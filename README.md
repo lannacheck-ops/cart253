@@ -14,5 +14,9 @@ This is my second edit
 
 
 
+![A digital image I drew of a chibi character a in kfc chicken bucket!](LFC_logo.png)
+
+
+
 
 
