@@ -1,6 +1,6 @@
 /**
- * My House
- * Pippin Barr
+ * Starter House
+ * Lanna Check
  * 
  * Draws a house with shapes.
  * 
@@ -19,13 +19,26 @@ function setup() {
 }
 
 /**
- * Draws a house
+ * Draws a house and some background elements
  */
 function draw() {
-    // The sky
-    background(150, 200, 250);
+    drawSky();
+    drawCloud();
+    drawGround();
+    drawHouse();
+}
 
-    // A cloud
+/**
+ * Draws a blue sky
+ */
+function drawSky(){
+    background(150, 200, 250);
+}
+
+/**
+ * Draws a white cloud
+ */
+function drawCloud(){
     push();
     noStroke();
     // Note: using a single number for a colour will be greyscale
@@ -38,15 +51,21 @@ function draw() {
     ellipse(190, 130, 60, 60);
     ellipse(220, 120, 60, 60);
     pop();
-
-    // The ground
+}
+/**
+ * Draws the ground
+ */
+function drawGround(){
     push();
     noStroke();
     fill(200);
     rect(0, 400, 640, 480);
     pop();
-
-    // The main body of the house
+}
+/**
+ * Draws main body of the house
+ */
+function drawHouse(){
     push();
     noStroke();
     fill(250, 250, 200);
