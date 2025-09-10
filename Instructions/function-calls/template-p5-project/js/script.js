@@ -3,7 +3,7 @@
  * Lanna Check
  * 
  * An art piece that represents the anxiety that a character 
- * faces as they look into their past.
+ * faces as they look back into their past.
  */
 
 "use strict";
