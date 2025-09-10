@@ -1,22 +1,25 @@
 /**
- * Function Calls
+ * Fearful look into the Past
  * Lanna Check
  * 
- * Working on function calls examples.
+ * An art piece that represents the anxiety that a character 
+ * faces as they look into their past.
  */
 
 "use strict";
-
+/**
+ * Creates the canvas of my piece
+ */
 function setup() {
 createCanvas(640,480);
 }
 
 
 /**
- * OOPS I DIDN'T DESCRIBE WHAT MY DRAW DOES!
+ * Draws the character's face as their eye looks to the back
 */
 function draw() {
-    //background represents the face of the character
+    //yellowish background represents the face of the character
     background(227, 180, 100);
     //the dark area of the character's eye
     fill(0);
