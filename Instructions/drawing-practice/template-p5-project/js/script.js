@@ -29,4 +29,18 @@ function draw() {
   ellipse(220, 160, 140);
   ellipse(420, 160, 140);
   pop();
+
+  push();
+  stroke(0);
+  strokeWeight(40);
+  point(250, 300);
+  point(390, 300);
+  pop();
+
+  push();
+  stroke(255);
+  strokeWeight(10);
+  point(250, 290);
+  point(390, 290);
+  pop();
 }
