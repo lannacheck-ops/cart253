@@ -43,4 +43,17 @@ function draw() {
   point(250, 290);
   point(390, 290);
   pop();
+
+  push();
+  noStroke();
+  fill(0);
+  triangle(300, 350, 340, 350, 320, 370);
+  pop();
+
+  push();
+  stroke(0);
+  strokeWeight(8);
+  line(318, 368, 290, 400);
+  line(321, 368, 349, 400);
+  pop();
 }
