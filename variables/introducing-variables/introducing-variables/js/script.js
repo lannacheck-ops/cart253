@@ -26,5 +26,6 @@ function draw() {
     fill(255, 255, 0);
     noStroke();
     ellipse(width / 2, height / 2, mouseX, mouseY);
+    pop();
 
 }
