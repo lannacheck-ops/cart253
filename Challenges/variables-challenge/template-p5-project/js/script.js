@@ -9,6 +9,13 @@
 
 "use strict";
 
+// Sky varables
+let sky = {
+    r: 160,
+    g: 180,
+    b: 200
+};
+
 // Our friend Mr. Furious
 let mrFurious = {
     // Position and size
@@ -34,7 +41,13 @@ function setup() {
  * Draw (and update) Mr. Furious
  */
 function draw() {
-    background(160, 180, 200);
+    // Sky color
+    background(sky.r, sky.g, sky.b);
+
+    // Sky getting darker
+    sky.r -= 1;
+    sky.g -= 1;
+    sky.b -= 1;
 
     // Make Mr. Furious get redder over time
 
