@@ -75,6 +75,8 @@ function draw() {
     ellipse(mrFurious.x, mrFurious.y, mrFurious.size);
     pop();
 
+    mrFurious.x += random(-1, 1);
+    mrFurious.y += random(-1, 1);
     drawBird();
 }
 
