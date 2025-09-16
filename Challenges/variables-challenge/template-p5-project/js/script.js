@@ -30,6 +30,15 @@ let mrFurious = {
     }
 };
 
+// Bird variables
+let bird = {
+    x: 0,
+    y: 80,
+    size: 40,
+
+    fill: "#d09250ff"
+}
+
 /**
  * Create the canvas
  */
@@ -65,4 +74,21 @@ function draw() {
     fill(mrFurious.fill.r, mrFurious.fill.g, mrFurious.fill.b);
     ellipse(mrFurious.x, mrFurious.y, mrFurious.size);
     pop();
+
+    drawBird();
+}
+
+/**
+ * Draws bird and moves it
+ */
+function drawBird() {
+    push();
+    fill(bird.fill);
+    noStroke();
+    circle(bird.x, bird.y, bird.size);
+    pop();
+
+    // Moves Bird
+    bird.x += 2;
+    bird.x = constrain(bird.x, 0, (width + bird.size));
 }
