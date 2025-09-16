@@ -27,7 +27,9 @@ let mrFurious = {
         r: 255,
         g: 225,
         b: 225
-    }
+    },
+    // Shake Intensity
+    shake: 1
 };
 
 // Bird variables
@@ -74,10 +76,16 @@ function draw() {
     fill(mrFurious.fill.r, mrFurious.fill.g, mrFurious.fill.b);
     ellipse(mrFurious.x, mrFurious.y, mrFurious.size);
     pop();
-
-    mrFurious.x += random(-1, 1);
-    mrFurious.y += random(-1, 1);
+    // Shake Mr Furious
+    mrFurious.x += random((mrFurious.shake * -1), mrFurious.shake);
+    mrFurious.y += random((mrFurious.shake * -1), mrFurious.shake);
     drawBird();
+    //Change Shake Intensity
+    mrFurious.shake += random(0.1, 0.5);
+    // Constrain Mr Furious
+    mrFurious.x = constrain(mrFurious.x, 0, width);
+    mrFurious.y = constrain(mrFurious.y, 0, height);
+
 }
 
 /**
