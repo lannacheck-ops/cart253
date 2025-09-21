@@ -1,6 +1,6 @@
 /**
  * Creature Loves Mouse
- * Pippin Barr
+ * Lanna Check
  * 
  * A creature that responds to the mouse by changing colour
  */
@@ -48,7 +48,21 @@ function draw() {
  * Responds to user input
  */
 function checkInput() {
-    // We'll need to figure this out
+    // Checks if the mouse button is pressed
+    if (mouseIsPressed) {
+        // If it is, the creature becomes happy
+        creature.fill = creature.fills.happy;
+    }
+    else if (keyIsPressed) {
+        // If a key is pressed the creature becomes angry
+        creature.fill = creature.fills.angry;
+    }
+    else {
+        // If the mouse and key is not pressed, the creature is bored
+        creature.fill = creature.fills.bored;
+    }
+
+
 }
 
 /**
