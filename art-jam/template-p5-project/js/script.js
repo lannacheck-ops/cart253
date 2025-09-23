@@ -13,9 +13,9 @@ let cat = {
     x: undefined,
     y: undefined,
     fill: {
-        r: 155,
-        g: 114,
-        b: 60
+        r: 180,
+        g: 107,
+        b: 43
     },
     stroke: {
         r: 74,
@@ -75,6 +75,7 @@ function drawCat() {
     drawCatNose();
     drawCatMouth();
     drawFrontHair();
+    drawPaw();
     // drawCatBrows();
 
 }
@@ -97,7 +98,7 @@ function drawCatEyes() {
     // Left Eye
     push();
     stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
-    strokeWeight(cat.stroke.size);
+    strokeWeight(5);
     fill(cat.eye.fill.r, cat.eye.fill.g, cat.eye.fill.b);
     circle(cat.eye.left.x, cat.eye.left.y, cat.eye.size);
     pop();
@@ -141,7 +142,10 @@ function drawCatEyes() {
 
 function drawCatNose() {
     push();
-    noStroke();
+    //noStroke();
+    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
+    strokeJoin(ROUND);
+    strokeWeight(5);
     fill(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     triangle(295, 340, 345, 340, 320, 370);
     pop();
@@ -192,7 +196,7 @@ function drawCatEars() {
 function drawFrontHair() {
     push();
     noFill();
-    stroke(8, 4, 3);
+    stroke(56, 35, 16);
     strokeWeight(25);
     // Left hair
     line(300, 120, 370, 215);
@@ -211,5 +215,26 @@ function drawFrontHair() {
 }
 
 function drawCatBody() {
+    push();
+    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
+    strokeWeight(cat.stroke.size);
+    rectMode(CENTER)
+    fill(cat.fill.r, cat.fill.g, cat.fill.b);
+    ellipse(320, 600, 450, 480);
+    pop();
+}
 
+function drawPaw() {
+    push();
+    strokeWeight(cat.stroke.size);
+    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
+    fill(201, 139, 56);
+    circle(540, 400, 140);
+    fill(201, 139, 56);
+    circle(490, 430, 70);
+    strokeWeight(10);
+    line(500, 345, 500, 390);
+    line(540, 335, 540, 390);
+    line(580, 345, 580, 390);
+    pop();
 }
