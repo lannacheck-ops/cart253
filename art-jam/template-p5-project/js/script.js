@@ -23,11 +23,11 @@ let cat = {
         b: 24,
         size: 5
     },
-    size: 400,
+    size: 360,
     // Cat's eyes parameters
     eye: {
-        size: 115,
-        irisSize: 80,
+        size: 105,
+        irisSize: 70,
         fill: {
             r: 241,
             g: 240,
@@ -68,11 +68,15 @@ function draw() {
  * Draws cat-sona's whole body
  */
 function drawCat() {
+    drawCatBody();
+    drawCatEars();
     drawCatHead();
     drawCatEyes();
     drawCatNose();
     drawCatMouth();
-    drawCatBrows();
+    drawFrontHair();
+    // drawCatBrows();
+
 }
 /**
  * Draws cat's head
@@ -83,7 +87,7 @@ function drawCatHead() {
     strokeWeight(cat.stroke.size);
     rectMode(CENTER)
     fill(cat.fill.r, cat.fill.g, cat.fill.b);
-    rect(cat.x, cat.y, cat.size, cat.size, 180);
+    ellipse(cat.x, cat.y, cat.size, cat.size);//, 180);
     pop();
 }
 /**
@@ -164,5 +168,48 @@ function drawCatBrows() {
     line(200, 200, 290, 180);
     line(440, 200, 350, 180);
     pop();
+
+}
+
+function drawCatEars() {
+    // Left Ear
+    push();
+    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
+    strokeWeight(cat.stroke.size);
+    fill(cat.fill.r, cat.fill.g, cat.fill.b);
+    triangle(170, 200, 190, 50, 300, 130);
+    pop();
+
+    // Right Ear
+    push();
+    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
+    strokeWeight(cat.stroke.size);
+    fill(cat.fill.r, cat.fill.g, cat.fill.b);
+    triangle(470, 200, 450, 50, 340, 130);
+    pop();
+}
+
+function drawFrontHair() {
+    push();
+    noFill();
+    stroke(8, 4, 3);
+    strokeWeight(25);
+    // Left hair
+    line(300, 120, 370, 215);
+    line(320, 120, 400, 215);
+    line(340, 125, 430, 220);
+    line(360, 125, 450, 215);
+    line(390, 135, 470, 220);
+    line(410, 145, 475, 220);
+
+    // Right hair
+    line(270, 130, 230, 210);
+    line(250, 140, 205, 215);
+    line(225, 150, 180, 220);
+    line(205, 160, 160, 220);
+    pop();
+}
+
+function drawCatBody() {
 
 }
