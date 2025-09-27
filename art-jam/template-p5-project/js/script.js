@@ -33,13 +33,16 @@ let cat = {
             g: 240,
             b: 240
         },
+        maxY: 280,
         left: {
             x: 245,
-            y: 280
+            y: 280,
+            maxX: 245
         },
         right: {
             x: 395,
-            y: 280
+            y: 280,
+            maxX: 395
         }
     }
 };
@@ -63,6 +66,19 @@ function draw() {
     background("#f0c864ff");
 
     drawCat();
+    moveCatEyes();
+}
+
+function moveCatEyes() {
+    cat.eye.left.x = mouseX
+    cat.eye.left.y = mouseY
+    cat.eye.left.x = constrain(cat.eye.left.x, cat.eye.left.maxX - cat.eye.size + 90, cat.eye.left.maxX + cat.eye.size - 90)
+    cat.eye.left.y = constrain(cat.eye.left.y, cat.eye.maxY - cat.eye.size + 90, cat.eye.maxY + cat.eye.size - 90)
+
+    cat.eye.right.x = mouseX
+    cat.eye.right.y = mouseY
+    cat.eye.right.x = constrain(cat.eye.right.x, cat.eye.right.maxX - cat.eye.size + 90, cat.eye.right.maxX + cat.eye.size - 90)
+    cat.eye.right.y = constrain(cat.eye.right.y, cat.eye.maxY - cat.eye.size + 90, cat.eye.maxY + cat.eye.size - 90)
 }
 /**
  * Draws cat-sona's whole body
@@ -72,11 +88,11 @@ function drawCat() {
     drawCatBody();
     drawCatEars();
     drawCatHead();
+    drawCatWhiskers();
     drawCatEyes();
     drawCatNose();
     drawCatMouth();
     drawFrontHair();
-
 
 }
 
@@ -102,18 +118,36 @@ function drawCatHead() {
     ellipse(cat.x, cat.y, cat.size, cat.size);//, 180);
     pop();
 }
+
+function drawCatWhiskers() {
+    // Left whiskers
+    push();
+    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
+    strokeWeight(7);
+    line(220, 340, 100, 320);
+    line(220, 360, 100, 360);
+    line(220, 380, 100, 400);
+    pop();
+
+    // Right whiskers
+    push();
+    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
+    strokeWeight(7);
+    line(420, 340, 540, 320);
+    line(420, 360, 540, 360);
+    line(420, 380, 540, 400);
+    pop();
+}
 /**
  * Draws cat's eyes 
  */
 function drawCatEyes() {
     // Left Eye
     push();
-    //stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
-    //strokeWeight(5);
-    /*noStroke();
-    fill(cat.eye.fill.r, cat.eye.fill.g, cat.eye.fill.b);
-    circle(cat.eye.left.x, cat.eye.left.y, cat.eye.size);
-    pop();*/
+    noStroke();
+    fill(cat.fill.r, cat.fill.g, cat.fill.b);
+    circle(245, 280, cat.eye.size);
+    pop();
 
     // Left Iris
     push();
@@ -131,12 +165,10 @@ function drawCatEyes() {
 
     // Right Eye
     push();
-    //stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
-    //strokeWeight(cat.stroke.size);
-    /*noStroke();
-    fill(cat.eye.fill.r, cat.eye.fill.g, cat.eye.fill.b);
-    circle(cat.eye.right.x, cat.eye.right.y, cat.eye.size);
-    pop();*/
+    noStroke();
+    fill(cat.fill.r, cat.fill.g, cat.fill.b);
+    circle(395, 280, cat.eye.size);
+    pop();
 
     // Right Iris
     push();
