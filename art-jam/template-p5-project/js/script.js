@@ -68,6 +68,7 @@ function draw() {
  * Draws cat-sona's whole body
  */
 function drawCat() {
+    drawCatTail();
     drawCatBody();
     drawCatEars();
     drawCatHead();
@@ -75,9 +76,17 @@ function drawCat() {
     drawCatNose();
     drawCatMouth();
     drawFrontHair();
-    //drawPaw();
-    // drawCatBrows();
 
+
+}
+
+function drawCatTail() {
+    push();
+    noFill();
+    stroke(130, 84, 60);
+    strokeWeight(50);
+    line(50, 100, 200, 450);
+    pop();
 }
 /**
  * Draws cat's head
@@ -101,10 +110,10 @@ function drawCatEyes() {
     push();
     //stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     //strokeWeight(5);
-    noStroke();
+    /*noStroke();
     fill(cat.eye.fill.r, cat.eye.fill.g, cat.eye.fill.b);
     circle(cat.eye.left.x, cat.eye.left.y, cat.eye.size);
-    pop();
+    pop();*/
 
     // Left Iris
     push();
@@ -124,13 +133,14 @@ function drawCatEyes() {
     push();
     //stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     //strokeWeight(cat.stroke.size);
-    noStroke();
+    /*noStroke();
     fill(cat.eye.fill.r, cat.eye.fill.g, cat.eye.fill.b);
     circle(cat.eye.right.x, cat.eye.right.y, cat.eye.size);
-    pop();
+    pop();*/
 
     // Right Iris
     push();
+    noStroke();
     fill(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     circle(cat.eye.right.x, cat.eye.right.y, cat.eye.irisSize);
     pop();
@@ -173,15 +183,6 @@ function drawCatMouth() {
     pop();
 }
 
-function drawCatBrows() {
-    push();
-    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b)
-    strokeWeight(15);
-    line(200, 200, 290, 180);
-    line(440, 200, 350, 180);
-    pop();
-
-}
 /**
  * Draws cat's ears
  */
@@ -194,12 +195,26 @@ function drawCatEars() {
     triangle(170, 200, 190, 50, 300, 130);
     pop();
 
+    // Left Inner Ear
+    push();
+    noStroke();
+    fill(245, 203, 188);
+    triangle(190, 200, 205, 90, 280, 130);
+    pop();
+
     // Right Ear
     push();
     stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     strokeWeight(cat.stroke.size);
     fill(cat.fill.r, cat.fill.g, cat.fill.b);
     triangle(470, 200, 450, 50, 340, 130);
+    pop();
+
+    // Right Inner Ear
+    push();
+    noStroke();
+    fill(245, 203, 188);
+    triangle(450, 200, 435, 90, 360, 130);
     pop();
 }
 /**
@@ -235,23 +250,5 @@ function drawCatBody() {
     rectMode(CENTER)
     fill(cat.fill.r, cat.fill.g, cat.fill.b);
     ellipse(320, 600, 450, 480);
-    pop();
-}
-
-function drawPaw() {
-    push();
-    //strokeWeight(cat.stroke.size);
-    //stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
-    noStroke();
-    fill(201, 139, 56);
-    circle(540, 400, 140);
-    fill(201, 139, 56);
-    circle(490, 430, 70);
-    pop();
-    push();
-    strokeWeight(10);
-    line(500, 345, 500, 390);
-    line(540, 335, 540, 390);
-    line(580, 345, 580, 390);
     pop();
 }
