@@ -27,7 +27,11 @@ let cat = {
     // Cat's eyes parameters
     eye: {
         size: 105,
-        irisSize: 70,
+        irisSizeX: 70,
+        irisLeftSizeY: 70,
+        irisRightSizeY: 70,
+        shineLeftSize: 30,
+        shineRightSize: 30,
         fill: {
             r: 241,
             g: 240,
@@ -66,9 +70,39 @@ function draw() {
     background("#f0c864ff");
 
     drawCat();
-    moveCatEyes();
+    //moveCatEyes();
+    blinkCatEyes();
 }
+/**
+ * Makes the cat's eye blink when the mouse is pressed over a specific eye
+ */
+function blinkCatEyes() {
 
+    const dLeftEye = dist(mouseX, mouseY, cat.eye.left.x, cat.eye.left.y);
+    const overlapLeftEye = (dLeftEye < cat.eye.irisSizeX / 2);
+
+    if (overlapLeftEye && mouseIsPressed) {
+        cat.eye.irisLeftSizeY = 10;
+        cat.eye.shineLeftSize = 0;
+    }
+    else {
+        cat.eye.irisLeftSizeY = 70;
+        cat.eye.shineLeftSize = 30;
+    }
+
+    const dRightEye = dist(mouseX, mouseY, cat.eye.right.x, cat.eye.right.y);
+    const overlapRightEye = (dRightEye < cat.eye.irisSizeX / 2);
+
+    if (overlapRightEye && mouseIsPressed) {
+        cat.eye.irisRightSizeY = 10;
+        cat.eye.shineRightSize = 0;
+    }
+    else {
+        cat.eye.irisRightSizeY = 70;
+        cat.eye.shineRightSize = 30;
+    }
+
+}
 function moveCatEyes() {
     cat.eye.left.x = mouseX
     cat.eye.left.y = mouseY
@@ -127,12 +161,9 @@ function drawCatWhiskers() {
     line(220, 340, 100, 320);
     line(220, 360, 100, 360);
     line(220, 380, 100, 400);
-    pop();
 
     // Right whiskers
-    push();
-    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
-    strokeWeight(7);
+
     line(420, 340, 540, 320);
     line(420, 360, 540, 360);
     line(420, 380, 540, 400);
@@ -153,13 +184,13 @@ function drawCatEyes() {
     push();
     noStroke();
     fill(cat.stroke.r, cat.stroke.g, cat.stroke.b);
-    circle(cat.eye.left.x, cat.eye.left.y, cat.eye.irisSize);
+    ellipse(cat.eye.left.x, cat.eye.left.y, cat.eye.irisSizeX, cat.eye.irisLeftSizeY);
     pop();
 
     // Left Eye shine
     push();
     stroke(241, 223, 189);
-    strokeWeight(30)
+    strokeWeight(cat.eye.shineLeftSize)
     point(cat.eye.left.x + 5, cat.eye.left.y - 20);
     pop();
 
@@ -174,13 +205,13 @@ function drawCatEyes() {
     push();
     noStroke();
     fill(cat.stroke.r, cat.stroke.g, cat.stroke.b);
-    circle(cat.eye.right.x, cat.eye.right.y, cat.eye.irisSize);
+    ellipse(cat.eye.right.x, cat.eye.right.y, cat.eye.irisSizeX, cat.eye.irisRightSizeY);
     pop();
 
     // Right Eye shine
     push();
     stroke(241, 223, 189);
-    strokeWeight(30)
+    strokeWeight(cat.eye.shineRightSize)
     point(cat.eye.right.x + 5, cat.eye.right.y - 20);
     pop();
 
