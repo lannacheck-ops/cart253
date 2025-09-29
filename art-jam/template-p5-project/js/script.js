@@ -326,6 +326,18 @@ function drawCatMouth() {
     triangle(303, 388, 319, 369, 335, 388);
     triangle(290, 386, 318, 408, 348, 386);
     pop();
+
+    push();
+    noFill();
+    stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
+    strokeWeight(5);
+    // Left lip
+    line(275, 372, 300, 388);
+    line(300, 388, 318, 368);
+    // Right lip
+    line(363, 372, 338, 388);
+    line(338, 388, 320, 368);
+    pop();
 }
 
 function drawCatLips() {
