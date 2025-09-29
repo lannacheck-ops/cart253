@@ -17,6 +17,11 @@ let cat = {
         g: 107,
         b: 43
     },
+    pinkFill: {
+        r: 245,
+        g: 203,
+        b: 188
+    },
     stroke: {
         r: 74,
         g: 46,
@@ -48,7 +53,32 @@ let cat = {
             y: 280,
             maxX: 395
         }
-    }
+    },
+    whisker: {
+        timer: 0,
+        startY: 340,
+        endY: 320,
+        left: {
+            startX: 220,
+            endX: 100
+        },
+        right: {
+            startX: 420,
+            endX: 540
+        }
+    },
+    tail: {
+        startX: 50
+    },
+    ear: {
+        left: {
+            midX: 190
+        },
+        right: {
+            midX: 450
+        }
+    },
+    happiness: 0
 };
 
 /**
@@ -60,6 +90,8 @@ function setup() {
     // Sets the cat-sona's position variables
     cat.x = width / 2
     cat.y = 300
+
+
 }
 
 
@@ -72,6 +104,7 @@ function draw() {
     drawCat();
     //moveCatEyes();
     blinkCatEyes();
+    massageCat();
 }
 /**
  * Makes the cat's eye blink when the mouse is pressed over a specific eye
@@ -103,6 +136,51 @@ function blinkCatEyes() {
     }
 
 }
+
+function massageCat() {
+    // Check if mouse is overlapping the head
+    const dHead = dist(mouseX, mouseY, cat.x, cat.y);
+    const overlapHead = (dHead < cat.size / 2);
+    cat.happiness = constrain(cat.happiness, 0, 200)
+    // Check if the mouse is moving (massaging)
+    const mouseIsMoving = (movedX !== 0 || movedY !== 0);
+
+    if (overlapHead && mouseIsMoving && mouseIsPressed) {
+        cat.whisker.timer += 1
+        cat.happiness += 1
+        if (cat.whisker.timer >= 24) {
+            cat.whisker.timer = 0
+        }
+        if (cat.whisker.timer < 12) {
+            cat.whisker.endY = 300
+            cat.tail.startX = 200
+            cat.ear.left.midX = 210
+            cat.ear.right.midX = 430
+        }
+        if (cat.whisker.timer >= 12 && cat.whisker.timer < 25) {
+            cat.whisker.endY = 320
+            cat.tail.startX = 50
+            cat.ear.left.midX = 190
+            cat.ear.right.midX = 450
+        }
+
+    }
+
+    if (cat.happiness >= 120) {
+        drawCatMouth()
+    }
+    if (!mouseIsPressed) {
+        cat.whisker.endY = 320
+        cat.tail.startX = 50
+        cat.ear.left.midX = 190
+        cat.ear.right.midX = 450
+        if (cat.happiness > 0) {
+            cat.happiness -= 1
+        }
+    }
+    console.log(cat.whisker.timer);
+    console.log(cat.happiness);
+}
 function moveCatEyes() {
     cat.eye.left.x = mouseX
     cat.eye.left.y = mouseY
@@ -125,17 +203,19 @@ function drawCat() {
     drawCatWhiskers();
     drawCatEyes();
     drawCatNose();
-    drawCatMouth();
+    drawCatLips();
     drawFrontHair();
 
 }
-
+/**
+ * Draws cat's tail
+ */
 function drawCatTail() {
     push();
     noFill();
     stroke(130, 84, 60);
     strokeWeight(50);
-    line(50, 100, 200, 450);
+    line(cat.tail.startX, 100, 200, 450);
     pop();
 }
 /**
@@ -152,21 +232,28 @@ function drawCatHead() {
     ellipse(cat.x, cat.y, cat.size, cat.size);//, 180);
     pop();
 }
-
+/**
+ * Draw cat's whiskers
+ */
 function drawCatWhiskers() {
     // Left whiskers
     push();
     stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     strokeWeight(7);
-    line(220, 340, 100, 320);
-    line(220, 360, 100, 360);
-    line(220, 380, 100, 400);
+    // Whisker 1
+    line(cat.whisker.left.startX, cat.whisker.startY, cat.whisker.left.endX, cat.whisker.endY);
+    // Whisker 2
+    line(cat.whisker.left.startX, cat.whisker.startY + 20, cat.whisker.left.endX, cat.whisker.endY + 40);
+    // Whisker 3
+    line(cat.whisker.left.startX, cat.whisker.startY + 40, cat.whisker.left.endX, cat.whisker.endY + 80);
 
     // Right whiskers
-
-    line(420, 340, 540, 320);
-    line(420, 360, 540, 360);
-    line(420, 380, 540, 400);
+    // Whisker 1
+    line(cat.whisker.right.startX, cat.whisker.startY, cat.whisker.right.endX, cat.whisker.endY);
+    // Whisker 2
+    line(cat.whisker.right.startX, cat.whisker.startY + 20, cat.whisker.right.endX, cat.whisker.endY + 40);
+    // Whisker 3
+    line(cat.whisker.right.startX, cat.whisker.startY + 40, cat.whisker.right.endX, cat.whisker.endY + 80);
     pop();
 }
 /**
@@ -234,6 +321,15 @@ function drawCatNose() {
  */
 function drawCatMouth() {
     push();
+    noStroke();
+    fill(cat.pinkFill.r, cat.pinkFill.g, cat.pinkFill.b);
+    triangle(303, 388, 319, 369, 335, 388);
+    triangle(290, 386, 318, 408, 348, 386);
+    pop();
+}
+
+function drawCatLips() {
+    push();
     noFill();
     stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     strokeWeight(5);
@@ -255,14 +351,14 @@ function drawCatEars() {
     stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     strokeWeight(cat.stroke.size);
     fill(cat.fill.r, cat.fill.g, cat.fill.b);
-    triangle(170, 200, 190, 50, 300, 130);
+    triangle(170, 200, cat.ear.left.midX, 50, 300, 130);
     pop();
 
     // Left Inner Ear
     push();
     noStroke();
-    fill(245, 203, 188);
-    triangle(190, 200, 205, 90, 280, 130);
+    fill(cat.pinkFill.r, cat.pinkFill.g, cat.pinkFill.b);
+    triangle(190, 200, cat.ear.left.midX + 15, 90, 280, 130);
     pop();
 
     // Right Ear
@@ -270,14 +366,14 @@ function drawCatEars() {
     stroke(cat.stroke.r, cat.stroke.g, cat.stroke.b);
     strokeWeight(cat.stroke.size);
     fill(cat.fill.r, cat.fill.g, cat.fill.b);
-    triangle(470, 200, 450, 50, 340, 130);
+    triangle(470, 200, cat.ear.right.midX, 50, 340, 130);
     pop();
 
     // Right Inner Ear
     push();
     noStroke();
-    fill(245, 203, 188);
-    triangle(450, 200, 435, 90, 360, 130);
+    fill(cat.pinkFill.r, cat.pinkFill.g, cat.pinkFill.b);
+    triangle(450, 200, cat.ear.right.midX - 15, 90, 360, 130);
     pop();
 }
 /**
