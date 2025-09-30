@@ -6,7 +6,12 @@
  */
 
 "use strict";
-
+// Background Music
+let music;
+// Cat sounds
+let catPurr;
+let catMeow;
+let catBlink;
 // Cat-sona's variables
 let cat = {
     // Cat's head parameters
@@ -84,17 +89,28 @@ let cat = {
     // Cat's happiness
     happiness: 0
 };
+/**
+ * Loads sounds
+ */
+function preload() {
+    music = loadSound('music.wav');
+    catPurr = loadSound('purr.wav');
+    catMeow = loadSound('meow.wav');
+    catBlink = loadSound('blink.wav');
+
+}
 
 /**
  * Creates the canvas and sets intial variables
 */
 function setup() {
     createCanvas(640, 640);
-
+    music.play();
+    music.loop();
+    music.setVolume(0.5);
     // Sets the cat-sona's position variables
     cat.x = width / 2
     cat.y = 300
-
 
 }
 
@@ -121,6 +137,10 @@ function blinkCatEyes() {
 
     // Makes the left eye close when the mouse is pressed over it
     if (overlapLeftEye && mouseIsPressed) {
+        if (!catBlink.isPlaying()) {
+            catBlink.play();
+            catBlink.setVolume(1);
+        }
         cat.eye.irisLeftSizeY = 10;
         cat.eye.shineLeftSize = 0;
     }
@@ -136,6 +156,10 @@ function blinkCatEyes() {
 
     // Makes the right eye close when the mouse is pressed over it
     if (overlapRightEye && mouseIsPressed) {
+        if (!catBlink.isPlaying()) {
+            catBlink.play();
+            catBlink.setVolume(1);
+        }
         cat.eye.irisRightSizeY = 10;
         cat.eye.shineRightSize = 0;
     }
@@ -158,8 +182,21 @@ function massageCat() {
     // Check if the mouse is moving (massaging)
     const mouseIsMoving = (movedX !== 0 || movedY !== 0);
 
+    // Changes the cursor to a hand when the mouse is overlapping the head
+    if (overlapHead) {
+        cursor(HAND);
+    }
+    else {
+        cursor(ARROW);
+    }
     // Trigger the ear, whisker and tail movement when the cat is being massaged
     if (overlapHead && mouseIsMoving && mouseIsPressed) {
+        // Plays the cat's purr when its not already playing
+        if (!catPurr.isPlaying()) {
+            catPurr.play();
+            //catPurr.loop();
+            catPurr.setVolume(1);
+        }
         cat.whisker.timer += 1
         // Adds the cat's happiness
         cat.happiness += 1
@@ -186,9 +223,22 @@ function massageCat() {
     if (cat.happiness >= 120) {
         drawCatMouth()
     }
+    // Plays the cat's meow when the cat is happy when its not already playing
+    if (!catMeow.isPlaying() && cat.happiness === 120) {
+        catMeow.play();
+        catMeow.setVolume(0.2);
+    }
 
-    // When the mouth is not pressed the ears, tail and whiskers return to their original position
     if (!mouseIsPressed) {
+        // When the mouse is not pressed stop the cat's purring
+        if (catPurr.isPlaying()) {
+            catPurr.stop();
+        }
+        // When the mouse is not pressed stop the cat's meowing
+        if (catMeow.isPlaying()) {
+            catMeow.stop();
+        }
+        // When the mouth is not pressed the ears, tail and whiskers return to their original position
         cat.whisker.endY = 320
         cat.tail.startX = 50
         cat.ear.left.midX = 190
