@@ -2,7 +2,7 @@
  * Art Jam
  * Lanna Check
  * 
- * An interactive self-potrait where player pet my cat persona using the mouse
+ * An interactive self-potrait where the player pets my cat persona using the mouse
  */
 
 "use strict";
@@ -54,6 +54,7 @@ let cat = {
             maxX: 395
         }
     },
+    // Cat's whiskers parameters
     whisker: {
         timer: 0,
         startY: 340,
@@ -67,9 +68,11 @@ let cat = {
             endX: 540
         }
     },
+    // Cat's tail parameters
     tail: {
         startX: 50
     },
+    // Cat's ear parameters
     ear: {
         left: {
             midX: 190
@@ -78,6 +81,7 @@ let cat = {
             midX: 450
         }
     },
+    // Cat's happiness
     happiness: 0
 };
 
@@ -102,7 +106,7 @@ function draw() {
     background("#f0c864ff");
 
     drawCat();
-    //moveCatEyes();
+    moveCatEyes();
     blinkCatEyes();
     massageCat();
 }
@@ -111,25 +115,31 @@ function draw() {
  */
 function blinkCatEyes() {
 
+    // Checks if the mouse is overlapping the left eye
     const dLeftEye = dist(mouseX, mouseY, cat.eye.left.x, cat.eye.left.y);
     const overlapLeftEye = (dLeftEye < cat.eye.irisSizeX / 2);
 
+    // Makes the left eye close when the mouse is pressed over it
     if (overlapLeftEye && mouseIsPressed) {
         cat.eye.irisLeftSizeY = 10;
         cat.eye.shineLeftSize = 0;
     }
+    // Restores eye's original size
     else {
         cat.eye.irisLeftSizeY = 70;
         cat.eye.shineLeftSize = 30;
     }
 
+    // Checks if the mouse is overlapping the right eye
     const dRightEye = dist(mouseX, mouseY, cat.eye.right.x, cat.eye.right.y);
     const overlapRightEye = (dRightEye < cat.eye.irisSizeX / 2);
 
+    // Makes the right eye close when the mouse is pressed over it
     if (overlapRightEye && mouseIsPressed) {
         cat.eye.irisRightSizeY = 10;
         cat.eye.shineRightSize = 0;
     }
+    // Restores eye's original size
     else {
         cat.eye.irisRightSizeY = 70;
         cat.eye.shineRightSize = 30;
@@ -137,6 +147,9 @@ function blinkCatEyes() {
 
 }
 
+/**
+ * When the mouse "massages" the cat's head when the mouse is pressed, the cat wags its tail, its whiskers move, and its ears move. Massaging the cat also increases its happiness
+ */
 function massageCat() {
     // Check if mouse is overlapping the head
     const dHead = dist(mouseX, mouseY, cat.x, cat.y);
@@ -145,12 +158,16 @@ function massageCat() {
     // Check if the mouse is moving (massaging)
     const mouseIsMoving = (movedX !== 0 || movedY !== 0);
 
+    // Trigger the ear, whisker and tail movement when the cat is being massaged
     if (overlapHead && mouseIsMoving && mouseIsPressed) {
         cat.whisker.timer += 1
+        // Adds the cat's happiness
         cat.happiness += 1
+        // Restores the timer to 0 after 24 frames
         if (cat.whisker.timer >= 24) {
             cat.whisker.timer = 0
         }
+        // The cat's ears, whiskers and tail move every 12 frames
         if (cat.whisker.timer < 12) {
             cat.whisker.endY = 300
             cat.tail.startX = 200
@@ -165,10 +182,12 @@ function massageCat() {
         }
 
     }
-
+    // When the cat's happiness is greater than 120 the cat opens its mouth (draws its mouth)
     if (cat.happiness >= 120) {
         drawCatMouth()
     }
+
+    // When the mouth is not pressed the ears, tail and whiskers return to their original position
     if (!mouseIsPressed) {
         cat.whisker.endY = 320
         cat.tail.startX = 50
@@ -178,17 +197,27 @@ function massageCat() {
             cat.happiness -= 1
         }
     }
-    console.log(cat.whisker.timer);
-    console.log(cat.happiness);
 }
+
+/**
+ * Moves the cat's eyes according to the mouse's position
+ */
 function moveCatEyes() {
+    // Right Eye
+    // Sets the right eye's position to the mouse position
     cat.eye.left.x = mouseX
     cat.eye.left.y = mouseY
+
+    // Constrains the left eye's position to a certain position on the face so the eye doesn't follow the mouse outside of it's face
     cat.eye.left.x = constrain(cat.eye.left.x, cat.eye.left.maxX - cat.eye.size + 90, cat.eye.left.maxX + cat.eye.size - 90)
     cat.eye.left.y = constrain(cat.eye.left.y, cat.eye.maxY - cat.eye.size + 90, cat.eye.maxY + cat.eye.size - 90)
 
+    // Left Eye
+    // Sets the left eye's position to the mouse position
     cat.eye.right.x = mouseX
     cat.eye.right.y = mouseY
+
+    // Constrains the right eye's position to a certain position on the face so the eye doesn't follow the mouse outside of it's face
     cat.eye.right.x = constrain(cat.eye.right.x, cat.eye.right.maxX - cat.eye.size + 90, cat.eye.right.maxX + cat.eye.size - 90)
     cat.eye.right.y = constrain(cat.eye.right.y, cat.eye.maxY - cat.eye.size + 90, cat.eye.maxY + cat.eye.size - 90)
 }
@@ -317,7 +346,7 @@ function drawCatNose() {
     pop();
 }
 /**
- * Draws cat's mouth: left and right lip
+ * Draws cat's open mouth
  */
 function drawCatMouth() {
     push();
@@ -339,7 +368,9 @@ function drawCatMouth() {
     line(338, 388, 320, 368);
     pop();
 }
-
+/**
+ * Draws cat's lips
+ */
 function drawCatLips() {
     push();
     noFill();
@@ -353,7 +384,6 @@ function drawCatLips() {
     line(338, 388, 320, 368);
     pop();
 }
-
 /**
  * Draws cat's ears
  */
