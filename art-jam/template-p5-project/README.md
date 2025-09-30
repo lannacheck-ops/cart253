@@ -20,8 +20,6 @@ JavaScript libraries:
 [p5.js](https://p5js.org/) and p5.sound.Js
 
 Sound assets are all from freesound.org:
-
-> - This project uses [p5.js](https://p5js.org).
 > - Blink sound: https://freesound.org/people/shaino123/sounds/695547/
 > - Meow sound: https://freesound.org/people/tuberatanka/sounds/110010/
 > - Purring sound: https://freesound.org/people/Leoni@FS/sounds/410172/
