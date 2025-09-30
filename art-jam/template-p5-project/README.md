@@ -9,14 +9,14 @@ Lanna Check
 My Cat-Sona is an interactive self-potrait where the player pets my cat persona using the mouse. 
 
 ### Controls
-Press and hold over the cat's head to while moving the mouse to pet the cat
-Click on the cat's eyes to make it blink
+> -Press and hold over the cat's head to while moving the mouse to pet the cat
+> -Click on the cat's eyes to make it blink
 
 ## Screenshot(s)
 
 This bit should have some images of the program running so that the reader has a sense of what it looks like. For example:
 
-> ![Image of My Cat-Sona self portrait]('artJam.png')
+> ![Image of My Cat-Sona self portrait](artJam.png)
 
 ## Attribution
 JavaScript libraries:
