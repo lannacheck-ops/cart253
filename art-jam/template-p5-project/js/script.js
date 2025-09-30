@@ -1,5 +1,5 @@
 /**
- * Art Jam
+ * My Cat-Sona
  * Lanna Check
  * 
  * An interactive self-potrait where the player pets my cat persona using the mouse
