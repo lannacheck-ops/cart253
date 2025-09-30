@@ -101,7 +101,7 @@ function preload() {
 }
 
 /**
- * Creates the canvas and sets intial variables
+ * Creates the canvas, plays the background music and sets intial variables
 */
 function setup() {
     createCanvas(640, 640);
