@@ -93,10 +93,10 @@ let cat = {
  * Loads sounds
  */
 function preload() {
-    music = loadSound('music.wav');
-    catPurr = loadSound('purr.wav');
-    catMeow = loadSound('meow.wav');
-    catBlink = loadSound('blink.wav');
+    music = loadSound('assets/sounds/music.wav');
+    catPurr = loadSound('assets/sounds/purr.wav');
+    catMeow = loadSound('assets/sounds/meow.wav');
+    catBlink = loadSound('assets/sounds/blink.wav');
 
 }
 

@@ -20,7 +20,7 @@ My Cat-Sona is an interactive self-potrait where the player pets my cat persona 
 > - music.setVolume()
 > - cursor(HAND)
 ## Screenshot(s)
-> ![Image of My Cat-Sona self portrait](artJam.png)
+> ![Image of My Cat-Sona self portrait](assets/images/artJam.png)
 
 ## Attribution
 JavaScript libraries:
