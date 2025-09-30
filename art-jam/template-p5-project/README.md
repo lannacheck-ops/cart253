@@ -12,6 +12,13 @@ My Cat-Sona is an interactive self-potrait where the player pets my cat persona 
 > - Press and hold over the cat's head to while moving the mouse to pet the cat.
 > - Click on the cat's eyes to make it blink.
 
+### New Functions Used
+> - function preload()
+> - loadSound()
+> - music.play()
+> - music.loop()
+> - music.setVolume()
+> - cursor(HAND)
 ## Screenshot(s)
 > ![Image of My Cat-Sona self portrait](artJam.png)
 
