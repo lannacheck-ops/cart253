@@ -1,3 +1,7 @@
 # Art Jam Responses
 
-## 1 Response
+## [Lucie's Art Jam Response](https://luciee246.github.io/cart253/topics/art-jam/)
+To start off, I was already surprised to see a microphone instead of a mouse cursor but even more so when I brought the microphone close to the mouth of the character on the screen and music started playing. I think this was a very clever project that helped me have an idea of what Lucie's interests might be; my guess would be singing or music. Another thing that stuck out to me was how easy it was to interact with the project. Right when I realized the character's mouth got bigger as I brought the microphone closer to it, I knew that bringing the mic closer to the mouth would create some type of reaction. Indeed, that reaction was the change of volume as I brought the microphone closer or further away from the mouth. When the microphone is too far from the mouth and the music can't be heard anymore, I really love how the music pauses and resumes when the microphone close enough to the mouth so the music can be heard again. It makes the interaction feel seamless and polished.
+One thing about me is I like to play around with projects in my own way, and I loved playing around with the way the volume would change as I played with the distance between the mic and the mouth. I like doing this especially when the singer would hit high notes in the song because it created an echo like effect or a reverberation since the volume would fade in and out.
+
+
