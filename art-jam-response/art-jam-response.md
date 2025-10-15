@@ -10,4 +10,5 @@ I love the character customization aspect of this project. I didn't expect to in
 
 ![Marc art jam screenshot](marc-art-jam.png)
 
-## Huynh's Art Jam Response
+## [Huynh's Art Jam Response](https://pentonfreak.github.io/Art-Jam-Assignment/)
+At first glance, this project is a beautiful pixel art portrait that looks very detailed, but it was fun to see that the eyes of the portrait moved left when the mouse position was to the left of the canvas. Looking at the code of this project was very impressive! Everything was so advanced starting from the use of for loops, event listeners and more things that I wasn't even sure about. I also understood that the grid in the background of the piece wasn't only an aesthetic choice, but it was a guideline for each "pixel" on the screen. Love the details in this project!
