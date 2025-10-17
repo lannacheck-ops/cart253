@@ -1,22 +1,22 @@
 # Mod Jam Ideas
 
-1. Frog gets hungry over time
-2. There is a variety of flies: bigger flies provides more satisfaction to the frog's hunger
-3. There is a gameover screen when the frog dies of hunger
+1. Frog gets hungry over time. (Does that mean I need a hunger meter? How full can the hungry meter get? What is the maximum point of the meter? Should I represent the frog's hunger through a gauge on the screen? Does the fullnees of the frog decrease or does the hunger increase overtime? I prefer the idea that the fullness decreases overtime tho. By how much does the fullness decrease per 1000 miliseconds? )
+2. There is a variety of flies: bigger flies provide more satisfaction to the frog's hunger (Do big flies appear randomly? Do big flies appear less often than small flies? Can there be poisinous flies that reduce the frog's hunger even more?)
+3. There is a gameover screen when the frog dies of hunger (Does this happen when the hunger meter is at 0? Does this happen happen when the frog stay at 0 hunger for more than 2 seconds? Does it actually show the frog been dead. The frog's death is represented by it no longer moving. Maybe the frogs eyes close to show it is dead. A gameover text shows on the screen.)
 4. The frog moves slower the hungerier it gets (the movement on the x axis becomes delayed)
-5. The frog moves faster the fuller it gets
-6. The hungrier the frog gets the slower its tongue shoots out and its tongue can't shoot to the edge of the screen.
-7. The eyes of the frog follows the fly's movement
-8. The frog's tongue can get trapped on certain obstacles.
-9. The frog can collect powerups to making catching flies easier.
-10. There can be moments when flies flood the screen to give players a chance to catch more flies.
-11. The mouse controls how far the tongue shoots.
-12. The flies have a random movement.
-13. The flies can detect the frog movement and fly away when they sense danger.
-14. Vegan frog that avoids eating flies to eat leaves.
-15. Two player game on who catches the most flies in a 1 minute.
+5. The frog moves faster the fuller it gets (the movement on the x axis is not delayed at all)
+6. The hungrier the frog gets the slower its tongue shoots out and its tongue can't shoot to the edge of the screen. (The tongue travels a shorter distance over time and when the frog gets really hungry the tongue can't reach the top of the screen. Meaning there should be a variable to determine the shooting speed of the tongue and a variable for the maximum y (or minimum since the 0 of the y is the top of the canvas) the tongue can shoot to.)
+7. The eyes of the frog follows the fly's movement (Something similar to my art-jam's eye mechanics)
+8. The frog's tongue can get trapped on certain obstacles.(The scenery of the game can be a pond and each obstacle relates to objects you can find in a pond. A trap could be floating logs in the pond. A log could obstruct the path leading to a fly and when the frog's tongue shoots out onto the log the frog's tongue gets trapped for a few seconds before the tongue gets released. How often do logs float along the screen? The logs move from left to right? Each log can move at different speeds. When the frog's tongue gets stuck the log stops moving and the frog as well. How long does the tongue get stuck for? 1 second? 2 seconds? Does the log get destroyed after the frog's tongue get released? or does the tongue keep moving along the screen?)
+9. The frog can collect powerups to making catching flies easier. (What powerups can the frog catch? Does the frog have to catch powerups with its tongue or can the frog get powerups with it's body by overlapping it? The frog could catch different flowers to represent powerups? For instance, getting a purple flower means the frog's tongue grows wider meaning the frog has more surface area to catch flies. The powerups have a cooldown though and disappear after a few seconds. After how many seconds? )
+10. There can be moments when flies flood the screen to give players a chance to catch more flies. (After certain time intervals, there's a fly flood. After how many seconds? How many flies get on the screen?)
+11. The mouse controls how far the tongue shoots.(The longer the left mouse button is pressed the further up the tongue shoots. OR The y position of the mouse determined how far the tongue shoots up.)
+12. The flies have a random movement. ( random x and y movement)
+13. The flies can detect the frog movement and fly away when they sense danger. (When the moved x of frog is too high the fly flies away. The frog has to be close enough to the fly for the fly to detect the frog's movement. There needs to be a variable to determine the distance between the frog and fly and a boolean to check if that distance crosses the fly's threshold to detect the frog's movement.)
+14. Vegan frog that avoids eating flies to eat leaves. (Flied block the path of a frog trying to eat leaves and touching a fly leads to a game over screen.)
+15. Two player game on who catches the most flies in a 1 minute. (Each player uses either the keypad or wasd keys to move the frog and pressing w or the up key shoots outs the respectuve frog's tongue. There is a score variable for each frog. When the 1 minute is up it the screen shows a game over screen as well as the score of each player. Multiple flies show up on the screen.)
 16. The mouse y controls how far the tongue shoots out
 17. Frog uses its tongue to move objects along a path.
-18. The frog has to jump on lily pads before they move out of the screen.
-19. The frog leaves poisonous saliva on the screen everywhere its tongue lands.
-20. The frog has to jump to catch flies that are too high up.
+18. The frog has to jump on lily pads before they move out of the screen.( Lily pads move from left to right on the screen. Players use the keypad to move the frog. The frog still has to eat flies while trying not to go over the right end of the screen. The frog can only jump to lily pads that are a close to it.)
+19. The frog leaves poisonous saliva on the screen everywhere its tongue lands. (The frog leaves traps for flies on the screen with its saliva. Flies can't move for a few seconds when trapped in this saliva making it easyfor the frog to eat the fly.)
+20. The frog has to jump to catch flies that are too high up. (The frog has to use the key pad and the mouse. The frog's tongue cannot reach the top of the screen.)
