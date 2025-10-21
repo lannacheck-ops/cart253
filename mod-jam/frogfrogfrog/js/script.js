@@ -84,7 +84,10 @@ function draw() {
 function moveFly(fly) {
     // Move the fly
     fly.x += fly.speed;
-
+    // Cool sine movement on the y
+    fly.y = fly.A * sin(fly.sinCount * 0.05) + fly.D;
+    fly.sinCount += random(1, 4);
+    //fly.y += random(-3, 3)
     if (fly.x > width) {
         resetFly(fly);
     }
@@ -98,8 +101,11 @@ function createFly() {
     const fly = {
         x: random(-40, -5),
         y: random(0, 200), // Will be random
+        D: random(50, 200),
+        A: random(10, 40),
         size: random(10, 20),
         speed: random(3, 5),
+        sinCount: 1,
         timer: undefined // Delay between fly creation
     };
     return fly;
@@ -126,8 +132,11 @@ function drawFly(fly) {
 function resetFly(fly) {
     fly.x = random(-50, -5);
     fly.y = random(0, 200); // Will be random
+    fly.D = random(50, 200);
+    fly.A = random(10, 40);
     fly.size = random(10, 20);
     fly.speed = random(3, 5);
+    fly.sinCount = 1;
     fly.timer = undefined // Delay between fly creation
 }
 
