@@ -29,8 +29,19 @@ const frog = {
         y: 480,
         size: 20,
         speed: 20,
+        maxy: 100,
         // Determines how the tongue moves each frame
         state: "idle" // State can be: idle, outbound, inbound
+    },
+    // The frog's hunger
+    hunger: {
+        x: 70,
+        y: 40,
+        max: 500,
+        min: 0,
+        value: 495,
+        timer: 10,
+        reduction: 0.3
     }
 };
 
@@ -56,6 +67,7 @@ function setup() {
     fly.timer = random(0, 1500);
     setInterval(drawFly, fly.timer);
     */
+    setInterval(reduceHungerMeter, frog.hunger.timer)
 }
 
 function draw() {
@@ -75,6 +87,8 @@ function draw() {
     checkTongueFlyOverlap(fly1);
     checkTongueFlyOverlap(fly2);
     checkTongueFlyOverlap(fly3);
+
+    hungerMeter();
 }
 
 /**
@@ -86,23 +100,22 @@ function moveFly(fly) {
     fly.x += fly.speed;
     // Cool sine movement on the y
     fly.y = fly.A * sin(fly.sinCount * 0.05) + fly.D;
-    fly.sinCount += random(1, 4);
+    fly.sinCount += random(0.5, 4);
     //fly.y += random(-3, 3)
     if (fly.x > width) {
         resetFly(fly);
     }
-    /*// Handle the fly going off the canvas
-    if (fly.x > width) {
-        resetFly();
-    }
-*/
 }
+
+/**
+ * Creates flies with random parameters
+ */
 function createFly() {
     const fly = {
-        x: random(-40, -5),
-        y: random(0, 200), // Will be random
-        D: random(50, 200),
-        A: random(10, 40),
+        x: random(-40, -10),
+        y: random(100, 200), // Will be random
+        D: random(120, 300),
+        A: random(10, 30),
         size: random(10, 20),
         speed: random(3, 5),
         sinCount: 1,
@@ -127,13 +140,13 @@ function drawFly(fly) {
 }
 
 /**
- * Resets the fly to the left with a random y
+ * Resets the flies parameters
  */
 function resetFly(fly) {
-    fly.x = random(-50, -5);
-    fly.y = random(0, 200); // Will be random
-    fly.D = random(50, 200);
-    fly.A = random(10, 40);
+    fly.x = random(-50, -10);
+    fly.y = random(100, 200); // Will be random
+    fly.D = random(120, 300);
+    fly.A = random(10, 30);
     fly.size = random(10, 20);
     fly.speed = random(3, 5);
     fly.sinCount = 1;
@@ -161,7 +174,7 @@ function moveTongue() {
     else if (frog.tongue.state === "outbound") {
         frog.tongue.y += -frog.tongue.speed;
         // The tongue bounces back if it hits the top
-        if (frog.tongue.y <= 0) {
+        if (frog.tongue.y <= frog.tongue.maxy) {
             frog.tongue.state = "inbound";
         }
     }
@@ -210,6 +223,9 @@ function checkTongueFlyOverlap(fly) {
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + fly.size / 2);
     if (eaten) {
+        // Add to frog's hunger meter
+        frog.hunger.value += fly.size
+        frog.hunger.value = constrain(frog.hunger.value, frog.hunger.min, frog.hunger.max);
         // Reset the fly
         resetFly(fly);
         // Bring back the tongue
@@ -217,6 +233,27 @@ function checkTongueFlyOverlap(fly) {
     }
 }
 
+function hungerMeter() {
+    // Hunger meter background
+    push();
+    strokeWeight(5);
+    fill("#838282ff");
+    rect(frog.hunger.x, frog.hunger.y, frog.hunger.max, 30, 8);
+    pop();
+    // Actual Hunger meter
+    push();
+    noStroke();
+    fill("#4bb71cff");
+    rect(frog.hunger.x + 2.5, frog.hunger.y + 2.5, frog.hunger.value, 25, 8);
+    pop();
+}
+
+function reduceHungerMeter() {
+    if (frog.hunger.value > frog.hunger.min) {
+        frog.hunger.value -= frog.hunger.reduction
+    };
+
+}
 /**
  * Launch the tongue on click (if it's not launched yet)
  */
