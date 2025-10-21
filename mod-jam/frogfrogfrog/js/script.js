@@ -165,6 +165,8 @@ function moveFrog() {
  */
 function moveTongue() {
     // Tongue matches the frog's x
+    frog.tongue.speed = frog.hunger.value / 24;
+    //frog.tongue.maxy = ;
     frog.tongue.x = frog.body.x;
     // If the tongue is idle, it doesn't do anything
     if (frog.tongue.state === "idle") {
@@ -233,6 +235,9 @@ function checkTongueFlyOverlap(fly) {
     }
 }
 
+/**
+ * Draws the Hunger Meter
+ */
 function hungerMeter() {
     // Hunger meter background
     push();
@@ -248,6 +253,9 @@ function hungerMeter() {
     pop();
 }
 
+/**
+ * Reduces the Hunger Meter
+ */
 function reduceHungerMeter() {
     if (frog.hunger.value > frog.hunger.min) {
         frog.hunger.value -= frog.hunger.reduction
