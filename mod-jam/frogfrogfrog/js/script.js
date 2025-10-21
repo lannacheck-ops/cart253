@@ -36,63 +36,99 @@ const frog = {
 
 // Our fly
 // Has a position, size, and speed of horizontal movement
-const fly = {
-    x: 0,
-    y: 200, // Will be random
-    size: 10,
-    speed: 3
-};
+let fly1 = undefined;
+let fly2 = undefined;
+let fly3 = undefined;
+
 
 /**
  * Creates the canvas and initializes the fly
  */
 function setup() {
     createCanvas(640, 480);
-
+    // Create flies 
+    fly1 = createFly();
+    fly2 = createFly();
+    fly3 = createFly();
     // Give the fly its first random position
-    resetFly();
+    //resetFly();
+    /*
+    fly.timer = random(0, 1500);
+    setInterval(drawFly, fly.timer);
+    */
 }
 
 function draw() {
     background("#87ceeb");
-    moveFly();
-    drawFly();
+    moveFly(fly1);
+    moveFly(fly2);
+    moveFly(fly3);
+
+    drawFly(fly1);
+    drawFly(fly2);
+    drawFly(fly3);
+
     moveFrog();
     moveTongue();
     drawFrog();
-    checkTongueFlyOverlap();
+
+    checkTongueFlyOverlap(fly1);
+    checkTongueFlyOverlap(fly2);
+    checkTongueFlyOverlap(fly3);
 }
 
 /**
  * Moves the fly according to its speed
  * Resets the fly if it gets all the way to the right
  */
-function moveFly() {
+function moveFly(fly) {
     // Move the fly
     fly.x += fly.speed;
-    // Handle the fly going off the canvas
+
+    if (fly.x > width) {
+        resetFly(fly);
+    }
+    /*// Handle the fly going off the canvas
     if (fly.x > width) {
         resetFly();
     }
+*/
+}
+function createFly() {
+    const fly = {
+        x: random(-40, -5),
+        y: random(0, 200), // Will be random
+        size: random(10, 20),
+        speed: random(3, 5),
+        timer: undefined // Delay between fly creation
+    };
+    return fly;
 }
 
 /**
  * Draws the fly as a black circle
  */
-function drawFly() {
+function drawFly(fly) {
     push();
     noStroke();
     fill("#000000");
     ellipse(fly.x, fly.y, fly.size);
     pop();
+    /*// Reset the fly timer each time a fly is drawn
+    fly.timer = random(0, 1500);
+    resetFly();
+    */
 }
 
 /**
  * Resets the fly to the left with a random y
  */
-function resetFly() {
-    fly.x = 0;
-    fly.y = random(0, 300);
+function resetFly(fly) {
+    fly.x = random(-50, -5);
+    fly.y = random(0, 200); // Will be random
+    fly.size = random(10, 20);
+    fly.speed = random(3, 5);
+    fly.timer = undefined // Delay between fly creation
 }
 
 /**
@@ -159,14 +195,14 @@ function drawFrog() {
 /**
  * Handles the tongue overlapping the fly
  */
-function checkTongueFlyOverlap() {
+function checkTongueFlyOverlap(fly) {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
     // Check if it's an overlap
-    const eaten = (d < frog.tongue.size/2 + fly.size/2);
+    const eaten = (d < frog.tongue.size / 2 + fly.size / 2);
     if (eaten) {
         // Reset the fly
-        resetFly();
+        resetFly(fly);
         // Bring back the tongue
         frog.tongue.state = "inbound";
     }
