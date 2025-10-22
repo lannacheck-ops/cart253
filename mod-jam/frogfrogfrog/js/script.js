@@ -158,6 +158,7 @@ function resetFly(fly) {
  */
 function moveFrog() {
     frog.body.x = mouseX;
+    frog.body.x = constrain(frog.body.x, frog.body.size / 2, width - frog.body.size / 2);
 }
 
 /**
