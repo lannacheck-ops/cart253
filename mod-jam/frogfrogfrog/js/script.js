@@ -33,6 +33,32 @@ const frog = {
         // Determines how the tongue moves each frame
         state: "idle" // State can be: idle, outbound, inbound
     },
+    // The frog's eye
+    eyes: {
+        size: 35,
+        left: {
+            x: undefined,
+            y: undefined
+        },
+
+        right: {
+            x: undefined,
+            y: undefined
+        }
+    },
+    // The frog's iris
+    iris: {
+        size: 20,
+        left: {
+            x: undefined,
+            y: undefined
+        },
+        right: {
+            x: undefined,
+            y: undefined
+        }
+    },
+
     // The frog's hunger
     hunger: {
         x: 70,
@@ -57,6 +83,7 @@ let fly3 = undefined;
  */
 function setup() {
     createCanvas(640, 480);
+
     // Create flies 
     fly1 = createFly();
     fly2 = createFly();
@@ -81,8 +108,14 @@ function draw() {
     drawFly(fly3);
 
     moveFrog();
+    moveFrogEyes();
+    moveFrogIris();
     moveTongue();
     drawFrog();
+    drawFrogEyes(frog.eyes.left.x, frog.eyes.left.y);
+    drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
+    drawFrogIris(frog.iris.left.x, frog.iris.left.y);
+    drawFrogIris(frog.iris.right.x, frog.iris.right.y);
 
     checkTongueFlyOverlap(fly1);
     checkTongueFlyOverlap(fly2);
@@ -162,6 +195,25 @@ function moveFrog() {
 }
 
 /**
+ * Adjust the frog's eyes' position
+ */
+function moveFrogEyes() {
+    frog.eyes.left.x = frog.body.x - 30;
+    frog.eyes.left.y = 450;
+    frog.eyes.right.x = frog.body.x + 30;
+    frog.eyes.right.y = 450;
+}
+/**
+ * Move frog's iris' to the mouse position
+ */
+function moveFrogIris() {
+    frog.iris.left.x = map(mouseX, 0, width, frog.body.x - 10 - 30, frog.body.x - 15);
+    frog.iris.left.y = map(mouseY, 0, height, 440, 453);
+    frog.iris.right.x = map(mouseX, 0, width, frog.body.x - 10 + 30, frog.body.x + 10 + 30);
+    frog.iris.right.y = map(mouseY, 0, height, 440, 453);
+}
+
+/**
  * Handles moving the tongue based on its state
  */
 function moveTongue() {
@@ -217,8 +269,27 @@ function drawFrog() {
     noStroke();
     ellipse(frog.body.x, frog.body.y, frog.body.size);
     pop();
+
 }
 
+/**
+ *  Draw frog eyes 
+ */
+function drawFrogEyes(x, y) {
+    push();
+    noStroke();
+    fill("#ffffffff");
+    ellipse(x, y, frog.eyes.size);
+    pop();
+}
+
+function drawFrogIris(x, y) {
+    push();
+    noStroke();
+    fill("#000000ff");
+    ellipse(x, y, frog.iris.size);
+    pop();
+}
 /**
  * Handles the tongue overlapping the fly
  */
