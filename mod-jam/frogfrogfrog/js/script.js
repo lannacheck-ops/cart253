@@ -114,7 +114,7 @@ function createFly() {
     const fly = {
         x: random(-40, -10),
         y: random(100, 200), // Will be random
-        D: random(120, 300),
+        D: random(120, 400),
         A: random(10, 30),
         size: random(10, 20),
         speed: random(3, 5),
@@ -145,7 +145,7 @@ function drawFly(fly) {
 function resetFly(fly) {
     fly.x = random(-50, -10);
     fly.y = random(100, 200); // Will be random
-    fly.D = random(120, 300);
+    fly.D = random(120, 400);
     fly.A = random(10, 30);
     fly.size = random(10, 20);
     fly.speed = random(3, 5);
@@ -167,7 +167,9 @@ function moveFrog() {
 function moveTongue() {
     // Tongue matches the frog's x
     frog.tongue.speed = frog.hunger.value / 24;
-    //frog.tongue.maxy = ;
+
+    // The maximum height of the frog's tongue appears lower on the screen the hungrier it gets
+    frog.tongue.maxy = -0.7 * (frog.hunger.value - 495) + 100;
     frog.tongue.x = frog.body.x;
     // If the tongue is idle, it doesn't do anything
     if (frog.tongue.state === "idle") {
