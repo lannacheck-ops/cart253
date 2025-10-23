@@ -207,10 +207,10 @@ function moveFrogEyes() {
  * Move frog's iris' to the mouse position
  */
 function moveFrogIris() {
-    frog.iris.left.x = map(mouseX, 0, width, frog.body.x - 10 - 30, frog.body.x - 15);
-    frog.iris.left.y = map(mouseY, 0, height, 440, 453);
-    frog.iris.right.x = map(mouseX, 0, width, frog.body.x - 10 + 30, frog.body.x + 10 + 30);
-    frog.iris.right.y = map(mouseY, 0, height, 440, 453);
+    frog.iris.left.x = map(mouseX, 0, width, frog.eyes.left.x - 8, frog.eyes.left.x + 8);
+    frog.iris.left.y = map(mouseY, 0, height, 442, 455);
+    frog.iris.right.x = map(mouseX, 0, width, frog.eyes.right.x - 8, frog.eyes.right.x + 8);
+    frog.iris.right.y = map(mouseY, 0, height, 442, 455);
 }
 
 /**
