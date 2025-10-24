@@ -70,7 +70,8 @@ const frog = {
         reduction: 0.3
     }
 };
-
+let mousePosX = undefined;
+let mousePosY = undefined;
 // Our fly
 // Has a position, size, and speed of horizontal movement
 let fly1 = undefined;
@@ -110,6 +111,7 @@ function draw() {
     moveFrog();
     moveFrogEyes();
     moveFrogIris();
+    adjustMousePosition();
     moveTongue();
     drawFrog();
     drawFrogEyes(frog.eyes.left.x, frog.eyes.left.y);
@@ -207,12 +209,19 @@ function moveFrogEyes() {
  * Move frog's iris' to the mouse position
  */
 function moveFrogIris() {
-    frog.iris.left.x = map(mouseX, 0, width, frog.eyes.left.x - 8, frog.eyes.left.x + 8);
-    frog.iris.left.y = map(mouseY, 0, height, 442, 455);
-    frog.iris.right.x = map(mouseX, 0, width, frog.eyes.right.x - 8, frog.eyes.right.x + 8);
-    frog.iris.right.y = map(mouseY, 0, height, 442, 455);
+    frog.iris.left.x = map(mousePosX, 0, width, frog.eyes.left.x - 8, frog.eyes.left.x + 8);
+    frog.iris.left.y = map(mousePosY, 0, height, 442, 458);
+    frog.iris.right.x = map(mousePosX, 0, width, frog.eyes.right.x - 8, frog.eyes.right.x + 8);
+    frog.iris.right.y = map(mousePosY, 0, height, 442, 458);
 }
 
+/**
+ * Constrain the mouse position variables to the canvas
+ */
+function adjustMousePosition() {
+    mousePosX = constrain(mouseX, 0, width);
+    mousePosY = constrain(mouseY, 0, height);
+}
 /**
  * Handles moving the tongue based on its state
  */
@@ -300,7 +309,7 @@ function checkTongueFlyOverlap(fly) {
     const eaten = (d < frog.tongue.size / 2 + fly.size / 2);
     if (eaten) {
         // Add to frog's hunger meter
-        frog.hunger.value += fly.size
+        frog.hunger.value += fly.size * 2
         frog.hunger.value = constrain(frog.hunger.value, frog.hunger.min, frog.hunger.max);
         // Reset the fly
         resetFly(fly);
