@@ -154,6 +154,9 @@ function createFly() {
         size: random(10, 20),
         speed: random(3, 5),
         sinCount: 1,
+        type: ["freeze", "poison", "regular"],
+        name: undefined,
+        color: ["#0748DE", "#9C930E", "#000000"],
         timer: undefined // Delay between fly creation
     };
     return fly;
@@ -163,7 +166,9 @@ function createFly() {
  * Draws the fly as a black circle
  */
 function drawFly(fly) {
+    console.log(fly1.name);
     push();
+    fly.name = random(fly.types);
     noStroke();
     fill("#000000");
     ellipse(fly.x, fly.y, fly.size);
@@ -185,6 +190,9 @@ function resetFly(fly) {
     fly.size = random(10, 20);
     fly.speed = random(3, 5);
     fly.sinCount = 1;
+    fly.types = ["freeze", "poison", "regular"];
+    fly.name = undefined;
+    fly.color = ["#0748DE", "#9C930E", "#000000"];
     fly.timer = undefined // Delay between fly creation
 }
 
