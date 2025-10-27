@@ -81,7 +81,7 @@ let mousePosY = undefined;
 let gameStart = false;
 
 // Game Start Boolean
-const gameFailed = false;
+let gameFailed = false;
 
 // Game Menu Position and Size
 const gameMenus = {
@@ -92,11 +92,18 @@ const gameMenus = {
     textColor: "#ffffffff",
     start: {
         x: 120,
-        y: 150
+        y: 150,
+        name: "START"
     },
     rules: {
         x: 340,
-        y: 150
+        y: 150,
+        name: "RULES"
+    },
+    retry: {
+        x: 220,
+        y: 190,
+        name: "RETRY?"
     }
 };
 
@@ -164,9 +171,11 @@ function setup() {
 function draw() {
     background("#87ceeb");
 
-    checkTongueMenuOverlap();
+
     if (!gameStart) {
-        drawMenus();
+        frog.hunger.value = 495;
+        drawMenus(gameMenus, gameMenus.start);
+        drawMenus(gameMenus, gameMenus.rules);
         moveFrog();
         moveFrogEyes();
         moveFrogIris();
@@ -177,10 +186,10 @@ function draw() {
         drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
         drawFrogIris(frog.iris.left.x, frog.iris.left.y);
         drawFrogIris(frog.iris.right.x, frog.iris.right.y);
-
+        checkTongueMenuOverlap();
     }
 
-    if (gameStart) {
+    if (gameStart && !gameFailed) {
         for (let fly of flies) {
             moveFly(fly);
             drawFly(fly);
@@ -201,6 +210,20 @@ function draw() {
         }
         hungerMeter();
         frozenHungerTimer();
+    }
+
+    if (gameStart && gameFailed) {
+        for (let fly of flies) {
+            drawFly(fly);
+        }
+        moveFrogIris();
+        adjustMousePosition();
+        drawFrog();
+        drawFrogEyes(frog.eyes.left.x, frog.eyes.left.y);
+        drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
+        drawFrogIris(frog.iris.left.x, frog.iris.left.y);
+        drawFrogIris(frog.iris.right.x, frog.iris.right.y);
+        drawMenus(gameMenus, gameMenus.retry);
     }
 }
 
@@ -453,7 +476,9 @@ function reduceHungerMeter() {
     if (frog.hunger.value > frog.hunger.min) {
         frog.hunger.value -= frog.hunger.reduction
     };
-
+    if (frog.hunger.value <= frog.hunger.min) {
+        gameFailed = true;
+    };
 }
 
 function freezeHungerMeter() {
@@ -479,43 +504,38 @@ function mousePressed() {
     if (frog.tongue.state === "idle") {
         frog.tongue.state = "outbound";
     }
+    if (gameFailed) {
+        const dMenuRetryX = abs(mouseX - gameMenus.retry.x);
+        const dMenuRetryY = abs(mouseY - gameMenus.retry.y);
+        // Check if it's an overlap
+        const retry = (dMenuRetryX < gameMenus.width);
+        const retry2 = (dMenuRetryY < gameMenus.height / 2);
+
+        if (retry && retry2) {
+            gameStart = false;
+            gameFailed = false;
+        }
+    }
 }
 
 /**
  * Draw and display Menu options on startscreen
  */
-function drawMenus() {
+function drawMenus(globalMenu, button) {
     // Start Button
     push();
     noStroke();
-    fill(gameMenus.color);
-    rect(gameMenus.start.x, gameMenus.start.y, gameMenus.width, gameMenus.height, gameMenus.roundness);
+    fill(globalMenu.color);
+    rect(button.x, button.y, globalMenu.width, globalMenu.height, globalMenu.roundness);
 
     //Style text
-    fill(gameMenus.textColor);
+    fill(globalMenu.textColor);
     textFont(fontMenus);
     textAlign(CENTER);
     textSize(45);
 
     // Display the rounded number.
-    text("START", gameMenus.start.x + 90, gameMenus.start.y + 58);
-
-    pop();
-
-    // rules Button
-    push();
-    noStroke();
-    fill(gameMenus.color);
-    rect(gameMenus.rules.x, gameMenus.rules.y, gameMenus.width, gameMenus.height, gameMenus.roundness);
-
-    //Style text
-    fill(gameMenus.textColor);
-    textFont(fontMenus);
-    textAlign(CENTER);
-    textSize(45);
-
-    // Display the rounded number.
-    text("RULES", gameMenus.rules.x + 90, gameMenus.rules.y + 58);
+    text(button.name, button.x + 90, button.y + 58);
 
     pop();
 }
