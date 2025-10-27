@@ -67,7 +67,9 @@ const frog = {
         min: 0,
         value: 495,
         timer: 10,
-        reduction: 0.3
+        reduction: 0.3,
+        frozen: false,
+        frozenTimer: 0
     }
 };
 let mousePosX = undefined;
@@ -85,9 +87,10 @@ let flies = [
         speed: 5,
         sinCount: 1,
         type: ["freeze", "poison", "regular"],
-        name: "regular",
+        typeRandomizer: [0, 0, 1, 1, 1, 2, 2, 2, 2, 2],
+        name: 2,
+        points: undefined,
         color: ["#0748DE", "#9C930E", "#000000"],
-        timer: undefined // Delay between fly creation
     },
     {
         x: -15,
@@ -98,9 +101,10 @@ let flies = [
         speed: 4,
         sinCount: 1,
         type: ["freeze", "poison", "regular"],
-        name: "regular",
+        typeRandomizer: [0, 0, 1, 1, 1, 2, 2, 2, 2, 2],
+        name: 2,
+        points: undefined,
         color: ["#0748DE", "#9C930E", "#000000"],
-        timer: undefined // Delay between fly creation
     },
     {
         x: -20,
@@ -111,9 +115,10 @@ let flies = [
         speed: 3,
         sinCount: 1,
         type: ["freeze", "poison", "regular"],
-        name: "regular",
+        typeRandomizer: [0, 0, 1, 1, 1, 2, 2, 2, 2, 2],
+        name: 2,
+        points: undefined,
         color: ["#0748DE", "#9C930E", "#000000"],
-        timer: undefined // Delay between fly creation
     }
 ];
 
@@ -147,6 +152,7 @@ function draw() {
         checkTongueFlyOverlap(fly);
     }
     hungerMeter();
+    frozenHungerTimer();
 }
 
 /**
@@ -154,10 +160,14 @@ function draw() {
  */
 function drawFly(fly) {
     push();
-    // fly.name = random(fly.type);
-    //console.log(fly.type.indexOf(fly.name));
     noStroke();
-    fill(fly.color[(fly.type.indexOf(fly.name))]);
+    if (fly.name === 2 || fly.name === 0) {
+        fly.points = fly.size * 2
+    }
+    else if (fly.name === 1) {
+        fly.points = fly.size * -2
+    }
+    fill(fly.color[fly.name]);
     ellipse(fly.x, fly.y, fly.size);
     pop();
 }
@@ -182,7 +192,7 @@ function moveFly(fly) {
  * Creates flies with random parameters
  */
 function createFly() {
-    const fly = {
+    const newfly = {
         x: random(-40, -10),
         y: random(100, 200), // Will be random
         D: random(120, 400),
@@ -192,10 +202,9 @@ function createFly() {
         sinCount: 1,
         type: ["freeze", "poison", "regular"],
         name: undefined,
-        color: ["#0748DE", "#9C930E", "#000000"],
-        timer: undefined // Delay between fly creation
+        color: ["#0748DE", "#9C930E", "#000000"]
     };
-    return fly;
+    return newfly;
 }
 
 
@@ -211,9 +220,9 @@ function resetFly(fly) {
     fly.speed = random(3, 5);
     fly.sinCount = 1;
     fly.types = ["freeze", "poison", "regular"];
-    fly.name = random(fly.type);
+    fly.typeRandomizer = [0, 0, 1, 1, 1, 2, 2, 2, 2, 2];
+    fly.name = random(fly.typeRandomizer);
     fly.color = ["#0748DE", "#9C930E", "#000000"];
-    fly.timer = undefined // Delay between fly creation
 }
 
 /**
@@ -337,7 +346,12 @@ function checkTongueFlyOverlap(fly) {
     const eaten = (d < frog.tongue.size / 2 + fly.size / 2);
     if (eaten) {
         // Add to frog's hunger meter
-        frog.hunger.value += fly.size * 2
+        //frog.hunger.value += fly.size * 2
+        frog.hunger.value += fly.points;
+        if (fly.name === 0) {
+            frog.hunger.frozenTimer += 120 //5 seconds
+            freezeHungerMeter();
+        }
         frog.hunger.value = constrain(frog.hunger.value, frog.hunger.min, frog.hunger.max);
         // Reset the fly
         resetFly(fly);
@@ -368,10 +382,30 @@ function hungerMeter() {
  * Reduces the Hunger Meter
  */
 function reduceHungerMeter() {
+    if (frog.hunger.frozen === true) {
+        return;
+    }
     if (frog.hunger.value > frog.hunger.min) {
         frog.hunger.value -= frog.hunger.reduction
     };
 
+}
+
+function freezeHungerMeter() {
+    if (frog.hunger.frozen === false) {
+        frog.hunger.frozen = true;
+    }
+}
+function frozenHungerTimer() {
+    console.log(frog.hunger.frozenTimer);
+    if (frog.hunger.frozen === true) {
+        frog.hunger.frozenTimer -= 1;
+
+    };
+    if (frog.hunger.frozenTimer <= 0) {
+        frog.hunger.frozen = false;
+        frog.hunger.frozenTimer = 0;
+    }
 }
 /**
  * Launch the tongue on click (if it's not launched yet)
