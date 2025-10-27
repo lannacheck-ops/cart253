@@ -74,40 +74,64 @@ let mousePosX = undefined;
 let mousePosY = undefined;
 // Our fly
 // Has a position, size, and speed of horizontal movement
-let fly1 = undefined;
-let fly2 = undefined;
-let fly3 = undefined;
 
+let flies = [
+    {
+        x: -30,
+        y: 200, // Will be random
+        D: 400,
+        A: 30,
+        size: 20,
+        speed: 5,
+        sinCount: 1,
+        type: ["freeze", "poison", "regular"],
+        name: "regular",
+        color: ["#0748DE", "#9C930E", "#000000"],
+        timer: undefined // Delay between fly creation
+    },
+    {
+        x: -15,
+        y: 160, // Will be random
+        D: 300,
+        A: 12,
+        size: 15,
+        speed: 4,
+        sinCount: 1,
+        type: ["freeze", "poison", "regular"],
+        name: "regular",
+        color: ["#0748DE", "#9C930E", "#000000"],
+        timer: undefined // Delay between fly creation
+    },
+    {
+        x: -20,
+        y: 110, // Will be random
+        D: 140,
+        A: 10,
+        size: 10,
+        speed: 3,
+        sinCount: 1,
+        type: ["freeze", "poison", "regular"],
+        name: "regular",
+        color: ["#0748DE", "#9C930E", "#000000"],
+        timer: undefined // Delay between fly creation
+    }
+];
 
 /**
  * Creates the canvas and initializes the fly
  */
 function setup() {
     createCanvas(640, 480);
-
-    // Create flies 
-    fly1 = createFly();
-    fly2 = createFly();
-    fly3 = createFly();
-    // Give the fly its first random position
-    //resetFly();
-    /*
-    fly.timer = random(0, 1500);
-    setInterval(drawFly, fly.timer);
-    */
-    setInterval(reduceHungerMeter, frog.hunger.timer)
+    setInterval(reduceHungerMeter, frog.hunger.timer);
 }
 
 function draw() {
     background("#87ceeb");
-    moveFly(fly1);
-    moveFly(fly2);
-    moveFly(fly3);
 
-    drawFly(fly1);
-    drawFly(fly2);
-    drawFly(fly3);
-
+    for (let fly of flies) {
+        moveFly(fly);
+        drawFly(fly);
+    }
     moveFrog();
     moveFrogEyes();
     moveFrogIris();
@@ -119,11 +143,23 @@ function draw() {
     drawFrogIris(frog.iris.left.x, frog.iris.left.y);
     drawFrogIris(frog.iris.right.x, frog.iris.right.y);
 
-    checkTongueFlyOverlap(fly1);
-    checkTongueFlyOverlap(fly2);
-    checkTongueFlyOverlap(fly3);
-
+    for (let fly of flies) {
+        checkTongueFlyOverlap(fly);
+    }
     hungerMeter();
+}
+
+/**
+ * Draws the fly as a black circle
+ */
+function drawFly(fly) {
+    push();
+    // fly.name = random(fly.type);
+    //console.log(fly.type.indexOf(fly.name));
+    noStroke();
+    fill(fly.color[(fly.type.indexOf(fly.name))]);
+    ellipse(fly.x, fly.y, fly.size);
+    pop();
 }
 
 /**
@@ -162,22 +198,6 @@ function createFly() {
     return fly;
 }
 
-/**
- * Draws the fly as a black circle
- */
-function drawFly(fly) {
-    console.log(fly1.name);
-    push();
-    fly.name = random(fly.types);
-    noStroke();
-    fill("#000000");
-    ellipse(fly.x, fly.y, fly.size);
-    pop();
-    /*// Reset the fly timer each time a fly is drawn
-    fly.timer = random(0, 1500);
-    resetFly();
-    */
-}
 
 /**
  * Resets the flies parameters
@@ -191,7 +211,7 @@ function resetFly(fly) {
     fly.speed = random(3, 5);
     fly.sinCount = 1;
     fly.types = ["freeze", "poison", "regular"];
-    fly.name = undefined;
+    fly.name = random(fly.type);
     fly.color = ["#0748DE", "#9C930E", "#000000"];
     fly.timer = undefined // Delay between fly creation
 }
