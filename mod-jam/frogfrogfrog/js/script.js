@@ -15,7 +15,7 @@
 
 "use strict";
 
-// Our frog
+// Frog
 const frog = {
     // The frog's body has a position and size
     body: {
@@ -72,11 +72,36 @@ const frog = {
         frozenTimer: 0
     }
 };
+
+// The Mouse position constrained by the canvas size
 let mousePosX = undefined;
 let mousePosY = undefined;
-// Our fly
-// Has a position, size, and speed of horizontal movement
 
+// Game Start Boolean
+let gameStart = false;
+
+// Game Start Boolean
+const gameFailed = false;
+
+// Game Menu Position and Size
+const gameMenus = {
+    width: 180,
+    height: 80,
+    roundness: 5,
+    color: "#8B4611",
+    textColor: "#ffffffff",
+    start: {
+        x: 120,
+        y: 150
+    },
+    rules: {
+        x: 340,
+        y: 150
+    }
+};
+
+// Fly array
+// Has a position, size, parameters to randomize the sine movement, speed on the x axis, fly type, fly's name, its color, etc.
 let flies = [
     {
         x: -30,
@@ -122,6 +147,12 @@ let flies = [
     }
 ];
 
+let fontMenus;
+// Preload fonts
+
+function preload() {
+    fontMenus = loadFont('/frogfrogfrog/assets/fonts/LuckiestGuy.ttf');
+}
 /**
  * Creates the canvas and initializes the fly
  */
@@ -133,26 +164,44 @@ function setup() {
 function draw() {
     background("#87ceeb");
 
-    for (let fly of flies) {
-        moveFly(fly);
-        drawFly(fly);
-    }
-    moveFrog();
-    moveFrogEyes();
-    moveFrogIris();
-    adjustMousePosition();
-    moveTongue();
-    drawFrog();
-    drawFrogEyes(frog.eyes.left.x, frog.eyes.left.y);
-    drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
-    drawFrogIris(frog.iris.left.x, frog.iris.left.y);
-    drawFrogIris(frog.iris.right.x, frog.iris.right.y);
+    checkTongueMenuOverlap();
+    if (!gameStart) {
+        drawMenus();
+        moveFrog();
+        moveFrogEyes();
+        moveFrogIris();
+        adjustMousePosition();
+        moveTongue();
+        drawFrog();
+        drawFrogEyes(frog.eyes.left.x, frog.eyes.left.y);
+        drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
+        drawFrogIris(frog.iris.left.x, frog.iris.left.y);
+        drawFrogIris(frog.iris.right.x, frog.iris.right.y);
 
-    for (let fly of flies) {
-        checkTongueFlyOverlap(fly);
     }
-    hungerMeter();
-    frozenHungerTimer();
+
+    if (gameStart) {
+        for (let fly of flies) {
+            moveFly(fly);
+            drawFly(fly);
+        }
+        moveFrog();
+        moveFrogEyes();
+        moveFrogIris();
+        adjustMousePosition();
+        moveTongue();
+        drawFrog();
+        drawFrogEyes(frog.eyes.left.x, frog.eyes.left.y);
+        drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
+        drawFrogIris(frog.iris.left.x, frog.iris.left.y);
+        drawFrogIris(frog.iris.right.x, frog.iris.right.y);
+
+        for (let fly of flies) {
+            checkTongueFlyOverlap(fly);
+        }
+        hungerMeter();
+        frozenHungerTimer();
+    }
 }
 
 /**
@@ -360,6 +409,22 @@ function checkTongueFlyOverlap(fly) {
     }
 }
 
+function checkTongueMenuOverlap() {
+    if (gameStart) {
+        return;
+    }
+    // Get distance from tongue to fly
+    const dMenuStartX = abs(frog.tongue.x - gameMenus.start.x);
+    const dMenuStartY = abs(frog.tongue.y - gameMenus.start.y);
+    // Check if it's an overlap
+    const start = (dMenuStartX < frog.tongue.size / 2 + gameMenus.width);
+    const start2 = (dMenuStartY < frog.tongue.size / 2 + gameMenus.height / 2);
+    console.log(start);
+    if (start && start2) {
+        frog.tongue.state = "inbound";
+        gameStart = true;
+    }
+}
 /**
  * Draws the Hunger Meter
  */
@@ -382,7 +447,7 @@ function hungerMeter() {
  * Reduces the Hunger Meter
  */
 function reduceHungerMeter() {
-    if (frog.hunger.frozen === true) {
+    if (!gameStart || frog.hunger.frozen === true) {
         return;
     }
     if (frog.hunger.value > frog.hunger.min) {
@@ -414,4 +479,43 @@ function mousePressed() {
     if (frog.tongue.state === "idle") {
         frog.tongue.state = "outbound";
     }
+}
+
+/**
+ * Draw and display Menu options on startscreen
+ */
+function drawMenus() {
+    // Start Button
+    push();
+    noStroke();
+    fill(gameMenus.color);
+    rect(gameMenus.start.x, gameMenus.start.y, gameMenus.width, gameMenus.height, gameMenus.roundness);
+
+    //Style text
+    fill(gameMenus.textColor);
+    textFont(fontMenus);
+    textAlign(CENTER);
+    textSize(45);
+
+    // Display the rounded number.
+    text("START", gameMenus.start.x + 90, gameMenus.start.y + 58);
+
+    pop();
+
+    // rules Button
+    push();
+    noStroke();
+    fill(gameMenus.color);
+    rect(gameMenus.rules.x, gameMenus.rules.y, gameMenus.width, gameMenus.height, gameMenus.roundness);
+
+    //Style text
+    fill(gameMenus.textColor);
+    textFont(fontMenus);
+    textAlign(CENTER);
+    textSize(45);
+
+    // Display the rounded number.
+    text("RULES", gameMenus.rules.x + 90, gameMenus.rules.y + 58);
+
+    pop();
 }
