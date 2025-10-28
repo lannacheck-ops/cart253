@@ -92,12 +92,12 @@ const gameMenus = {
     textColor: "#ffffffff",
     start: {
         x: 120,
-        y: 150,
+        y: 220,
         name: "START"
     },
     rules: {
         x: 340,
-        y: 150,
+        y: 220,
         name: "RULES"
     },
     retry: {
@@ -107,22 +107,35 @@ const gameMenus = {
     }
 };
 
+let title = {
+    x: 30,
+    y: 80,
+    wrapX: 600,
+    wrapY: 180,
+    strokeColor: "#ffffffff",
+    color: "#00ff00"
+}
 // Fly array
 // Has a position, size, parameters to randomize the sine movement, speed on the x axis, fly type, fly's name, its color, etc.
 let flies = [
     {
+        // Fly position
         x: -30,
-        y: 200, // Will be random
+        y: 200,
         D: 400,
         A: 30,
         size: 20,
         speed: 5,
         sinCount: 1,
+        // Fly type
         type: ["freeze", "poison", "regular"],
         typeRandomizer: [0, 0, 1, 1, 1, 2, 2, 2, 2, 2],
         name: 2,
         points: undefined,
         color: ["#0748DE", "#9C930E", "#000000"],
+        // Wings
+        wingEndX: -30,
+        wingTimer: 0
     },
     {
         x: -15,
@@ -137,6 +150,9 @@ let flies = [
         name: 2,
         points: undefined,
         color: ["#0748DE", "#9C930E", "#000000"],
+        // Wings
+        wingEndX: -15,
+        wingTimer: 0
     },
     {
         x: -20,
@@ -151,14 +167,19 @@ let flies = [
         name: 2,
         points: undefined,
         color: ["#0748DE", "#9C930E", "#000000"],
+        // Wings
+        wingEndX: -20,
+        wingTimer: 0
     }
 ];
 
 let fontMenus;
+let fontTitle;
 // Preload fonts
 
 function preload() {
     fontMenus = loadFont('/frogfrogfrog/assets/fonts/LuckiestGuy.ttf');
+    fontTitle = loadFont('/frogfrogfrog/assets/fonts/BouncyBalloons.ttf')
 }
 /**
  * Creates the canvas and initializes the fly
@@ -176,6 +197,7 @@ function draw() {
         frog.hunger.value = 495;
         drawMenus(gameMenus, gameMenus.start);
         drawMenus(gameMenus, gameMenus.rules);
+        drawTitle();
         moveFrog();
         moveFrogEyes();
         moveFrogIris();
@@ -191,6 +213,7 @@ function draw() {
 
     if (gameStart && !gameFailed) {
         for (let fly of flies) {
+            moveFlyWings(fly);
             moveFly(fly);
             drawFly(fly);
         }
@@ -231,6 +254,14 @@ function draw() {
  * Draws the fly as a black circle
  */
 function drawFly(fly) {
+    //Wings
+
+    push();
+    stroke("#ffffffd5");
+    strokeWeight(fly.size / 2.3);
+    line(fly.x + fly.size / 4, fly.y, fly.wingEndX, fly.y - fly.size / 4);
+    pop();
+
     push();
     noStroke();
     if (fly.name === 2 || fly.name === 0) {
@@ -242,6 +273,7 @@ function drawFly(fly) {
     fill(fly.color[fly.name]);
     ellipse(fly.x, fly.y, fly.size);
     pop();
+
 }
 
 /**
@@ -260,6 +292,20 @@ function moveFly(fly) {
     }
 }
 
+function moveFlyWings(fly) {
+    fly.wingTimer += 1;
+    // Restores the timer to 0 after 24 frames
+    if (fly.wingTimer >= 8) {
+        fly.wingTimer = 0
+    }
+    // The cat's ears, whiskers and tail move every 2 frames
+    if (fly.wingTimer === 4) {
+        fly.wingEndX = fly.x + fly.size / 2
+    }
+    if (fly.wingTimer === 8) {
+        fly.wingEndX = fly.x - fly.size / 2
+    }
+}
 /**
  * Creates flies with random parameters
  */
@@ -295,6 +341,9 @@ function resetFly(fly) {
     fly.typeRandomizer = [0, 0, 1, 1, 1, 2, 2, 2, 2, 2];
     fly.name = random(fly.typeRandomizer);
     fly.color = ["#0748DE", "#9C930E", "#000000"];
+    // Wings
+    fly.wingEndX = fly.x;
+    fly.wingTimer = 0;
 }
 
 /**
@@ -442,7 +491,6 @@ function checkTongueMenuOverlap() {
     // Check if it's an overlap
     const start = (dMenuStartX < frog.tongue.size / 2 + gameMenus.width);
     const start2 = (dMenuStartY < frog.tongue.size / 2 + gameMenus.height / 2);
-    console.log(start);
     if (start && start2) {
         frog.tongue.state = "inbound";
         gameStart = true;
@@ -487,7 +535,6 @@ function freezeHungerMeter() {
     }
 }
 function frozenHungerTimer() {
-    console.log(frog.hunger.frozenTimer);
     if (frog.hunger.frozen === true) {
         frog.hunger.frozenTimer -= 1;
 
@@ -501,17 +548,12 @@ function frozenHungerTimer() {
  * Launch the tongue on click (if it's not launched yet)
  */
 function mousePressed() {
-    console.log(mouseX, mouseY);
-    if (frog.tongue.state === "idle") {
-        frog.tongue.state = "outbound";
+    if (!gameFailed) {
+        if (frog.tongue.state === "idle") {
+            frog.tongue.state = "outbound";
+        }
     }
     if (gameFailed) {
-        //const dMenuRetryX = abs(mouseX - gameMenus.retry.x);
-        //const dMenuRetryY = abs(mouseY - gameMenus.retry.y);
-        // Check if it's an overlap
-        /*const retry = (gameMenus.retry.x < mouseX < gameMenus.width + gameMenus.retry.x);
-        const retry2 = (mouseY < gameMenus.height / 2);
-*/
         if (mouseX > gameMenus.retry.x && mouseX < gameMenus.width + gameMenus.retry.x && mouseY > gameMenus.retry.y && mouseY < gameMenus.retry.y + gameMenus.height) {
             gameStart = false;
             gameFailed = false;
@@ -538,5 +580,18 @@ function drawMenus(globalMenu, button) {
     // Display the rounded number.
     text(button.name, button.x + 90, button.y + 58);
 
+    pop();
+}
+
+function drawTitle() {
+    push();
+    stroke(title.strokeColor);
+    strokeWeight(8);
+    fill(title.color);
+    textFont(fontTitle);
+    textAlign(CENTER);
+    textSize(45);
+    textWrap(WORD);
+    text("HUNGRY HUNGRY FROGGY", title.x, title.y, title.wrapX, title.wrapY);
     pop();
 }
