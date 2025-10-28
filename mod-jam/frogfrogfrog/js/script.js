@@ -501,17 +501,18 @@ function frozenHungerTimer() {
  * Launch the tongue on click (if it's not launched yet)
  */
 function mousePressed() {
+    console.log(mouseX, mouseY);
     if (frog.tongue.state === "idle") {
         frog.tongue.state = "outbound";
     }
     if (gameFailed) {
-        const dMenuRetryX = abs(mouseX - gameMenus.retry.x);
-        const dMenuRetryY = abs(mouseY - gameMenus.retry.y);
+        //const dMenuRetryX = abs(mouseX - gameMenus.retry.x);
+        //const dMenuRetryY = abs(mouseY - gameMenus.retry.y);
         // Check if it's an overlap
-        const retry = (dMenuRetryX < gameMenus.width);
-        const retry2 = (dMenuRetryY < gameMenus.height / 2);
-
-        if (retry && retry2) {
+        /*const retry = (gameMenus.retry.x < mouseX < gameMenus.width + gameMenus.retry.x);
+        const retry2 = (mouseY < gameMenus.height / 2);
+*/
+        if (mouseX > gameMenus.retry.x && mouseX < gameMenus.width + gameMenus.retry.x && mouseY > gameMenus.retry.y && mouseY < gameMenus.retry.y + gameMenus.height) {
             gameStart = false;
             gameFailed = false;
         }
