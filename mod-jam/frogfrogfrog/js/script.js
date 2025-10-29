@@ -79,7 +79,12 @@ let mousePosY = undefined;
 
 // Game Start Boolean
 let gameStart = false;
+let gameRules = false;
 
+let rules = ["Blue flies increase your health and freeze your hunger for 2 seconds",
+    "Yellow flies are poisonous, they will decrease your health",
+    "Black flies increase your fullness"
+]
 // Game Start Boolean
 let gameFailed = false;
 
@@ -116,70 +121,48 @@ let title = {
     color: "#00ff00"
 }
 // Fly array
-// Has a position, size, parameters to randomize the sine movement, speed on the x axis, fly type, fly's name, its color, etc.
-let flies = [
-    {
-        // Fly position
-        x: -30,
-        y: 200,
-        D: 400,
-        A: 30,
-        size: 20,
-        speed: 5,
-        sinCount: 1,
-        // Fly type
-        type: ["freeze", "poison", "regular"],
-        typeRandomizer: [0, 0, 1, 1, 1, 2, 2, 2, 2, 2],
-        name: 2,
-        points: undefined,
-        color: ["#0748DE", "#9C930E", "#000000"],
-        // Wings
-        wingEndX: -30,
-        wingTimer: 0
-    },
-    {
-        x: -15,
-        y: 160, // Will be random
-        D: 300,
-        A: 12,
-        size: 15,
-        speed: 4,
-        sinCount: 1,
-        type: ["freeze", "poison", "regular"],
-        typeRandomizer: [0, 0, 1, 1, 1, 2, 2, 2, 2, 2],
-        name: 2,
-        points: undefined,
-        color: ["#0748DE", "#9C930E", "#000000"],
-        // Wings
-        wingEndX: -15,
-        wingTimer: 0
-    },
-    {
-        x: -20,
-        y: 110, // Will be random
-        D: 140,
-        A: 10,
-        size: 10,
-        speed: 3,
-        sinCount: 1,
-        type: ["freeze", "poison", "regular"],
-        typeRandomizer: [0, 0, 1, 1, 1, 2, 2, 2, 2, 2],
-        name: 2,
-        points: undefined,
-        color: ["#0748DE", "#9C930E", "#000000"],
-        // Wings
-        wingEndX: -20,
-        wingTimer: 0
-    }
-];
-
+let flies = [];
+// Maximum number of flies on the screen
+let fliesMax = 3;
+// Tutorial fly
+let tutorialFly = {
+    x: 320,
+    y: 150, // Will be random
+    D: 200,
+    A: 20,
+    size: 15,
+    speed: 0,
+    sinCount: 1,
+    types: ["freeze", "poison", "regular"],
+    name: 2,
+    points: undefined,
+    color: ["#0748DE", "#9C930E", "#000000"],
+    // Wings
+    wingEndX: 400,
+    wingTimer: 0,
+    index: 2,
+    boxX: 100,
+    boxY: 180,
+    boxSize: 180
+}
+// Fonts
 let fontMenus;
 let fontTitle;
-// Preload fonts
+
+// Images 
+let imgMouse;
+let imgMouseClicked;
+
+
+/**
+ *  Preload fonts and images
+ */
 
 function preload() {
     fontMenus = loadFont('/frogfrogfrog/assets/fonts/LuckiestGuy.ttf');
     fontTitle = loadFont('/frogfrogfrog/assets/fonts/BouncyBalloons.ttf')
+    imgMouse = loadImage('/frogfrogfrog/assets/images/mouse.png');
+    imgMouseClicked = loadImage('/frogfrogfrog/assets/images/mouseClicked.png');
 }
 /**
  * Creates the canvas and initializes the fly
@@ -187,13 +170,26 @@ function preload() {
 function setup() {
     createCanvas(640, 480);
     setInterval(reduceHungerMeter, frog.hunger.timer);
+
+    // Creates 3 flies in the flies array
+    for (let i = 0; i < fliesMax; i++) {
+        flies.push(createFly());
+    }
 }
 
+/**
+ * Draws different elements on the screen depending on the if the player started the game, lost the game or following the rules of the game
+ */
 function draw() {
     background("#87ceeb");
 
 
-    if (!gameStart) {
+    // Draws the start screen of the game
+    if (!gameStart && !gameRules) {
+        // Resets the fly position when the game hasn't started yet
+        for (let fly of flies) {
+            resetFly(fly);
+        }
         frog.hunger.value = 495;
         drawMenus(gameMenus, gameMenus.start);
         drawMenus(gameMenus, gameMenus.rules);
@@ -208,10 +204,35 @@ function draw() {
         drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
         drawFrogIris(frog.iris.left.x, frog.iris.left.y);
         drawFrogIris(frog.iris.right.x, frog.iris.right.y);
-        checkTongueMenuOverlap();
+        checkTongueMenuOverlap(gameMenus, gameMenus.start);
+        checkTongueMenuOverlap(gameMenus, gameMenus.rules);
+    }
+
+    // Draws the rules screen of the game
+    if (!gameStart && gameRules) {
+        frog.body.x = width / 2;
+        moveFlyWings(tutorialFly);
+        moveFly(tutorialFly);
+        drawFly(tutorialFly);
+        drawTutorial();
+        moveFrogEyes();
+        moveFrogIris();
+        adjustMousePosition();
+        moveTongue();
+        drawFrog();
+        drawFrogEyes(frog.eyes.left.x, frog.eyes.left.y);
+        drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
+        drawFrogIris(frog.iris.left.x, frog.iris.left.y);
+        drawFrogIris(frog.iris.right.x, frog.iris.right.y);
+        checkTongueFlyOverlap(tutorialFly);
+        hungerMeter();
+        frozenHungerTimer();
     }
 
     if (gameStart && !gameFailed) {
+
+
+
         for (let fly of flies) {
             moveFlyWings(fly);
             moveFly(fly);
@@ -254,14 +275,13 @@ function draw() {
  * Draws the fly as a black circle
  */
 function drawFly(fly) {
-    //Wings
-
+    // Draw Wings
     push();
-    stroke("#ffffffd5");
+    stroke("#ffffffaa");
     strokeWeight(fly.size / 2.3);
-    line(fly.x + fly.size / 4, fly.y, fly.wingEndX, fly.y - fly.size / 4);
+    line(fly.x + 2, fly.y + fly.size / 4, fly.wingEndX, fly.y - 10);
     pop();
-
+    // Draw Fly
     push();
     noStroke();
     if (fly.name === 2 || fly.name === 0) {
@@ -294,33 +314,38 @@ function moveFly(fly) {
 
 function moveFlyWings(fly) {
     fly.wingTimer += 1;
-    // Restores the timer to 0 after 24 frames
-    if (fly.wingTimer >= 8) {
+    // Restores the timer to 0 after 8 frames
+    if (fly.wingTimer > 8) {
         fly.wingTimer = 0
     }
-    // The cat's ears, whiskers and tail move every 2 frames
+    // The fly's wing moves every 4 frames
     if (fly.wingTimer === 4) {
-        fly.wingEndX = fly.x + fly.size / 2
+        fly.wingEndX = fly.x + fly.size / 3
     }
     if (fly.wingTimer === 8) {
-        fly.wingEndX = fly.x - fly.size / 2
+        fly.wingEndX = fly.x - fly.size / 3
     }
 }
 /**
  * Creates flies with random parameters
  */
 function createFly() {
-    const newfly = {
-        x: random(-40, -10),
+    let newfly = {
+        x: random(-50, -10),
         y: random(100, 200), // Will be random
         D: random(120, 400),
         A: random(10, 30),
         size: random(10, 20),
         speed: random(3, 5),
         sinCount: 1,
-        type: ["freeze", "poison", "regular"],
-        name: undefined,
-        color: ["#0748DE", "#9C930E", "#000000"]
+        types: ["freeze", "poison", "regular"],
+        typeRandomizer: [0, 0, 1, 1, 1, 2, 2, 2, 2, 2],
+        name: round(random(0, 2)),
+        points: undefined,
+        color: ["#0748DE", "#9C930E", "#000000"],
+        // Wings
+        wingEndX: random(-50, -10),
+        wingTimer: 0
     };
     return newfly;
 }
@@ -330,20 +355,37 @@ function createFly() {
  * Resets the flies parameters
  */
 function resetFly(fly) {
-    fly.x = random(-50, -10);
-    fly.y = random(100, 200); // Will be random
-    fly.D = random(120, 400);
-    fly.A = random(10, 30);
-    fly.size = random(10, 20);
-    fly.speed = random(3, 5);
-    fly.sinCount = 1;
-    fly.types = ["freeze", "poison", "regular"];
-    fly.typeRandomizer = [0, 0, 1, 1, 1, 2, 2, 2, 2, 2];
-    fly.name = random(fly.typeRandomizer);
-    fly.color = ["#0748DE", "#9C930E", "#000000"];
-    // Wings
-    fly.wingEndX = fly.x;
-    fly.wingTimer = 0;
+    if (gameStart) {
+        fly.x = random(-50, -10);
+        fly.y = random(100, 200); // Will be random
+        fly.D = random(120, 400);
+        fly.A = random(10, 30);
+        fly.size = random(10, 20);
+        fly.speed = random(3, 5);
+        fly.sinCount = 1;
+        fly.types = ["freeze", "poison", "regular"];
+        fly.typeRandomizer = [0, 0, 1, 1, 1, 2, 2, 2, 2, 2];
+        fly.name = random(fly.typeRandomizer);
+        fly.color = ["#0748DE", "#9C930E", "#000000"];
+        // Wings
+        fly.wingEndX = fly.x;
+        fly.wingTimer = 0;
+    }
+
+    if (!gameStart) {
+        fly.y = 150
+        if (fly.name === 2) {
+            fly.name = 1
+        }
+        else if (fly.name === 1) {
+            fly.name = 0
+        }
+        else if (fly.name === 0) {
+            fly.name = 2
+        }
+        fly.wingEndX = fly.x;
+        fly.wingTimer = 0;
+    }
 }
 
 /**
@@ -481,21 +523,27 @@ function checkTongueFlyOverlap(fly) {
     }
 }
 
-function checkTongueMenuOverlap() {
+function checkTongueMenuOverlap(globalMenu, button) {
     if (gameStart) {
         return;
     }
     // Get distance from tongue to fly
-    const dMenuStartX = abs(frog.tongue.x - gameMenus.start.x);
-    const dMenuStartY = abs(frog.tongue.y - gameMenus.start.y);
+    const dMenuStartX = abs(frog.tongue.x - button.x);
+    const dMenuStartY = abs(frog.tongue.y - button.y);
     // Check if it's an overlap
-    const start = (dMenuStartX < frog.tongue.size / 2 + gameMenus.width);
-    const start2 = (dMenuStartY < frog.tongue.size / 2 + gameMenus.height / 2);
-    if (start && start2) {
+    const overlapX = (dMenuStartX < frog.tongue.size / 2 + globalMenu.width);
+    const overlapY = (dMenuStartY < frog.tongue.size / 2 + globalMenu.height / 2);
+    if (overlapX && overlapY) {
         frog.tongue.state = "inbound";
-        gameStart = true;
+        if (button.name === "START") {
+            gameStart = true;
+        }
+        if (button.name === "RULES") {
+            gameRules = true;
+        }
     }
 }
+
 /**
  * Draws the Hunger Meter
  */
@@ -515,7 +563,7 @@ function hungerMeter() {
 }
 
 /**
- * Reduces the Hunger Meter
+ * Reduces the Hunger Meter and check if the player fails the game
  */
 function reduceHungerMeter() {
     if (!gameStart || frog.hunger.frozen === true) {
@@ -577,7 +625,7 @@ function drawMenus(globalMenu, button) {
     textAlign(CENTER);
     textSize(45);
 
-    // Display the rounded number.
+    // Display the text
     text(button.name, button.x + 90, button.y + 58);
 
     pop();
@@ -593,5 +641,31 @@ function drawTitle() {
     textSize(45);
     textWrap(WORD);
     text("HUNGRY HUNGRY FROGGY", title.x, title.y, title.wrapX, title.wrapY);
+    pop();
+}
+
+/** 
+* Draw and display Tutorial 
+*/
+function drawTutorial() {
+    // Draws dialog box
+    push();
+    stroke(0);
+    strokeWeight(4);
+    fill(255);
+    square(tutorialFly.boxX, tutorialFly.boxY, tutorialFly.boxSize, 10);
+    pop();
+
+    // Draws text
+    push();
+    fill(0);
+    textFont(fontMenus);
+    textAlign(CENTER);
+    textSize(round(tutorialFly.boxSize / 9));
+
+    // Display the text
+    textWrap(WORD);
+    text(rules[tutorialFly.index], tutorialFly.boxX, tutorialFly.boxY + tutorialFly.boxSize / 4.6, tutorialFly.boxSize);
+    tutorialFly.index = tutorialFly.name;
     pop();
 }
