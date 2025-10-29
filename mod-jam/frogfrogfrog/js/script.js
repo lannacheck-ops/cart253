@@ -221,6 +221,7 @@ function draw() {
 
     // Draws the start screen of the game
     if (!gameStart && !gameRules) {
+        cursor(ARROW);
         // Resets the fly position when the game hasn't started yet
         for (let fly of flies) {
             resetFly(fly);
@@ -708,11 +709,13 @@ function mousePressed() {
  * Check mouse overlap
  */
 function checkMouseOverlap(button) {
-    let mouseOverlap = false
-    if (gameRules) {
-        if (mouseX > button.x && mouseX < button.width + button.x && mouseY > button.y && mouseY < button.y + button.height) {
-            mouseOverlap = true;
-        }
+    let mouseOverlap;
+
+    if (mouseX > button.x && mouseX < button.width + button.x && mouseY > button.y && mouseY < button.y + button.height) {
+        mouseOverlap = true;
+    }
+    else {
+        mouseOverlap = false;
     }
 
     if (mouseOverlap) {
