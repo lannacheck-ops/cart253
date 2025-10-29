@@ -61,7 +61,7 @@ const frog = {
 
     // The frog's hunger
     hunger: {
-        x: 70,
+        x: 100,
         y: 40,
         max: 500,
         min: 0,
@@ -69,7 +69,28 @@ const frog = {
         timer: 10,
         reduction: 0.3,
         frozen: false,
-        frozenTimer: 0
+        frozenTimer: 0,
+
+    },
+
+    hungerIcon: {
+        x: 50,
+        y: 55,
+        size: 40,
+        eyes: {
+            size: 17,
+            leftX: 40,
+            Y: 40,
+            rightX: 60,
+            irisSize: 10
+        },
+        mouth: {
+            x: 42,
+            y: 55,
+            size: 15,
+            btmRadius: 20,
+            topRadius: 0
+        }
     }
 };
 
@@ -108,7 +129,17 @@ const gameMenus = {
     retry: {
         x: 220,
         y: 190,
-        name: "RETRY?"
+        name: "RETRY?",
+        width: 180,
+        height: 80,
+    },
+    esc: {
+        x: 520,
+        y: 420,
+        width: 80,
+        height: 40,
+        radius: 10,
+        outline: 10
     }
 };
 
@@ -153,6 +184,10 @@ let fontTitle;
 let imgMouse;
 let imgMouseClicked;
 
+// An array of the mouse Images
+let mouseImages = [];
+let mouseImgIndex = 0;
+let mouseImgTimer = 0;
 
 /**
  *  Preload fonts and images
@@ -170,7 +205,7 @@ function preload() {
 function setup() {
     createCanvas(640, 480);
     setInterval(reduceHungerMeter, frog.hunger.timer);
-
+    mouseImages = [imgMouse, imgMouseClicked];
     // Creates 3 flies in the flies array
     for (let i = 0; i < fliesMax; i++) {
         flies.push(createFly());
@@ -214,6 +249,7 @@ function draw() {
         moveFlyWings(tutorialFly);
         moveFly(tutorialFly);
         drawFly(tutorialFly);
+        animateMouse();
         drawTutorial();
         moveFrogEyes();
         moveFrogIris();
@@ -227,6 +263,8 @@ function draw() {
         checkTongueFlyOverlap(tutorialFly);
         hungerMeter();
         frozenHungerTimer();
+        checkMouseOverlap(gameMenus.esc);
+
     }
 
     if (gameStart && !gameFailed) {
@@ -267,7 +305,7 @@ function draw() {
         drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
         drawFrogIris(frog.iris.left.x, frog.iris.left.y);
         drawFrogIris(frog.iris.right.x, frog.iris.right.y);
-        drawMenus(gameMenus, gameMenus.retry);
+        drawMenus(gameMenus, gameMenus.retry); checkMouseOverlap(gameMenus.retry);
     }
 }
 
@@ -548,6 +586,12 @@ function checkTongueMenuOverlap(globalMenu, button) {
  * Draws the Hunger Meter
  */
 function hungerMeter() {
+    //Top Margin
+    push();
+    noStroke();
+    fill("#e6f859ff");
+    rect(0, 0, width, height / 5);
+    pop();
     // Hunger meter background
     push();
     strokeWeight(5);
@@ -557,8 +601,46 @@ function hungerMeter() {
     // Actual Hunger meter
     push();
     noStroke();
-    fill("#4bb71cff");
+    fill("#3bbd04ff");
     rect(frog.hunger.x + 2.5, frog.hunger.y + 2.5, frog.hunger.value, 25, 8);
+    pop();
+    // Hunger meter icon
+    // Body
+    push();
+    noStroke();
+    fill("#4bb71cff");
+    ellipse(frog.hungerIcon.x, frog.hungerIcon.y, frog.hungerIcon.size);
+    pop();
+    //Eyes
+    //Left Eye
+    push();
+    stroke("#4bb71cff");
+    fill("#ffffffff");
+    ellipse(frog.hungerIcon.eyes.leftX, frog.hungerIcon.eyes.Y, frog.hungerIcon.eyes.size);
+    pop();
+    //Right Eye
+    push();
+    stroke("#4bb71cff");
+    fill("#ffffffff");
+    ellipse(frog.hungerIcon.eyes.rightX, frog.hungerIcon.eyes.Y, frog.hungerIcon.eyes.size);
+    pop();
+    // Left Iris
+    push();
+    stroke(0)
+    strokeWeight(frog.hungerIcon.eyes.irisSize)
+    point(frog.hungerIcon.eyes.leftX, frog.hungerIcon.eyes.Y);
+    pop();
+    // Right Iris
+    push();
+    stroke(0)
+    strokeWeight(frog.hungerIcon.eyes.irisSize)
+    point(frog.hungerIcon.eyes.rightX, frog.hungerIcon.eyes.Y);
+    pop();
+    // Mouth
+    push();
+    noStroke();
+    fill("#ff0000");
+    square(frog.hungerIcon.mouth.x, frog.hungerIcon.mouth.y, frog.hungerIcon.mouth.size, frog.hungerIcon.mouth.topRadius, frog.hungerIcon.mouth.topRadius, frog.hungerIcon.mouth.btmRadius, frog.hungerIcon.mouth.btmRadius);
     pop();
 }
 
@@ -575,6 +657,14 @@ function reduceHungerMeter() {
     if (frog.hunger.value <= frog.hunger.min) {
         gameFailed = true;
     };
+    if (frog.hunger.value <= 200) {
+        frog.hungerIcon.mouth.btmRadius = 0
+        frog.hungerIcon.mouth.topRadius = 20
+    }
+    if (frog.hunger.value > 200) {
+        frog.hungerIcon.mouth.btmRadius = 20
+        frog.hungerIcon.mouth.topRadius = 0
+    }
 }
 
 function freezeHungerMeter() {
@@ -607,8 +697,31 @@ function mousePressed() {
             gameFailed = false;
         }
     }
+    if (gameRules) {
+        if (mouseX > gameMenus.esc.x && mouseX < gameMenus.esc.width + gameMenus.esc.x && mouseY > gameMenus.esc.y && mouseY < gameMenus.esc.y + gameMenus.esc.height) {
+            gameRules = false;
+        }
+    }
 }
 
+/**
+ * Check mouse overlap
+ */
+function checkMouseOverlap(button) {
+    let mouseOverlap = false
+    if (gameRules) {
+        if (mouseX > button.x && mouseX < button.width + button.x && mouseY > button.y && mouseY < button.y + button.height) {
+            mouseOverlap = true;
+        }
+    }
+
+    if (mouseOverlap) {
+        cursor(HAND);
+    }
+    else {
+        cursor(ARROW);
+    }
+}
 /**
  * Draw and display Menu options on startscreen
  */
@@ -659,13 +772,52 @@ function drawTutorial() {
     // Draws text
     push();
     fill(0);
+    // Styles the text
     textFont(fontMenus);
     textAlign(CENTER);
     textSize(round(tutorialFly.boxSize / 9));
-
-    // Display the text
     textWrap(WORD);
+    // Display the text
     text(rules[tutorialFly.index], tutorialFly.boxX, tutorialFly.boxY + tutorialFly.boxSize / 4.6, tutorialFly.boxSize);
     tutorialFly.index = tutorialFly.name;
     pop();
+
+    // Draws the mouse image
+    push();
+    image(mouseImages[mouseImgIndex], 400, 400, 60, 72);
+    pop();
+
+    // Draw exit button
+    push();
+    stroke("#969696ff");
+    strokeWeight(6);
+    fill("#ffffffff");
+    rect(gameMenus.esc.x, gameMenus.esc.y, gameMenus.esc.width, gameMenus.esc.height, gameMenus.esc.radius);
+    pop();
+
+    // Display the exit text
+    push();
+    fill(0);
+    textFont(fontMenus);
+    textAlign(CENTER);
+    textSize(35);
+
+
+    text("ESC", gameMenus.esc.x + 40, gameMenus.esc.y + 32);
+    pop();
+}
+
+function animateMouse() {
+    mouseImgTimer += 1;
+    // Restores the timer to 0 after 8 frames
+    if (mouseImgTimer > 40) {
+        mouseImgTimer = 0
+    }
+    // The mouse image changes every 4 frames
+    if (mouseImgTimer === 20) {
+        mouseImgIndex = 1
+    }
+    if (mouseImgTimer === 40) {
+        mouseImgIndex = 0
+    }
 }
