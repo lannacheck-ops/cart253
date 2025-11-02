@@ -91,7 +91,23 @@ const frog = {
             btmRadius: 20,
             topRadius: 0
         }
-    }
+    },
+
+};
+
+// Potion 
+let potion = {
+    color: "#a24bc9",
+    bottle: {
+        x: -50,
+        y: -50,
+        color: "#ffffff8f",
+        size: 35,
+        radius: 5
+    },
+    inventory: 0,
+    active: false,
+    timer: 5000
 };
 
 // The Mouse position constrained by the canvas size
@@ -176,6 +192,8 @@ let tutorialFly = {
     boxY: 180,
     boxSize: 180
 }
+
+
 // Fonts
 let fontMenus;
 let fontTitle;
@@ -205,6 +223,7 @@ function preload() {
 function setup() {
     createCanvas(640, 480);
     setInterval(reduceHungerMeter, frog.hunger.timer);
+    setInterval(resetPotion, potion.timer);
     mouseImages = [imgMouse, imgMouseClicked];
     // Creates 3 flies in the flies array
     for (let i = 0; i < fliesMax; i++) {
@@ -229,6 +248,7 @@ function draw() {
         frog.hunger.value = 495;
         frog.hungerIcon.mouth.btmRadius = 20;
         frog.hungerIcon.mouth.topRadius = 0;
+        potion.inventory = 0;
         drawMenus(gameMenus, gameMenus.start);
         drawMenus(gameMenus, gameMenus.rules);
         drawTitle();
@@ -271,9 +291,7 @@ function draw() {
     }
 
     if (gameStart && !gameFailed) {
-
-
-
+        drawPotion();
         for (let fly of flies) {
             moveFlyWings(fly);
             moveFly(fly);
@@ -293,6 +311,7 @@ function draw() {
         for (let fly of flies) {
             checkTongueFlyOverlap(fly);
         }
+        checkTonguePotionOverlap();
         hungerMeter();
         frozenHungerTimer();
     }
@@ -429,6 +448,42 @@ function resetFly(fly) {
     }
 }
 
+function drawPotion() {
+    // Bottle
+    push();
+    noStroke();
+    fill(potion.bottle.color);
+    square(potion.bottle.x, potion.bottle.y, potion.bottle.size, potion.bottle.radius);
+    pop();
+
+    // Liquid
+    push();
+    noStroke();
+    fill(potion.color);
+    rect(potion.bottle.x + 1, potion.bottle.y + 17, potion.bottle.size - 2, 15, potion.bottle.radius);
+    pop();
+
+    // Tube
+    push();
+    noStroke();
+    fill(potion.bottle.color);
+    rect(potion.bottle.x + 12.5, potion.bottle.y - 10, 10, 15, 2);
+    pop();
+}
+// Reset the potion's position and randomize the timer
+function resetPotion() {
+    if (potion.inventory === 1) {
+        potion.bottle.x = -50;
+        potion.bottle.y = -50;
+        potion.timer = random(5000, 9000);
+    }
+    if (potion.active || potion.inventory === 1 || !gameStart || gameFailed) {
+        return;
+    }
+    potion.bottle.x = random(50, 600);
+    potion.bottle.y = random(140, 400);
+    potion.timer = random(5000, 9000);
+}
 /**
  * Moves the frog to the mouse position on x
  */
@@ -559,6 +614,22 @@ function checkTongueFlyOverlap(fly) {
         frog.hunger.value = constrain(frog.hunger.value, frog.hunger.min, frog.hunger.max);
         // Reset the fly
         resetFly(fly);
+        // Bring back the tongue
+        frog.tongue.state = "inbound";
+    }
+}
+
+function checkTonguePotionOverlap() {
+    // Get distance from tongue to fly
+    const d = dist(frog.tongue.x, frog.tongue.y, potion.bottle.x + potion.bottle.size / 2, potion.bottle.y + potion.bottle.size / 2);
+    // Check if it's an overlap
+    const eaten = (d < frog.tongue.size / 2 + potion.bottle.size / 2);
+    if (eaten) {
+        // Add to frog's hunger meter
+        //frog.hunger.value += fly.size * 2
+        potion.inventory = 1;
+        // Reset the position
+        resetPotion();
         // Bring back the tongue
         frog.tongue.state = "inbound";
     }
