@@ -154,7 +154,7 @@ let title = {
 // Fly array
 let flies = [];
 // Maximum number of flies on the screen
-let fliesMax = 3;
+let fliesMax = 4;
 // Tutorial fly
 let tutorialFly = {
     x: 320,
@@ -227,6 +227,8 @@ function draw() {
             resetFly(fly);
         }
         frog.hunger.value = 495;
+        frog.hungerIcon.mouth.btmRadius = 20;
+        frog.hungerIcon.mouth.topRadius = 0;
         drawMenus(gameMenus, gameMenus.start);
         drawMenus(gameMenus, gameMenus.rules);
         drawTitle();
@@ -696,11 +698,13 @@ function mousePressed() {
         if (mouseX > gameMenus.retry.x && mouseX < gameMenus.width + gameMenus.retry.x && mouseY > gameMenus.retry.y && mouseY < gameMenus.retry.y + gameMenus.height) {
             gameStart = false;
             gameFailed = false;
+            frog.tongue.state = "idle"
         }
     }
     if (gameRules) {
         if (mouseX > gameMenus.esc.x && mouseX < gameMenus.esc.width + gameMenus.esc.x && mouseY > gameMenus.esc.y && mouseY < gameMenus.esc.y + gameMenus.esc.height) {
             gameRules = false;
+            frog.tongue.state = "idle"
         }
     }
 }
@@ -822,5 +826,11 @@ function animateMouse() {
     }
     if (mouseImgTimer === 40) {
         mouseImgIndex = 0
+    }
+}
+
+function keyPressed(event) {
+    if (event.keyCode === 27 && gameRules) {
+        gameRules = false;
     }
 }
