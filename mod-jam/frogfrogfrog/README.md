@@ -26,18 +26,18 @@ A game about catching flies with your frog-tongue to avoid dying of hunger
 ### New Functions Used
 > - lerpColor()
 ## Screenshot(s)
-> ![Image of the Hungry Hungry Froggy Start Screen](frogfrogfrog\assets\images\startscreeen.png)
-> ![Image of the Hungry Hungry Froggy Tutorial Screen](frogfrogfrog\assets\images\tutorial1.png)
-> ![Image of the Hungry Hungry Froggy Game Begin Screen](frogfrogfrog\assets\images\gamebegin.png)
-> ![Image of the Hungry Hungry Froggy Game Screen](frogfrogfrog\assets\images\gamescreen.png)
-> ![Image of the Hungry Hungry Froggy Low Health Screen](frogfrogfrog\assets\images\lowhealth.png)
-> ![Image of the Hungry Hungry Froggy Game Over Screen](frogfrogfrog\assets\images\gameover.png)
+> ![Image of the Hungry Hungry Froggy Start Screen](\assets\images\startscreeen.png)
+> ![Image of the Hungry Hungry Froggy Tutorial Screen](\assets\images\tutorial1.png)
+> ![Image of the Hungry Hungry Froggy Game Begin Screen](\assets\images\gamebegin.png)
+> ![Image of the Hungry Hungry Froggy Game Screen](\assets\images\gamescreen.png)
+> ![Image of the Hungry Hungry Froggy Low Health Screen](\assets\images\lowhealth.png)
+> ![Image of the Hungry Hungry Froggy Game Over Screen](\assets\images\gameover.png)
 
 ## Attribution
 JavaScript libraries:
 [p5.js](https://p5js.org/) and p5.sound.Js
 
-Credit to Pipping Barr for the base code from [frogfrogfrog](https://github.com/pippinbarr/frogfrogfrog)
+Credit to Pippin Barr for the base code from [frogfrogfrog](https://github.com/pippinbarr/frogfrogfrog)
 
 Sound assets are all from freesound.org:
 > - Button UI sound: https://freesound.org/people/Bpianoholic/sounds/620391/
