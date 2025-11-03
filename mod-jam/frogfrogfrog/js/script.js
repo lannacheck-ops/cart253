@@ -101,7 +101,7 @@ const frog = {
     fliesEaten: 0
 };
 
-// Potion 
+// Potion size, position and color
 let potion = {
     color: "#a24bc9",
     bottle: {
@@ -127,8 +127,9 @@ let mousePosY = undefined;
 let gameStart = false;
 let gameRules = false;
 
-let rules = ["Press P to activate the potion", "Potions increase your tongue size for 5 seconds", "Blue flies increase your health and freeze your hunger for 2 seconds",
-    "Yellow flies are poisonous, they will decrease your health",
+// Array of the rules of the game (in text)
+let rules = ["Press P to activate the potion", "Potions increase your tongue size for 5 seconds", "Blue flies increase your fullness and freeze your hunger for 2 seconds",
+    "Yellow flies are poisonous, they will decrease your hunger meter",
     "Black flies increase your fullness"
 ]
 // Game Start Boolean
@@ -187,6 +188,7 @@ const gameMenus = {
     }
 };
 
+// Title position, size and color
 let title = {
     x: 30,
     y: 80,
@@ -243,7 +245,7 @@ let yellowFlyPickUpSfx;
 let potionSpawnSfx;
 let criticalHungerSfx;
 
-// An array of the mouse Images
+// An array of the mouse Images that I drew
 let mouseImages = [];
 let mouseImgIndex = 0;
 let mouseImgTimer = 0;
@@ -285,6 +287,7 @@ function setup() {
     setInterval(reduceHungerMeter, frog.hunger.timer);
     // Timer interval to reset the potion's position
     setInterval(resetPotion, potion.timer);
+    // Add the mouse images to the array
     mouseImages = [imgMouse, imgMouseClicked];
     // Creates 4 flies in the flies array
     for (let i = 0; i < fliesMax; i++) {
@@ -364,7 +367,7 @@ function draw() {
         checkMouseOverlap(gameMenus.esc);
 
     }
-    // Draws the game with a text box of the goal right before the game begins
+    // Draws the game with a text box stating the goal of the game right before the game begins
     if (!gameBegin && gameStart && !gameFailed) {
         drawGameBeginText(gameMenus, gameMenus.begin);
         for (let fly of flies) {
@@ -429,7 +432,7 @@ function draw() {
 }
 
 /**
- * Draws the fly as a black circle
+ * Draws the flies
  */
 function drawFly(fly) {
     // Draw Wings
@@ -474,7 +477,9 @@ function moveFly(fly) {
         resetFly(fly);
     }
 }
-
+/**
+ *  Flap the flies' wings every 4 frames
+ */
 function moveFlyWings(fly) {
     fly.wingTimer += 1;
     // Restores the timer to 0 after 8 frames
@@ -513,7 +518,7 @@ function createFly() {
     return newfly;
 }
 /**
- * Resets the flies parameters and when on the tutorial screen change the fly type based on the previous fly's name
+ * Resets the flies parameters and when on the tutorial screen, change the fly type based on the previous fly's name
  */
 function resetFly(fly) {
     if (gameStart) {
@@ -604,17 +609,21 @@ function resetPotion() {
  * Make the potion disappear from the screen after 2 seconds 
  */
 function potionOnScreenTimer() {
+    // Only calls the function when the potion is on screen
     if (!potion.onScreen) {
         potion.onScreenTimer = 120;
         return;
     }
+    // If the potion is in the inventory don't call this function
     if (potion.onScreen && potion.inventory === 1) {
         potion.onScreenTimer = 120;
         return;
     }
+    // Start the timer countdown
     if (potion.onScreenTimer > 0) {
         potion.onScreenTimer -= 1;
     }
+    // Reset the timer and remove the potion from the screen
     if (potion.onScreenTimer <= 0) {
         potion.timer = random(7000, 9000);
         potion.onScreenTimer = 120;
@@ -640,6 +649,7 @@ function potionActiveTimer() {
         potion.active = false;
         potion.onScreen = false;
         potion.activeTimer = 300; // Resets the timer to 5 seconds
+        // Takes care of the tutorial screen text
         if (tutorialFly.index === 0) {
             tutorialFly.index = 4;
             tutorialFly.name = 2;
@@ -776,7 +786,7 @@ function drawFrogEyes(x, y) {
 }
 
 /**
- * Draw frog's iris
+ * Draw frog's iris 
  */
 function drawFrogIris(x, y) {
     push();
@@ -801,21 +811,26 @@ function checkTongueFlyOverlap(fly) {
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size / 2 + fly.size / 2);
     if (eaten) {
-        // Add to frog's hunger meter
+        // Chooses what sound to play based on the fly type
         if (fly.name === 1) {
+            // Yellow fly pick up sound
             yellowFlyPickUpSfx.play();
         }
         else {
+            // Other fly pick up sound
             flyPickUpSfx.play();
             flyPickUpSfx.setVolume(1.5);
         }
-
+        // Add to frog's hunger meter
         frog.hunger.value += fly.points;
+        // Add to number of flies eaten
         frog.fliesEaten += 1;
+        // Calls the freeze hunger meter when the blue fly is eaten
         if (fly.name === 0) {
             frog.hunger.frozenTimer += 120 //2 seconds
             freezeHungerMeter();
         }
+        // Constrains the hunger value to a max and a min
         frog.hunger.value = constrain(frog.hunger.value, frog.hunger.min, frog.hunger.max);
         // Reset the fly
         resetFly(fly);
@@ -879,7 +894,7 @@ function checkTongueMenuOverlap(globalMenu, button) {
  * Draws the Hunger Meter
  */
 function hungerMeter() {
-    //Top Margin
+    // Yellow Top Margin
     push();
     noStroke();
     fill("#e6f859ff");
@@ -941,6 +956,7 @@ function hungerMeter() {
  * Reduces the Hunger Meter and checks if the player fails the game
  */
 function reduceHungerMeter() {
+    // If the game hasn't started, if the frog hunger meter is frozen or if the game is over don't call this function
     if (!gameStart || frog.hunger.frozen === true || !gameBegin || gameFailed) {
         return;
     }
@@ -1037,7 +1053,7 @@ function mousePressed() {
 }
 
 /**
- * Check mouse overlap on menu buttons to change the cursor
+ * Check mouse overlap on menu buttons to change the cursor from an arrow to a hand
  */
 function checkMouseOverlap(button) {
     let mouseOverlap;
@@ -1057,7 +1073,7 @@ function checkMouseOverlap(button) {
     }
 }
 /**
- * Draw and display Menu options on startscreen
+ * Draw and display Menu options on startscreen and the retry menu button
  */
 function drawMenus(globalMenu, button) {
     // Buttons
@@ -1226,6 +1242,9 @@ function drawGameBeginText(globalMenu, button) {
     pop();
 }
 
+/**
+ * Draws the game over dialog box and shows the amount of flies the frog has eaten
+ */
 function drawGameOver(button) {
     push();
     // Draws dialog box
@@ -1273,7 +1292,7 @@ function drawGameOver(button) {
     textAlign(CENTER);
     textSize(45);
     textWrap(WORD);
-    // Display the text
+    // Display the number of flies eaten text
     text(frog.fliesEaten, button.box.x, button.box.y + button.box.height / 1.3, button.box.width);
     pop();
 }
