@@ -98,7 +98,7 @@ const frog = {
             topRadius: 0
         }
     },
-
+    fliesEaten: 0
 };
 
 // Potion 
@@ -153,11 +153,17 @@ const gameMenus = {
         name: "RULES"
     },
     retry: {
-        x: 220,
-        y: 190,
+        x: 213,
+        y: 320,
         name: "RETRY?",
         width: 180,
         height: 80,
+        box: {
+            x: 170,
+            y: 130,
+            width: 270,
+            height: 180
+        }
     },
     esc: {
         x: 520,
@@ -247,7 +253,7 @@ function setup() {
     setInterval(reduceHungerMeter, frog.hunger.timer);
     setInterval(resetPotion, potion.timer);
     mouseImages = [imgMouse, imgMouseClicked];
-    // Creates 3 flies in the flies array
+    // Creates 4 flies in the flies array
     for (let i = 0; i < fliesMax; i++) {
         flies.push(createFly());
     }
@@ -263,7 +269,7 @@ function draw() {
     // Draws the start screen of the game
     if (!gameStart && !gameRules) {
         cursor(ARROW);
-
+        frog.fliesEaten = 0;
         tutorialFly.index = 4;
         tutorialFly.x = 320;
         tutorialFly.name = 2;
@@ -381,7 +387,9 @@ function draw() {
         drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
         drawFrogIris(frog.iris.left.x, frog.iris.left.y);
         drawFrogIris(frog.iris.right.x, frog.iris.right.y);
-        drawMenus(gameMenus, gameMenus.retry); checkMouseOverlap(gameMenus.retry);
+        drawMenus(gameMenus, gameMenus.retry);
+        drawGameOver(gameMenus.retry);
+        checkMouseOverlap(gameMenus.retry);
     }
 }
 
@@ -755,6 +763,7 @@ function checkTongueFlyOverlap(fly) {
         // Add to frog's hunger meter
         //frog.hunger.value += fly.size * 2
         frog.hunger.value += fly.points;
+        frog.fliesEaten += 1;
         if (fly.name === 0) {
             frog.hunger.frozenTimer += 120 //2 seconds
             freezeHungerMeter();
@@ -1144,5 +1153,57 @@ function drawGameBeginText(globalMenu, button) {
     // Display the text
     text(button.name, button.x + 59, button.y + 30);
 
+    pop();
+}
+
+function drawGameOver(button) {
+    push();
+    // Draws dialog box
+    push();
+    stroke(0);
+    strokeWeight(4);
+    fill(255);
+    rect(button.box.x, button.box.y, button.box.width, button.box.height, 10);
+    pop();
+
+    // Draws Game Over text
+    push();
+
+    // Styles the text
+    stroke(0);
+    strokeWeight(7);
+    fill(frog.tongue.color);
+    textFont(fontMenus);
+    textAlign(CENTER);
+    textSize(45);
+    textWrap(WORD);
+    // Display the text
+    text("GAME OVER", button.box.x, button.box.y - button.box.height / 4.6, button.box.width);
+    pop();
+
+    // Draws the "number of flies eaten text"
+    push();
+    fill(0);
+    // Styles the text
+    textFont(fontMenus);
+    textAlign(CENTER);
+    textSize(30);
+    textWrap(WORD);
+    // Display the text
+    text("Nmber of Flies Eaten:", button.box.x, button.box.y + button.box.height / 4.6, button.box.width);
+    pop();
+
+    // Draws text that shows the number of flies eaten
+    push();
+    fill(frog.body.color);
+    // Styles the text
+    stroke(0);
+    strokeWeight(3);
+    textFont(fontMenus);
+    textAlign(CENTER);
+    textSize(45);
+    textWrap(WORD);
+    // Display the text
+    text(frog.fliesEaten, button.box.x, button.box.y + button.box.height / 1.3, button.box.width);
     pop();
 }
