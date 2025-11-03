@@ -26,12 +26,12 @@ A game about catching flies with your frog-tongue to avoid dying of hunger
 ### New Functions Used
 > - lerpColor()
 ## Screenshot(s)
-> ![Image of the Hungry Hungry Froggy Start Screen](\assets\images\startscreeen.png)
-> ![Image of the Hungry Hungry Froggy Tutorial Screen](\assets\images\tutorial1.png)
-> ![Image of the Hungry Hungry Froggy Game Begin Screen](\assets\images\gamebegin.png)
-> ![Image of the Hungry Hungry Froggy Game Screen](\assets\images\gamescreen.png)
-> ![Image of the Hungry Hungry Froggy Low Health Screen](\assets\images\lowhealth.png)
-> ![Image of the Hungry Hungry Froggy Game Over Screen](\assets\images\gameover.png)
+![Image of the Hungry Hungry Froggy Start Screen](\assets\images\startscreeen.png)
+![Image of the Hungry Hungry Froggy Tutorial Screen](\assets\images\tutorial1.png)
+![Image of the Hungry Hungry Froggy Game Begin Screen](\assets\images\gamebegin.png)
+![Image of the Hungry Hungry Froggy Game Screen](\assets\images\gamescreen.png)
+![Image of the Hungry Hungry Froggy Low Health Screen](\assets\images\lowhealth.png)
+![Image of the Hungry Hungry Froggy Game Over Screen](\assets\images\gameover.png)
 
 ## Attribution
 JavaScript libraries:
