@@ -230,13 +230,26 @@ let fontTitle;
 let imgMouse;
 let imgMouseClicked;
 
+// Sounds
+let music;
+let buttonSfx;
+let flyBuzzSfx;
+let flyPickUpSfx;
+let potionPickUpSfx;
+let potionUseSfx;
+let slurpSfx;
+let gameOverSfx;
+let yellowFlyPickUpSfx;
+let potionSpawnSfx;
+let criticalHungerSfx;
+
 // An array of the mouse Images
 let mouseImages = [];
 let mouseImgIndex = 0;
 let mouseImgTimer = 0;
 
 /**
- *  Preload fonts and images
+ *  Preload fonts, images and sounds
  */
 
 function preload() {
@@ -244,13 +257,33 @@ function preload() {
     fontTitle = loadFont('/frogfrogfrog/assets/fonts/BouncyBalloons.ttf')
     imgMouse = loadImage('/frogfrogfrog/assets/images/mouse.png');
     imgMouseClicked = loadImage('/frogfrogfrog/assets/images/mouseClicked.png');
+    // Background music
+    music = loadSound('/frogfrogfrog/assets/sounds/pianoloop.wav');
+    // Sound effects
+    buttonSfx = loadSound('/frogfrogfrog/assets/sounds/buttonUI.wav');
+    flyBuzzSfx = loadSound('/frogfrogfrog/assets/sounds/flybuzz.wav');
+    flyPickUpSfx = loadSound('/frogfrogfrog/assets/sounds/flypickup.ogg');
+    potionPickUpSfx = loadSound('/frogfrogfrog/assets/sounds/potionpickup.wav');
+    potionUseSfx = loadSound('/frogfrogfrog/assets/sounds/potionuse.wav');
+    slurpSfx = loadSound('/frogfrogfrog/assets/sounds/slurp.wav');
+    yellowFlyPickUpSfx = loadSound('/frogfrogfrog/assets/sounds/yellowflypickup.mp3');
+    gameOverSfx = loadSound('/frogfrogfrog/assets/sounds/gameover.wav');
+    potionSpawnSfx = loadSound('/frogfrogfrog/assets/sounds/potionspawn.wav');
+    criticalHungerSfx = loadSound('/frogfrogfrog/assets/sounds/criticalhunger.wav');
+
 }
 /**
  * Creates the canvas and initializes the fly
  */
 function setup() {
     createCanvas(640, 480);
+    // Loop and play background music
+    music.play();
+    music.loop();
+    music.setVolume(0.5);
+    // Timer interval to reduce hunger meter
     setInterval(reduceHungerMeter, frog.hunger.timer);
+    // Timer interval to reset the potion's position
     setInterval(resetPotion, potion.timer);
     mouseImages = [imgMouse, imgMouseClicked];
     // Creates 4 flies in the flies array
@@ -273,6 +306,7 @@ function draw() {
         tutorialFly.index = 4;
         tutorialFly.x = 320;
         tutorialFly.name = 2;
+        frog.body.color = "#00ff00";
         // Resets the fly position when the game hasn't started yet
         for (let fly of flies) {
             resetFly(fly);
@@ -382,6 +416,7 @@ function draw() {
             drawFly(fly);
         }
         adjustMousePosition();
+        moveTongue();
         drawFrog();
         drawFrogEyes(frog.eyes.left.x, frog.eyes.left.y);
         drawFrogEyes(frog.eyes.right.x, frog.eyes.right.y);
@@ -406,9 +441,11 @@ function drawFly(fly) {
     // Draw Fly
     push();
     noStroke();
+    // Black and blues flies have positive fly points
     if (fly.name === 2 || fly.name === 0) {
         fly.points = fly.size * 2
     }
+    // Yellow flies have negative fly points
     else if (fly.name === 1) {
         fly.points = fly.size * -2
     }
@@ -423,6 +460,10 @@ function drawFly(fly) {
  * Resets the fly if it gets all the way to the right
  */
 function moveFly(fly) {
+    if (!flyBuzzSfx.isPlaying() && fly.x > 0) {
+        flyBuzzSfx.play();
+        flyBuzzSfx.setVolume(2);
+    }
     // Move the fly
     fly.x += fly.speed;
     // Cool sine movement on the y
@@ -553,6 +594,7 @@ function resetPotion() {
     if (potion.active || potion.inventory === 1 || !gameStart || gameFailed || potion.onScreen || !gameBegin) {
         return;
     }
+    potionSpawnSfx.play();
     potion.bottle.x = random(50, 550);
     potion.bottle.y = random(140, 350);
     potion.timer = random(7000, 9000);
@@ -562,7 +604,6 @@ function resetPotion() {
  * Make the potion disappear from the screen after 2 seconds 
  */
 function potionOnScreenTimer() {
-    console.log(potion.onScreen, potion.onScreenTimer, potion.inventory)
     if (!potion.onScreen) {
         potion.onScreenTimer = 120;
         return;
@@ -761,7 +802,14 @@ function checkTongueFlyOverlap(fly) {
     const eaten = (d < frog.tongue.size / 2 + fly.size / 2);
     if (eaten) {
         // Add to frog's hunger meter
-        //frog.hunger.value += fly.size * 2
+        if (fly.name === 1) {
+            yellowFlyPickUpSfx.play();
+        }
+        else {
+            flyPickUpSfx.play();
+            flyPickUpSfx.setVolume(1.5);
+        }
+
         frog.hunger.value += fly.points;
         frog.fliesEaten += 1;
         if (fly.name === 0) {
@@ -787,6 +835,8 @@ function checkTonguePotionOverlap() {
         // Check if it's an overlap
         const eaten = (d < frog.tongue.size / 2 + potion.bottle.size / 2);
         if (eaten) {
+            potionPickUpSfx.play();
+            potionPickUpSfx.setVolume(0.5);
             // Set the potion inventory to 1
             potion.inventory = 1;
             if (tutorialFly.index === 1) {
@@ -806,13 +856,15 @@ function checkTongueMenuOverlap(globalMenu, button) {
     if (gameStart) {
         return;
     }
-    // Get distance from tongue to fly
+    // Get distance from tongue to menu button
     const dMenuStartX = abs(frog.tongue.x - button.x);
     const dMenuStartY = abs(frog.tongue.y - button.y);
     // Check if it's an overlap
     const overlapX = (dMenuStartX < frog.tongue.size / 2 + globalMenu.width);
     const overlapY = (dMenuStartY < frog.tongue.size / 2 + globalMenu.height / 2);
     if (overlapX && overlapY) {
+        buttonSfx.play();
+        buttonSfx.setVolume(1.1);
         frog.tongue.state = "inbound";
         if (button.name === "START") {
             gameStart = true;
@@ -889,21 +941,28 @@ function hungerMeter() {
  * Reduces the Hunger Meter and checks if the player fails the game
  */
 function reduceHungerMeter() {
-    if (!gameStart || frog.hunger.frozen === true || !gameBegin) {
+    if (!gameStart || frog.hunger.frozen === true || !gameBegin || gameFailed) {
         return;
     }
     if (frog.hunger.value > frog.hunger.min) {
         frog.hunger.value -= frog.hunger.reduction
     };
     // When the hunger meter runs out the frog dies and the game ends
-    if (frog.hunger.value <= frog.hunger.min) {
+    if (frog.hunger.value <= frog.hunger.min && !gameFailed) {
+        gameOverSfx.play();
         gameFailed = true;
         frog.iris.fill = frog.iris.colors[1];
     };
+    // Make the hunger meter icon sad if the hunger is less than or equal to 200
     if (frog.hunger.value <= 200) {
+        if (!criticalHungerSfx.isPlaying()) {
+            criticalHungerSfx.play();
+            criticalHungerSfx.setVolume(0.5);
+        }
         frog.hungerIcon.mouth.btmRadius = 0
         frog.hungerIcon.mouth.topRadius = 20
     }
+    // Make the hunger meter icon happy if the hunger is greater than to 200
     if (frog.hunger.value > 200) {
         frog.hungerIcon.mouth.btmRadius = 20
         frog.hungerIcon.mouth.topRadius = 0
@@ -941,11 +1000,15 @@ function mousePressed() {
     if (!gameFailed) {
         if (frog.tongue.state === "idle") {
             frog.tongue.state = "outbound";
+            slurpSfx.play();
+            slurpSfx.setVolume(0.5);
         }
     }
     // When the mouse is pressed when overlapping the retry button the game restarts
     if (gameFailed) {
         if (mouseX > gameMenus.retry.x && mouseX < gameMenus.width + gameMenus.retry.x && mouseY > gameMenus.retry.y && mouseY < gameMenus.retry.y + gameMenus.height) {
+            buttonSfx.play();
+            buttonSfx.setVolume(1.1);
             gameStart = false;
             gameFailed = false;
             frog.tongue.state = "idle"
@@ -954,6 +1017,8 @@ function mousePressed() {
     // When the mouse is pressed when overlapping the esc button the player returns to the start screen
     if (gameRules) {
         if (mouseX > gameMenus.esc.x && mouseX < gameMenus.esc.width + gameMenus.esc.x && mouseY > gameMenus.esc.y && mouseY < gameMenus.esc.y + gameMenus.esc.height) {
+            buttonSfx.play();
+            buttonSfx.setVolume(1.1);
             gameRules = false;
             frog.tongue.state = "idle"
         }
@@ -963,6 +1028,8 @@ function mousePressed() {
     if (!gameBegin && gameStart) {
         if (mouseX > gameMenus.begin.x && mouseX < gameMenus.begin.width + gameMenus.begin.x && mouseY > gameMenus.begin.y && mouseY < gameMenus.begin.y + gameMenus.begin.height) {
             cursor(ARROW);
+            buttonSfx.play();
+            buttonSfx.setVolume(1.1);
             gameBegin = true;
             frog.tongue.state = "idle"
         }
@@ -1103,10 +1170,13 @@ function animateMouse() {
 function keyPressed(event) {
     // The leaves the rules screen when "Esc" is pressed
     if (event.keyCode === 27 && gameRules) {
+        buttonSfx.play();
+        buttonSfx.setVolume(1.1);
         gameRules = false;
     }
     // The potion activates when letter P is pressed
     if (potion.inventory === 1 && event.keyCode === 80 && !potion.active) {
+        potionUseSfx.play();
         potion.active = true;
     }
 
