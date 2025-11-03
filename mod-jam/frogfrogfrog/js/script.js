@@ -255,23 +255,23 @@ let mouseImgTimer = 0;
  */
 
 function preload() {
-    fontMenus = loadFont('/frogfrogfrog/assets/fonts/LuckiestGuy.ttf');
-    fontTitle = loadFont('/frogfrogfrog/assets/fonts/BouncyBalloons.ttf')
-    imgMouse = loadImage('/frogfrogfrog/assets/images/mouse.png');
-    imgMouseClicked = loadImage('/frogfrogfrog/assets/images/mouseClicked.png');
+    fontMenus = loadFont('/assets/fonts/LuckiestGuy.ttf');
+    fontTitle = loadFont('/assets/fonts/BouncyBalloons.ttf')
+    imgMouse = loadImage('/assets/images/mouse.png');
+    imgMouseClicked = loadImage('/assets/images/mouseClicked.png');
     // Background music
-    music = loadSound('/frogfrogfrog/assets/sounds/pianoloop.wav');
+    music = loadSound('/assets/sounds/pianoloop.wav');
     // Sound effects
-    buttonSfx = loadSound('/frogfrogfrog/assets/sounds/buttonUI.wav');
-    flyBuzzSfx = loadSound('/frogfrogfrog/assets/sounds/flybuzz.wav');
-    flyPickUpSfx = loadSound('/frogfrogfrog/assets/sounds/flypickup.ogg');
-    potionPickUpSfx = loadSound('/frogfrogfrog/assets/sounds/potionpickup.wav');
-    potionUseSfx = loadSound('/frogfrogfrog/assets/sounds/potionuse.wav');
-    slurpSfx = loadSound('/frogfrogfrog/assets/sounds/slurp.wav');
-    yellowFlyPickUpSfx = loadSound('/frogfrogfrog/assets/sounds/yellowflypickup.mp3');
-    gameOverSfx = loadSound('/frogfrogfrog/assets/sounds/gameover.wav');
-    potionSpawnSfx = loadSound('/frogfrogfrog/assets/sounds/potionspawn.wav');
-    criticalHungerSfx = loadSound('/frogfrogfrog/assets/sounds/criticalhunger.wav');
+    buttonSfx = loadSound('/assets/sounds/buttonUI.wav');
+    flyBuzzSfx = loadSound('/assets/sounds/flybuzz.wav');
+    flyPickUpSfx = loadSound('/assets/sounds/flypickup.ogg');
+    potionPickUpSfx = loadSound('/assets/sounds/potionpickup.wav');
+    potionUseSfx = loadSound('/assets/sounds/potionuse.wav');
+    slurpSfx = loadSound('/assets/sounds/slurp.wav');
+    yellowFlyPickUpSfx = loadSound('/assets/sounds/yellowflypickup.mp3');
+    gameOverSfx = loadSound('/assets/sounds/gameover.wav');
+    potionSpawnSfx = loadSound('/assets/sounds/potionspawn.wav');
+    criticalHungerSfx = loadSound('/assets/sounds/criticalhunger.wav');
 
 }
 /**
