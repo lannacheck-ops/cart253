@@ -1,6 +1,6 @@
 /**
- * Vertical circles
- * Pippin Barr
+ * Nine Circles
+ * Lanna Check
  * 
  * Draws a series of circles from the top to the bottom of the canvas.
  * Arguably not in the most efficient way.
@@ -24,13 +24,13 @@ function draw() {
     // Draw a series of 50-pixel diameter circles
     // Starting at the top of the canvas
     // And ending at the bottom
-    ellipse(200, 0, 50);
-    ellipse(200, 50, 50);
-    ellipse(200, 100, 50);
-    ellipse(200, 150, 50);
-    ellipse(200, 200, 50);
-    ellipse(200, 250, 50);
-    ellipse(200, 300, 50);
-    ellipse(200, 350, 50);
-    ellipse(200, 400, 50);
+    let x = 200;
+    let diameter = 50;
+
+    let numCircles = 9
+    for (let i = 0; i < numCircles; i++) {
+        const y = diameter * i
+        ellipse(x, y, diameter);
+    }
+
 }
