@@ -1,6 +1,6 @@
 /**
  * Flies
- * Pippin Barr
+ * Lanna Check
  * 
  * A program for drawing flies on the canvas. The flies are stored
  * in an array.
@@ -25,6 +25,11 @@ let flies = [
         x: 180,
         y: 50,
         size: 5
+    },
+    {
+        x: 50,
+        y: 60,
+        size: 100
     }
 ];
 
@@ -43,22 +48,11 @@ function draw() {
     background("#87ceed");
 
     // Display each fly in the array
+    for (let fly of flies) {
+        push();
+        fill(0);
+        ellipse(fly.x, fly.y, fly.size);
+        pop();
 
-    // The fly at index 0
-    push();
-    fill(0);
-    ellipse(flies[0].x, flies[0].y, flies[0].size);
-    pop();
-
-    // The fly at index 1
-    push();
-    fill(0);
-    ellipse(flies[1].x, flies[1].y, flies[1].size);
-    pop();
-
-    // The fly at index 2
-    push();
-    fill(0);
-    ellipse(flies[2].x, flies[2].y, flies[2].size);
-    pop();
+    }
 }
