@@ -7,21 +7,21 @@
 /**
  * This will be called just before the blue variation starts
  */
-function blueSetup() {
+function flappyBirdBossSetup() {
 
 }
 
 /**
  * This will be called every frame when the blue variation is active
  */
-function blueDraw() {
+function flappyBirdBossDraw() {
     background("blue");
 }
 
 /**
  * This will be called whenever a key is pressed while the blue variation is active
  */
-function blueKeyPressed(event) {
+function flappyBirdBossKeyPressed(event) {
     if (event.keyCode === 27) {
         state = "menu";
     }
@@ -30,6 +30,6 @@ function blueKeyPressed(event) {
 /**
  * This will be called whenever the mouse is pressed while the blue variation is active
  */
-function blueMousePressed() {
+function flappyBirdBossMousePressed() {
 
 }

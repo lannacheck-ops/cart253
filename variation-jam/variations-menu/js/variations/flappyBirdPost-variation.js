@@ -7,21 +7,21 @@
 /**
  * This will be called just before the green variation starts
  */
-function greenSetup() {
+function flappyBirdPostSetup() {
 
 }
 
 /**
  * This will be called every frame when the green variation is active
  */
-function greenDraw() {
+function flappyBirdPostDraw() {
     background("green");
 }
 
 /**
  * This will be called whenever a key is pressed while the green variation is active
  */
-function greenKeyPressed(event) {
+function flappyBirdPostKeyPressed(event) {
     if (event.keyCode === 27) {
         state = "menu";
     }
@@ -30,6 +30,6 @@ function greenKeyPressed(event) {
 /**
  * This will be called whenever the mouse is pressed while the green variation is active
  */
-function greenMousePressed() {
+function flappyBirdPostMousePressed() {
 
 }

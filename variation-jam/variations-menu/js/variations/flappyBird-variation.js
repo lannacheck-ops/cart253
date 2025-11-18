@@ -7,21 +7,24 @@
 /**
  * This will be called just before the red variation starts
  */
-function redSetup() {
-
+function flappyBirdSetup() {
+    bird.x = birdInitialX;
+    bird.y = birdInitialY;
 }
 
 /**
  * This will be called every frame when the red variation is active
  */
-function redDraw() {
-    background("red");
+function flappyBirdDraw() {
+    background("#65c5f8ff");
+    drawBird();
+    moveBird();
 }
 
 /**
  * This will be called whenever a key is pressed while the red variation is active
  */
-function redKeyPressed(event) {
+function flappyBirdKeyPressed(event) {
     if (event.keyCode === 27) {
         state = "menu";
     }
@@ -30,6 +33,7 @@ function redKeyPressed(event) {
 /**
  * This will be called whenever the mouse is pressed while the red variation is active
  */
-function redMousePressed() {
-
+function flappyBirdMousePressed() {
+    gameStart = true;
+    bird.velocity = bird.lift;
 }

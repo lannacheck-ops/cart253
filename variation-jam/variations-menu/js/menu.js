@@ -11,7 +11,7 @@ const menuOption = [
         y: undefined,
         size: 32,
         overlap: false,
-        state: "red-variation"
+        state: "flappyBird-variation"
     },
     {
         menuName: "Flappy Bird Post",
@@ -19,7 +19,7 @@ const menuOption = [
         y: undefined,
         size: 32,
         overlap: false,
-        state: "green-variation"
+        state: "flappyBirdPost-variation"
     },
     {
         menuName: "Flappy Bird Boss",
@@ -27,7 +27,7 @@ const menuOption = [
         y: undefined,
         size: 32,
         overlap: false,
-        state: "blue-variation"
+        state: "flappyBirdBoss-variation"
     }
 ];
 
@@ -104,5 +104,16 @@ function menuMousePressed() {
         if (option.overlap === true) {
             state = option.state;
         }
+    }
+    switch (state) {
+        case "flappyBird-variation":
+            flappyBirdSetup();
+            break
+        case "flappyBirdPost-variation":
+            flappyBirdPostSetup();
+            break;
+        case "flappyBirdBoss-variation":
+            blueSetup();
+            break;
     }
 }

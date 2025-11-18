@@ -10,6 +10,7 @@
 "use strict";
 
 let state = "menu";
+let gameStart = false;
 
 /**
  * Create the canvas
@@ -26,16 +27,17 @@ function draw() {
     // A "switch" statement is like a cleaner alternative to writing multiple if...else if...else statements.
     switch (state) { // Check value in the "state" variable
         case "menu": // Compare if the state value is equal to "menu"
-            menuDraw(); // Call menuDraw function if the state is "menu"
+            menuDraw();
+            gameStart = false // Call menuDraw function if the state is "menu"
             break;//Stops JavaScript from continuing to check the other cases.
-        case "red-variation":
-            redDraw();
-            break
-        case "green-variation":
-            greenDraw();
+        case "flappyBird-variation":
+            flappyBirdDraw();
             break;
-        case "blue-variation":
-            blueDraw();
+        case "flappyBirdPost-variation":
+            flappyBirdPostDraw();
+            break;
+        case "flappyBirdBoss-variation":
+            flappyBirdBossDraw();
             break;
     }
 }
@@ -49,14 +51,14 @@ function mousePressed() {
         case "menu":
             menuMousePressed();
             break;
-        case "red-variation":
-            redMousePressed();
+        case "flappyBird-variation":
+            flappyBirdMousePressed();
             break
-        case "green-variation":
-            greenMousePressed();
+        case "flappyBirdPost-variation":
+            flappyBirdPostMousePressed();
             break;
-        case "blue-variation":
-            blueMousePressed();
+        case "flappyBirdBoss-variation":
+            flappyBirdBossMousePressed();
             break;
     }
 }
@@ -67,14 +69,14 @@ function mousePressed() {
  */
 function keyPressed(event) {
     switch (state) {
-        case "red-variation":
-            redKeyPressed(event);
+        case "flappyBird-variation":
+            flappyBirdKeyPressed(event);
             break
-        case "green-variation":
-            greenKeyPressed(event);
+        case "flappyBirdPost-variation":
+            flappyBirdPostKeyPressed(event);
             break;
-        case "blue-variation":
-            blueKeyPressed(event);
+        case "flappyBirdBoss-variation":
+            flappyBirdBossKeyPressed(event);
             break;
     }
 }
