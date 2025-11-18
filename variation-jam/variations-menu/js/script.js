@@ -67,9 +67,6 @@ function mousePressed() {
  */
 function keyPressed(event) {
     switch (state) {
-        case "menu":
-            menuKeyPressed(event);
-            break;
         case "red-variation":
             redKeyPressed(event);
             break
