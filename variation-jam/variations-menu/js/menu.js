@@ -4,22 +4,46 @@
  * This keeps the stuff the menu needs to do *separate* from the rest of the program.
  */
 
-const menuText = `
-(R) Red variation
-(G) Green variation
-(B) Blue variation`
+const menuOption = [
+    {
+        menuName: "Flappy Bird",
+        x: undefined,
+        y: undefined
+    },
+    {
+        menuName: "Flappy Bird Post",
+        x: undefined,
+        y: undefined
+    },
+    {
+        menuName: "Flappy Bird Boss",
+        x: undefined,
+        y: undefined
+    }
+];
 
 /**
  * Display the main menu
  */
 function menuDraw() {
     background(0);
+    for (let option of menuOption) {
+        menuOptionDraw(option);
+    };
 
+
+}
+/**
+ * Display main menu text
+ */
+function menuOptionDraw(option) {
+    option.y = (menuOption.indexOf(option) * 50) + height / 2.4;
+    option.x = width / 2;
     push();
     fill(255);
     textSize(32);
     textAlign(CENTER, CENTER);
-    text(menuText, width / 2, height / 2);
+    text(option.menuName, option.x, option.y);
     pop();
 }
 
