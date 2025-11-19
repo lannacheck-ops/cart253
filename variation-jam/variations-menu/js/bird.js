@@ -4,7 +4,7 @@ let bird = {
     radius: 20,
     velocity: 0,
     gravity: 0.6,
-    lift: -12
+    lift: -10
 };
 birdInitialX = 100;
 birdInitialY = 200;
