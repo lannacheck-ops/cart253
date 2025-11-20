@@ -6,6 +6,8 @@
 let pipes = [];
 let pipeSpawnTimer = 1000;
 let pipeGap = 200;
+let pipeMax = 3;
+let pipeDist = 200;
 /**
  * This will be called just before the red variation starts
  */
@@ -14,15 +16,17 @@ function flappyBirdSetup() {
     bird.y = birdInitialY;
     // Empty array of pipes
     pipes = [];
-    // Add first pipe to the array
-    pipes.push(createPipes());
-    // Timer interval to reduce hunger meter
-    setInterval(addPipe, pipeSpawnTimer);
+    // Add pipes to the array
+    for (i = 0; i < pipeMax; i++) {
+        pipes.push(createPipes(i));
+        //console.log(pipes[i].x);
+    }
 }
 
-function createPipes() {
+function createPipes(i) {
     let pipe = {
-        x: width + 200,
+        // Calculates the initial x of the pipes
+        x: pipeDist * i + width + pipeDist,
         color: "#5dd41dff",
         speed: 3,
         width: 80,
@@ -38,14 +42,6 @@ function createPipes() {
     return pipe;
 }
 
-function addPipe() {
-    if (pipes.length < 3) {
-        const newPipe = createPipes();
-        pipes.push(newPipe);
-        pipeSpawnTimer = random(1000, 2500);
-    }
-
-}
 /**
  * This will be called every frame when the red variation is active
  */
@@ -53,10 +49,13 @@ function flappyBirdDraw() {
     background("#65c5f8ff");
     drawBird();
     moveBird();
-    for (let pipe of pipes) {
-        drawPipe(pipe);
-        movePipe(pipe);
+    if (gameStart == true) {
+        for (let pipe of pipes) {
+            drawPipe(pipe);
+            movePipe(pipe);
+        }
     }
+
 }
 
 /**
@@ -93,19 +92,21 @@ function movePipe(pipe) {
  * Reset pipe parameters
  */
 function resetPipe(pipe) {
-    let newX;
+    let index = pipes.indexOf(pipe);
+    let newX = pipe.width * index + width + pipeDist + random(200, 500);
     let validPosition = false;
+
 
     // Keep trying positions until we find one with enough space
     while (!validPosition) {
-        newX = width + pipe.width + random(200, 500);
+        newX += pipeDist;
         validPosition = true;
 
         // Check distance from all other pipes
         for (let otherPipe of pipes) {
             if (otherPipe !== pipe) { // Don't compare with itself
                 let distance = abs(newX - otherPipe.x);
-                if (distance < pipe.width + 100) { // 50px minimum space + pipe width
+                if (distance < pipe.width + pipeDist) { // 50px minimum space + pipe width
                     validPosition = false;
                     break; // immediately exit the loop if on position is too close
                 }

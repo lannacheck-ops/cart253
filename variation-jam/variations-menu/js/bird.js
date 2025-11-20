@@ -18,6 +18,7 @@ function moveBird() {
 
 function drawBird() {
     push();
+    noStroke();
     fill(255, 255, 0);
     circle(bird.x, bird.y, bird.radius * 2);
     pop();
