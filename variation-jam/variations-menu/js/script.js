@@ -22,6 +22,7 @@ let cnv = {
 */
 function setup() {
     createCanvas(cnv.width, cnv.heigth);
+    angleMode(DEGREES);
 }
 
 
@@ -32,8 +33,9 @@ function draw() {
     // A "switch" statement is like a cleaner alternative to writing multiple if...else if...else statements.
     switch (state) { // Check value in the "state" variable
         case "menu": // Compare if the state value is equal to "menu"
-            menuDraw();
-            gameStart = false // Call menuDraw function if the state is "menu"
+            menuDraw();// Call menuDraw function if the state is "menu"
+            gameStart = false;
+            gameFailed = false;
             break;//Stops JavaScript from continuing to check the other cases.
         case "flappyBird-variation":
             flappyBirdDraw();

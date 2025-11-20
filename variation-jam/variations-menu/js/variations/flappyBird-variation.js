@@ -6,9 +6,10 @@
  * Sets up the Flappy Bird game
  */
 function flappyBirdSetup() {
-    // Reset the birds initial position before the game starts
+    // Reset the bird's variables before the game starts
     bird.x = birdInitialX;
     bird.y = birdInitialY;
+    bird.angle = 0;
     // Empties array of pipes before the game starts
     pipes = [];
     // Add pipes to the array
@@ -22,14 +23,21 @@ function flappyBirdSetup() {
  */
 function flappyBirdDraw() {
     background("#65c5f8ff");
-    drawBird();
-    moveBird();
+
     for (let pipe of pipes) {
         drawPipe(pipe);
         movePipe(pipe);
         checkPipeOverlap(pipe);
     }
+    // Draws, moves and rotates the bird
+    push();
+    translate(bird.x, bird.y); // Set the center(center of the canvas) of rotation to the bird's x and y
+    rotate(bird.angle); // Rotate the bird
+    drawBird();
+    moveBird();
+    pop();
 
+    checkBirdCanvasOverlap();
 
 }
 
@@ -56,6 +64,12 @@ function checkPipeOverlap(pipe) {
         }
     }
 }
+
+function checkBirdCanvasOverlap() {
+    if (bird.y - bird.size / 2 < 0 || bird.y + bird.size / 2 > cnv.heigth) {
+        gameFailed = true;
+    }
+}
 /**
  * Exit to menu when the esc key is pressed
  */
@@ -72,6 +86,6 @@ function flappyBirdMousePressed() {
     gameStart = true;
     if (!gameFailed) {
         bird.velocity = bird.lift;
+        bird.angle -= 35;
     }
-
 }
