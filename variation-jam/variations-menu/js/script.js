@@ -11,6 +11,7 @@
 
 let state = "menu";
 let gameStart = false;
+let gameFailed = false;
 
 /**
  * Create the canvas

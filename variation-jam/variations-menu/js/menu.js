@@ -113,7 +113,7 @@ function menuMousePressed() {
             flappyBirdPostSetup();
             break;
         case "flappyBirdBoss-variation":
-            blueSetup();
+            flappyBirdBossSetup();
             break;
     }
 }

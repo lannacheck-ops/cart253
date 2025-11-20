@@ -23,6 +23,25 @@ function flappyBirdSetup() {
     }
 }
 
+/**
+ * This will be called every frame when the red variation is active
+ */
+function flappyBirdDraw() {
+    background("#65c5f8ff");
+    drawBird();
+    moveBird();
+    for (let pipe of pipes) {
+        drawPipe(pipe);
+        movePipe(pipe);
+        checkPipeOverlap(pipe);
+    }
+
+
+}
+
+/**
+ * Create pipes
+ */
 function createPipes(i) {
     let pipe = {
         // Calculates the initial x of the pipes
@@ -41,23 +60,6 @@ function createPipes(i) {
     };
     return pipe;
 }
-
-/**
- * This will be called every frame when the red variation is active
- */
-function flappyBirdDraw() {
-    background("#65c5f8ff");
-    drawBird();
-    moveBird();
-    if (gameStart == true) {
-        for (let pipe of pipes) {
-            drawPipe(pipe);
-            movePipe(pipe);
-        }
-    }
-
-}
-
 /**
  * Draw the pipes
  */
@@ -79,6 +81,9 @@ function drawPipe(pipe) {
  * Move the pipes to the left 
  */
 function movePipe(pipe) {
+    if (!gameStart || gameFailed) {
+        return;
+    }
     pipe.x -= pipe.speed;
     const minX = random(-1000, -200);
     // Once the pipe is outside the screen reset its parameters
@@ -92,23 +97,28 @@ function movePipe(pipe) {
  * Reset pipe parameters
  */
 function resetPipe(pipe) {
+    // Find the index of the specifc pipe being reset
     let index = pipes.indexOf(pipe);
+    // Set the new x position of the pipe based on its index and some random variables
     let newX = pipe.width * index + width + pipeDist + random(200, 500);
+    // Checks if the new x position of the pipe is valid
     let validPosition = false;
 
 
-    // Keep trying positions until we find one with enough space
+    // Keep trying x positions until we find one with enough space
     while (!validPosition) {
+        // Adds the pipeDist variable to the new x position until the gap is big enough for the position to be valid
         newX += pipeDist;
+        // Optimiscally make the position valid 
         validPosition = true;
 
         // Check distance from all other pipes
         for (let otherPipe of pipes) {
             if (otherPipe !== pipe) { // Don't compare with itself
                 let distance = abs(newX - otherPipe.x);
-                if (distance < pipe.width + pipeDist) { // 50px minimum space + pipe width
+                if (distance < pipe.width + pipeDist) {
                     validPosition = false;
-                    break; // immediately exit the loop if on position is too close
+                    break; // Immediately exit the loop if the pipe's position is too close
                 }
             }
         }
@@ -124,6 +134,26 @@ function resetPipe(pipe) {
     pipe.bottomPipe.height = undefined;
 }
 
+function checkPipeOverlap(pipe) {
+    // Get the distance from the rightmost side of the bird to the middle of the pipe
+    const dX = abs((bird.x + bird.size / 2) - (pipe.x + pipe.width / 2));
+    // Check if they overlap on the x
+    const overlapX = (dX < bird.size / 2 + pipe.width / 2);
+    // Check if the bird overlaps the top Pipe
+    const overlapTopY = bird.y - bird.size / 2 <= pipe.topPipe.height;
+    // Check if the bird overlaps the bottom Pipe
+    const overlapBottomY = bird.y + bird.size / 2 >= pipe.bottomPipe.y;
+
+    if (overlapX == true) {
+        console.log(overlapX, dX, overlapBottomY, pipe.bottomPipe.y, overlapTopY, pipe.topPipe.height, bird.y - bird.size / 2);
+    }
+    // If the bird overlaps either the top or bottom pipe, stop the game
+    if (overlapX == true) {
+        if (overlapTopY == true || overlapBottomY == true) {
+            gameFailed = true;
+        }
+    }
+}
 /**
  * This will be called whenever a key is pressed while the red variation is active
  */
@@ -138,5 +168,8 @@ function flappyBirdKeyPressed(event) {
  */
 function flappyBirdMousePressed() {
     gameStart = true;
-    bird.velocity = bird.lift;
+    if (!gameFailed) {
+        bird.velocity = bird.lift;
+    }
+
 }

@@ -1,7 +1,7 @@
 let bird = {
     x: 100,
     y: 200,
-    radius: 20,
+    size: 20,
     velocity: 0,
     gravity: 0.6,
     lift: -10
@@ -9,7 +9,7 @@ let bird = {
 birdInitialX = 100;
 birdInitialY = 200;
 function moveBird() {
-    if (!gameStart) {
+    if (!gameStart || gameFailed) {
         return;
     }
     bird.velocity += bird.gravity;
@@ -20,6 +20,6 @@ function drawBird() {
     push();
     noStroke();
     fill(255, 255, 0);
-    circle(bird.x, bird.y, bird.radius * 2);
+    circle(bird.x, bird.y, bird.size * 2);
     pop();
 }
