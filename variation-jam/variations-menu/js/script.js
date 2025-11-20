@@ -12,12 +12,16 @@
 let state = "menu";
 let gameStart = false;
 let gameFailed = false;
+let cnv = {
+    width: 500,
+    heigth: 500
+};
 
 /**
  * Create the canvas
 */
 function setup() {
-    createCanvas(500, 500);
+    createCanvas(cnv.width, cnv.heigth);
 }
 
 
