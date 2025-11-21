@@ -1,6 +1,6 @@
 let pipes = [];
 let pipeSpawnTimer = 1000;
-let pipeGap = 150;
+let pipeGap = 140;
 let pipeMax = 3;
 let pipeDist = 200;
 /**
@@ -20,7 +20,8 @@ function createPipes(i) {
         bottomPipe: {
             y: undefined,
             height: undefined
-        }
+        },
+        pastPipe: false
     };
     return pipe;
 }
@@ -96,4 +97,5 @@ function resetPipe(pipe) {
     pipe.topPipe.height = random(50, height - pipeGap - 50);
     pipe.bottomPipe.y = undefined;
     pipe.bottomPipe.height = undefined;
+    pipe.pastPipe = false;
 }

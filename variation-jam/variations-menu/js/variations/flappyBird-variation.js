@@ -1,7 +1,7 @@
 /**
  * Contains the Flappy Bird variation of the game
  */
-
+let score = 0;
 /**
  * Sets up the Flappy Bird game
  */
@@ -12,6 +12,8 @@ function flappyBirdSetup() {
     bird.angle = 0;
     // Empties array of pipes before the game starts
     pipes = [];
+    // Reset the score
+    score = 0;
     // Add pipes to the array
     for (i = 0; i < pipeMax; i++) {
         pipes.push(createPipes(i));
@@ -38,6 +40,7 @@ function flappyBirdDraw() {
     pop();
 
     checkBirdCanvasOverlap();
+    drawScore();
 
 }
 
@@ -54,21 +57,47 @@ function checkPipeOverlap(pipe) {
     // Check if the bird overlaps the bottom Pipe
     const overlapBottomY = bird.y + bird.size / 2 >= pipe.bottomPipe.y;
 
-    if (overlapX == true) {
-        console.log(overlapX, dX, overlapBottomY, pipe.bottomPipe.y, overlapTopY, pipe.topPipe.height, bird.y - bird.size / 2);
-    }
     // If the bird overlaps either the top or bottom pipe, stop the game
     if (overlapX == true) {
+        // Add the score if the bird passes through the pipe it was overlapping
+        addScore(overlapX, pipe);
         if (overlapTopY == true || overlapBottomY == true) {
             gameFailed = true;
         }
     }
 }
 
+/**
+ * Check if the bird touches the top or bottom of the canvas 
+ */
 function checkBirdCanvasOverlap() {
     if (bird.y - bird.size / 2 < 0 || bird.y + bird.size / 2 > cnv.heigth) {
         gameFailed = true;
     }
+}
+/**
+ * Add the score if the bird passes through a pipe
+ */
+function addScore(overlapX, pipe) {
+    // Checks if the bird went past a pipe
+    const pastPipe = bird.x + bird.size / 2 > pipe.x + pipe.width;
+
+    if (overlapX && pastPipe && !pipe.pastPipe) {
+        // Add 1 to the score
+        score += 1;
+        // The pipe has been past 
+        pipe.pastPipe = true;
+    }
+
+}
+
+function drawScore() {
+    let scoreTxt = "Score: " + score
+    push();
+    textAlign(LEFT, CENTER);
+    textSize(20);
+    text(scoreTxt, 20, 30);
+    pop();
 }
 /**
  * Exit to menu when the esc key is pressed
