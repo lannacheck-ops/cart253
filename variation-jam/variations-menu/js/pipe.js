@@ -1,7 +1,7 @@
 let pipes = [];
 let pipeSpawnTimer = 1000;
 let pipeGap = 140;
-let pipeMax = 3;
+let pipeMax = undefined;
 let pipeDist = 200;
 /**
  * Create pipes

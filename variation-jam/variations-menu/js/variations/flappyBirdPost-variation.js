@@ -8,14 +8,22 @@
  * This will be called just before the green variation starts
  */
 function flappyBirdPostSetup() {
-
+    birdNest = [];
+    birdNestMax = 1;
+    for (i = 0; i < birdNestMax; i++) {
+        birdNest.push(createBirdNest(i));
+    }
 }
 
 /**
  * This will be called every frame when the green variation is active
  */
 function flappyBirdPostDraw() {
-    background("green");
+    background("#65c5f8ff");
+    for (let nest of birdNest) {
+        drawBirdNest(nest);
+        moveBirdNest(nest);
+    }
 }
 
 /**

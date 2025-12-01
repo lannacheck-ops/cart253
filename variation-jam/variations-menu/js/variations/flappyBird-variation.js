@@ -12,6 +12,8 @@ function flappyBirdSetup() {
     bird.angle = 0;
     // Empties array of pipes before the game starts
     pipes = [];
+    // Sets the max amount of bird in the array
+    pipeMax = 3;
     // Reset the score
     score = 0;
     // Add pipes to the array
