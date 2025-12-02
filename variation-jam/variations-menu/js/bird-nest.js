@@ -8,7 +8,7 @@ function createBirdNest(i) {
         y: undefined,
         width: 80,
         height: 35,
-        speed: 3,
+        speed: 4,
         delivered: false,
         bird: {
             color: "#fff024ff",
@@ -61,6 +61,7 @@ function drawBirdNest(nest) {
     drawBirdNestWings(nest.bird.wing.rightX, nest.bird.wing.y, nest.bird.wing, nest.bird.wing.rightAngle);
 }
 
+
 function moveBirdNestWings(nest) {
 
 }
@@ -76,6 +77,9 @@ function drawBirdNestWings(x, y, wing, wingAngle) {
 }
 
 function moveBirdNest(nest) {
+    if (!gameStart || gameFailed) {
+        return;
+    }
     nest.x -= nest.speed;
     const minX = random(-1000, -200);
     // Once the nest is outside the screen reset its parameters
@@ -87,7 +91,7 @@ function moveBirdNest(nest) {
 function resetBirdNest(nest) {
     let index = pipes.indexOf(nest);
 
-    nest.x = index * nest.width + width + 100;
-    nest.speed = 3;
+    nest.x = index * nest.width + width + 300;
+    nest.speed += 0.1;
     nest.delivered = false;
 }

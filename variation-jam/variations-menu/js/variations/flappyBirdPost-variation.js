@@ -20,12 +20,30 @@ function preload() {
  * This will be called just before the flappyBirdPost variation starts
  */
 function flappyBirdPostSetup() {
+    // Reset the bird's variables before the game starts
+    bird.x = birdInitialX;
+    bird.y = birdInitialY;
+    bird.angle = 0;
+    // Empty bird nest array
     birdNest = [];
     birdNestMax = 1;
     for (i = 0; i < birdNestMax; i++) {
         birdNest.push(createBirdNest(i));
     }
     letter.active = false;
+    // Empties array of pipes before the game starts
+    pipes = [];
+    // Sets the max amount of bird in the array
+    pipeMax = 2;
+    // Reset the score
+    score = 0;
+    pipeSpeed = 2;
+    pipeGap = 200;
+    // Add pipes to the array
+    for (i = 0; i < pipeMax; i++) {
+        pipes.push(createPipes(i));
+    }
+
 }
 
 
@@ -34,9 +52,19 @@ function flappyBirdPostSetup() {
  */
 function flappyBirdPostDraw() {
     background("#65c5f8ff");
+
+    for (let pipe of pipes) {
+        drawPipe(pipe);
+        movePipe(pipe);
+        checkPipeOverlap(pipe);
+        console.log(pipe.speed);
+    }
+
     for (let nest of birdNest) {
         drawBirdNest(nest);
         moveBirdNest(nest);
+        checkLetterBirdNestCollision(nest);
+        checkBirdBirdNestOverlap(nest);
     }
     moveLetter();
     letterSpawn();
@@ -45,9 +73,11 @@ function flappyBirdPostDraw() {
     rotate(bird.angle); // Rotate the bird
     drawBird();
     moveBird();
-    bird.y = constrain(bird.y, 0, height);
+    //bird.y = constrain(bird.y, 0, height);
     pop();
     checkBirdCanvasOverlap();
+
+    drawScore();
 }
 
 /**
@@ -58,8 +88,10 @@ function flappyBirdPostKeyPressed(event) {
         state = "menu";
     }
     // If the spacebar is pressed
-    if (event.keyCode === 32) {
-        letter.active = true
+    if (gameStart && !gameFailed) {
+        if (event.keyCode === 32) {
+            letter.active = true
+        }
     }
 }
 
@@ -82,6 +114,30 @@ function moveLetter() {
     }
     if (letter.y > height + letter.size) {
         letter.active = false;
+    }
+}
+
+function checkLetterBirdNestCollision(nest) {
+    // Get the distance from the rightmost side of the bird to the middle of the pipe
+    const d = dist(letter.x, letter.y, nest.x, nest.bird.y);
+    const collision = (d < letter.size / 2 + nest.width / 2);
+
+    // If the bird overlaps either the top or bottom pipe, stop the game
+    if (collision === true && letter.active) {
+        // Add the score if the bird passes through the pipe it was overlapping
+        score += 5;
+        letter.active = false;
+        resetBirdNest(nest);
+    }
+}
+
+function checkBirdBirdNestOverlap(nest) {
+    const d = dist(bird.x, bird.y, nest.x, nest.bird.y);
+    const collision = (d < bird.size / 2 + nest.width / 2);
+
+    // If the bird overlaps either the top or bottom pipe, stop the game
+    if (collision === true) {
+        gameFailed = true;
     }
 }
 /**

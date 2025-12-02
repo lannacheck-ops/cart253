@@ -16,10 +16,13 @@ function flappyBirdSetup() {
     pipeMax = 3;
     // Reset the score
     score = 0;
+    pipeGap = 140;
+    pipeSpeed = 3;
     // Add pipes to the array
     for (i = 0; i < pipeMax; i++) {
         pipes.push(createPipes(i));
     }
+
 }
 
 /**

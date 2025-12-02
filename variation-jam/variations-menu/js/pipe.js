@@ -1,8 +1,9 @@
 let pipes = [];
 let pipeSpawnTimer = 1000;
-let pipeGap = 140;
+let pipeGap = undefined;
 let pipeMax = undefined;
 let pipeDist = 200;
+let pipeSpeed = undefined;
 /**
  * Create pipes
  */
@@ -11,7 +12,7 @@ function createPipes(i) {
         // Calculates the initial x of the pipes based on their creation index "i"
         x: pipeDist * i * 1.5 + width + pipeDist,
         color: "#5dd41dff",
-        speed: 3,
+        speed: pipeSpeed,
         width: 80,
         topPipe: {
             y: 0,
@@ -91,7 +92,7 @@ function resetPipe(pipe) {
 
     pipe.x = newX;
     pipe.color = "#5dd41dff";
-    pipe.speed = 3;
+    pipe.speed = pipeSpeed;
     pipe.width = 80;
     pipe.topPipe.y = 0;
     pipe.topPipe.height = random(50, height - pipeGap - 50);
