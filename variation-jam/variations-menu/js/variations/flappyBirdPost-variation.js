@@ -4,15 +4,18 @@
  * This keeps the stuff the menu needs to do *separate* from the rest of the program.
  */
 
+// Image of letter
 let letterImg = undefined;
+// Letter variables
 let letter = {
     x: undefined,
     y: undefined,
     velocity: 0,
     gravity: 0.6,
-    active: false,
+    active: false, // Checks if the letter has been dropped
     size: 32
 }
+// Load letter image
 function preload() {
     letterImg = loadImage('assets/images/letter.png');
 }
@@ -26,10 +29,12 @@ function flappyBirdPostSetup() {
     bird.angle = 0;
     // Empty bird nest array
     birdNest = [];
+    // Sets the max amount of bird nests to appear
     birdNestMax = 1;
     for (i = 0; i < birdNestMax; i++) {
         birdNest.push(createBirdNest(i));
     }
+    // Rest letter active
     letter.active = false;
     // Empties array of pipes before the game starts
     pipes = [];
@@ -37,6 +42,7 @@ function flappyBirdPostSetup() {
     pipeMax = 2;
     // Reset the score
     score = 0;
+    // Reset the pipe variables
     pipeSpeed = 2;
     pipeGap = 200;
     // Add pipes to the array
@@ -48,46 +54,49 @@ function flappyBirdPostSetup() {
 
 
 /**
- * This will be called every frame when the green variation is active
+ * Draws the Flappy Bird Post game
  */
 function flappyBirdPostDraw() {
     background("#65c5f8ff");
-
+    // Draws the pipes
     for (let pipe of pipes) {
         drawPipe(pipe);
         movePipe(pipe);
         checkPipeOverlap(pipe);
-        console.log(pipe.speed);
     }
-
+    // Draws the bird nests
     for (let nest of birdNest) {
         drawBirdNest(nest);
         moveBirdNest(nest);
         checkLetterBirdNestCollision(nest);
         checkBirdBirdNestOverlap(nest);
     }
+    // Moves the letter 
     moveLetter();
+    // Draws the letter
     letterSpawn();
+
+    // Draws the bird
     push();
     translate(bird.x, bird.y); // Set the center(center of the canvas) of rotation to the bird's x and y
     rotate(bird.angle); // Rotate the bird
     drawBird();
     moveBird();
-    //bird.y = constrain(bird.y, 0, height);
     pop();
-    checkBirdCanvasOverlap();
 
+    checkBirdCanvasOverlap();
     drawScore();
 }
 
 /**
- * This will be called whenever a key is pressed while the green variation is active
+ * Calls the key pressed function when this variation is active
  */
 function flappyBirdPostKeyPressed(event) {
+    // If the ESC key is pressed go back to the main menu
     if (event.keyCode === 27) {
         state = "menu";
     }
-    // If the spacebar is pressed
+    // If the spacebar is pressed drop the letter
     if (gameStart && !gameFailed) {
         if (event.keyCode === 32) {
             letter.active = true
@@ -135,7 +144,7 @@ function checkBirdBirdNestOverlap(nest) {
     const d = dist(bird.x, bird.y, nest.x, nest.bird.y);
     const collision = (d < bird.size / 2 + nest.width / 2);
 
-    // If the bird overlaps either the top or bottom pipe, stop the game
+    // If the bird collides with the bird nest the player loses
     if (collision === true) {
         gameFailed = true;
     }

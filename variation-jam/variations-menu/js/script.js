@@ -14,14 +14,14 @@ let gameStart = false;
 let gameFailed = false;
 let cnv = {
     width: 500,
-    heigth: 500
+    height: 500
 };
 
 /**
  * Create the canvas
 */
 function setup() {
-    createCanvas(cnv.width, cnv.heigth);
+    createCanvas(cnv.width, cnv.height);
     angleMode(DEGREES);
 }
 
