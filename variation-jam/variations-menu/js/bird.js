@@ -22,7 +22,8 @@ let bird = {
         color: "#f9f9ebff",
         width: 23,
         height: 18
-    }
+    },
+    escape: false
 };
 birdInitialX = 100;
 birdInitialY = 200;

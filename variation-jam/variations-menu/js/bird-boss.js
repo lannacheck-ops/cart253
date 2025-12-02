@@ -19,7 +19,8 @@ let birdBoss = {
     mouth: {
         color: "#ff4d47ff",
         width: cnv.height - cnv.height / 1.3,
-        height: cnv.height - cnv.height / 1.1
+        height: cnv.height - cnv.height / 1.1,
+        y: cnv.height / 2 + ((cnv.height / 2) / 3)
     },
     laser: {
         colorAlpha: 255,
@@ -32,9 +33,11 @@ let birdBoss = {
         sizeMax: 30,
         sizeMin: 10,
         xDecrease: 10,
-        timer: 0
+        timer: 0,
+        shot: false
     },
     state: undefined
+
 };
 
 function drawBirdBoss() {
@@ -66,26 +69,29 @@ function drawBirdBoss() {
     push();
     noStroke();
     fill(birdBoss.mouth.color);
-    ellipse(birdBoss.x - birdBoss.size / 3, birdBoss.y + birdBoss.y / 3, birdBoss.mouth.width, birdBoss.mouth.height);
+    ellipse(birdBoss.x - birdBoss.size / 3, birdBoss.mouth.y, birdBoss.mouth.width, birdBoss.mouth.height);
     pop();
 
     if (birdBoss.state === "laser") {
         push();
         stroke(255, 77, 71, birdBoss.laser.colorAlpha);
         strokeWeight(birdBoss.laser.size);
-        line(birdBoss.x - birdBoss.size / 2.7, birdBoss.eye.iris.y, birdBoss.laser.x2, birdBoss.eye.iris.y);
+        line(birdBoss.x - birdBoss.size / 2.7, birdBoss.laser.y, birdBoss.laser.x2, birdBoss.laser.y);
         pop();
     }
 }
 
 function moveLaser() {
     if (birdBoss.state === "lockOn") {
+        birdBoss.laser.shot = false;
+        bird.escape = false;
         birdBoss.laser.x2 = birdBoss.x - birdBoss.size / 2.7;
         birdBoss.laser.timer = 0;
         birdBoss.laser.size = birdBoss.laser.sizeMin;
         birdBoss.laser.colorAlpha = 255;
     }
     if (birdBoss.state === "laser") {
+
         if (birdBoss.laser.timer < 2) {
             if (birdBoss.laser.x2 >= -10) {
                 birdBoss.laser.x2 -= birdBoss.laser.xDecrease;

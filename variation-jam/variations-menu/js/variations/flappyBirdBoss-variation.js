@@ -50,7 +50,9 @@ function flappyBirdBossDraw() {
     moveLaser();
 
     checkBirdCanvasOverlap();
-    checkBirdAndBossPostion();
+    checkBirdAndBossEyePostion();
+    checkBirdAndBossMouthPostion();
+    checkLaserOverlap();
     drawScore();
 }
 
@@ -65,25 +67,65 @@ function flappyBirdBossKeyPressed(event) {
 
 // check the position in comparison the eye size and shi
 function moveBossEye() {
-    if (bird.y <= height / 2) {
-        birdBoss.eye.iris.y = map(bird.y, 0, height / 2, birdBoss.y - birdBoss.size / 4, birdBoss.y - birdBoss.size / 8);
-        console.log(birdBoss.state, birdBoss.laser.size);
+
+    if (birdBoss.state == "lockOn") {
+        if (bird.y <= height / 2) {
+            birdBoss.eye.iris.y = map(bird.y, 0, height / 2, birdBoss.y - birdBoss.size / 4, birdBoss.y - birdBoss.size / 8);
+
+        }
     }
-    // 
 }
 function moveBossMouth() {
 
+    if (birdBoss.state == "lockOn") {
+        if (bird.y >= height / 2) {
+            birdBoss.mouth.y = map(bird.y, height / 2 + birdBoss.mouth.height / 2, height, birdBoss.y + birdBoss.y / 4, birdBoss.y + birdBoss.y / 1.3);
+        }
+    }
 }
-function checkBirdAndBossPostion() {
+function checkBirdAndBossEyePostion() {
     const eyeBirdDist = bird.y - (birdBoss.eye.iris.y - birdBoss.eye.iris.size / 2);
     // Check Eye position
     if (eyeBirdDist <= 7 && birdBoss.state == "lockOn") {
         birdBoss.state = "laser";
+        birdBoss.laser.y = birdBoss.eye.iris.y;
     }
     else if (birdBoss.state !== "laser") {
         birdBoss.state = "lockOn";
     }
 
+}
+function checkBirdAndBossMouthPostion() {
+    const mouthBirdDist = abs((birdBoss.mouth.y - birdBoss.mouth.height / 2) - bird.y);
+
+    // Check Eye position
+    if (mouthBirdDist <= 5 && birdBoss.state == "lockOn") {
+        birdBoss.state = "laser";
+        birdBoss.laser.y = birdBoss.mouth.y;
+    }
+    else if (birdBoss.state !== "laser") {
+        birdBoss.state = "lockOn";
+    }
+}
+
+function checkLaserOverlap() {
+    const laserBirdDist = abs((bird.y + bird.size / 2) - (birdBoss.laser.y + birdBoss.laser.size / 2));
+    const laserOverlap = laserBirdDist < bird.size / 2;
+
+    if (birdBoss.laser.x2 <= bird.x + bird.size / 2 && birdBoss.state === "laser" && birdBoss.laser.colorAlpha >= 30) {
+        if (laserOverlap) {
+            gameFailed = true;
+        }
+    }
+    if (birdBoss.laser.colorAlpha <= 30 && birdBoss.state === "laser") {
+        birdBoss.laser.shot = true;
+    }
+    if (!laserOverlap && birdBoss.laser.shot && bird.escape == false && birdBoss.state === "laser") {
+        score += 5;
+        bird.escape = true;
+
+    }
+    console.log(birdBoss.state, bird.escape, birdBoss.laser.shot, birdBoss.laser.colorAlpha);
 }
 /**
  * This will be called whenever the mouse is pressed while the blue variation is active
