@@ -59,13 +59,9 @@ function mousePressed() {
             menuMousePressed();
             break;
         case "flappyBird-variation":
-            flappyBirdMousePressed();
-            break
         case "flappyBirdPost-variation":
-            flappyBirdPostMousePressed();
-            break;
         case "flappyBirdBoss-variation":
-            flappyBirdBossMousePressed();
+            flappyBirdMousePressed();
             break;
     }
 }

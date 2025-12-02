@@ -15,21 +15,6 @@ function createBirdNest(i) {
             x: undefined,
             y: undefined,
             size: 45,
-            eyes: {
-                color: 255,
-                width: 25,
-                height: 22,
-                y: undefined,
-                leftX: undefined,
-                rightX: undefined
-            },
-            iris: {
-                color: 0,
-                size: 10,
-                y: undefined,
-                leftX: undefined,
-                rightX: undefined
-            },
             wing: {
                 y: undefined,
                 leftX: undefined,
@@ -74,13 +59,6 @@ function drawBirdNest(nest) {
     // Call the draw wings function
     drawBirdNestWings(nest.bird.wing.leftX, nest.bird.wing.y, nest.bird.wing, nest.bird.wing.leftAngle);
     drawBirdNestWings(nest.bird.wing.rightX, nest.bird.wing.y, nest.bird.wing, nest.bird.wing.rightAngle);
-
-    //Eyes
-    push();
-    stroke(nest.bird.iris.color);
-    strokeWeight(nest.bird.iris.size);
-    point(nest.x, nest.bird.y - 15);
-    pop();
 }
 
 function moveBirdNestWings(nest) {
