@@ -76,7 +76,7 @@ function checkPipeOverlap(pipe) {
  * Check if the bird touches the top or bottom of the canvas 
  */
 function checkBirdCanvasOverlap() {
-    if (bird.y - bird.size / 2 < 0 || bird.y + bird.size / 2 > cnv.heigth) {
+    if (bird.y - bird.size / 2 < 0 || bird.y + bird.size / 2 > height) {
         gameFailed = true;
     }
 }

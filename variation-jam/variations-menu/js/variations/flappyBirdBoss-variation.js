@@ -37,7 +37,8 @@ function flappyBirdBossDraw() {
         movePipe(pipe);
         checkPipeOverlap(pipe);
     }
-
+    moveBossEye();
+    moveBossMouth();
     drawBirdBoss();
 
     push();
@@ -46,8 +47,10 @@ function flappyBirdBossDraw() {
     drawBird();
     moveBird();
     pop();
+    moveLaser();
 
     checkBirdCanvasOverlap();
+    checkBirdAndBossPostion();
     drawScore();
 }
 
@@ -60,6 +63,28 @@ function flappyBirdBossKeyPressed(event) {
     }
 }
 
+// check the position in comparison the eye size and shi
+function moveBossEye() {
+    if (bird.y <= height / 2) {
+        birdBoss.eye.iris.y = map(bird.y, 0, height / 2, birdBoss.y - birdBoss.size / 4, birdBoss.y - birdBoss.size / 8);
+        console.log(birdBoss.state, birdBoss.laser.size);
+    }
+    // 
+}
+function moveBossMouth() {
+
+}
+function checkBirdAndBossPostion() {
+    const eyeBirdDist = bird.y - (birdBoss.eye.iris.y - birdBoss.eye.iris.size / 2);
+    // Check Eye position
+    if (eyeBirdDist <= 7 && birdBoss.state == "lockOn") {
+        birdBoss.state = "laser";
+    }
+    else if (birdBoss.state !== "laser") {
+        birdBoss.state = "lockOn";
+    }
+
+}
 /**
  * This will be called whenever the mouse is pressed while the blue variation is active
  */
