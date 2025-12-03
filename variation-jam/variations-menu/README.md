@@ -1,7 +1,7 @@
 # Flappy Bird EXTRAS!
 Lanna Check
 
-[View this project online](https://lannacheck-ops.github.io/cart253/art-jam/template-p5-project/)
+[View this project online](https://lannacheck-ops.github.io/cart253/variation-jam/variations-menu/)
 
 ## Description
 
