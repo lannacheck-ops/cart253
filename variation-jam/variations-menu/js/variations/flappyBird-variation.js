@@ -47,6 +47,7 @@ function flappyBirdDraw() {
     checkBirdCanvasOverlap();
     drawScore();
     drawEsc();
+    drawGameDescription();
 
 }
 

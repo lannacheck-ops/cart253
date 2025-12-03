@@ -56,6 +56,7 @@ function flappyBirdBossDraw() {
     checkLaserOverlap();
     drawScore();
     drawEsc();
+    drawGameDescription();
 }
 
 /**

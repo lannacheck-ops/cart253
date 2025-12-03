@@ -79,6 +79,8 @@ function drawInstructions() {
 function drawEsc() {
     push();
     fill(0);
+    stroke(255);
+    strokeWeight(3);
     textFont(pixelFont);
     textSize(30);
     textAlign(LEFT, CENTER);
