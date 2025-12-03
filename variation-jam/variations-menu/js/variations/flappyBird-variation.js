@@ -1,6 +1,8 @@
 /**
  * Contains the Flappy Bird variation of the game
  */
+
+// Score variable
 let score = 0;
 /**
  * Sets up the Flappy Bird game
@@ -14,10 +16,11 @@ function flappyBirdSetup() {
     pipes = [];
     // Sets the max amount of bird in the array
     pipeMax = 3;
-    // Reset the score
-    score = 0;
+    //  Set pipe variables according the variation
     pipeGap = 140;
     pipeSpeed = 3;
+    // Reset the score
+    score = 0;
     // Add pipes to the array
     for (i = 0; i < pipeMax; i++) {
         pipes.push(createPipes(i));
@@ -30,7 +33,7 @@ function flappyBirdSetup() {
  */
 function flappyBirdDraw() {
     background("#65c5f8ff");
-
+    // Draws the pipes
     for (let pipe of pipes) {
         drawPipe(pipe);
         movePipe(pipe);
@@ -43,10 +46,13 @@ function flappyBirdDraw() {
     drawBird();
     moveBird();
     pop();
-
+    // Checks if the bird overlaps the canvas
     checkBirdCanvasOverlap();
+    // Draws the score
     drawScore();
+    // Draws the escape text
     drawEsc();
+    // Draws the game description
     drawGameDescription();
 
 }
@@ -107,6 +113,9 @@ function addScore(overlapX, pipe) {
 
 }
 
+/**
+ * Draws the score
+ */
 function drawScore() {
     let scoreTxt = "Score: " + score
     push();
@@ -132,8 +141,6 @@ function flappyBirdKeyPressed(event) {
  * Lift the bird when the mouse is pressed
  */
 function flappyBirdMousePressed() {
-
-    // jumpSfx.setVolume(0.5);
     gameStart = true;
     if (!gameFailed) {
         jumpSfx.play();

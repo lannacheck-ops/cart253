@@ -1,9 +1,16 @@
+/**
+ * Contains the code to draw the game descriptions before each variation starts
+ */
+
+// Description variable
 let description = {
+    // Description box
     box: {
         x: undefined,
         y: undefined,
         size: 200
     },
+    // Description text based on the variation state
     txt: {
         flappy: "Avoid the green pipes to earn points !",
         post: "Deliver letters to other birds! Don't crash into them tho.",
@@ -12,6 +19,9 @@ let description = {
     }
 }
 
+/**
+ * Draws the description text box
+ */
 function drawGameDescription() {
     description.box.x = width / 2 - description.box.size / 2
     description.box.y = height / 2 - description.box.size / 2

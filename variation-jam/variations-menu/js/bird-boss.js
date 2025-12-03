@@ -1,3 +1,8 @@
+/**
+ * Contains the birdBoss variables and draws and moves the bird
+ */
+
+// Boss variables
 let birdBoss = {
     color: "#08be3cff",
     x: cnv.width + cnv.height / 4,
@@ -40,6 +45,9 @@ let birdBoss = {
 
 };
 
+/**
+ * Draws birdBoss
+ */
 function drawBirdBoss() {
     // Body
     push();
@@ -58,7 +66,6 @@ function drawBirdBoss() {
     pop();
 
     // Iris
-    // birdBoss.eye.iris.y = birdBoss.y - birdBoss.size / 6
     push();
     stroke(birdBoss.eye.iris.color);
     strokeWeight(birdBoss.eye.iris.size);
@@ -71,7 +78,7 @@ function drawBirdBoss() {
     fill(birdBoss.mouth.color);
     ellipse(birdBoss.x - birdBoss.size / 3, birdBoss.mouth.y, birdBoss.mouth.width, birdBoss.mouth.height);
     pop();
-
+    // Laser
     if (birdBoss.state === "laser") {
         push();
         stroke(255, 77, 71, birdBoss.laser.colorAlpha);
@@ -81,7 +88,11 @@ function drawBirdBoss() {
     }
 }
 
+/**
+ * Moves and animates the laser
+ */
 function moveLaser() {
+    // Reset the laser values on the lockOn state
     if (birdBoss.state === "lockOn") {
         birdBoss.laser.shot = false;
         bird.escape = false;
@@ -90,27 +101,33 @@ function moveLaser() {
         birdBoss.laser.size = birdBoss.laser.sizeMin;
         birdBoss.laser.colorAlpha = 255;
     }
+    // Move and animate the laser 
     if (birdBoss.state === "laser") {
-
-        if (birdBoss.laser.timer < 2) {
+        if (birdBoss.laser.timer < 2)// Every 2 frames {
             if (birdBoss.laser.x2 >= -10) {
+                // Play the laser sfx
                 if (!laserSfx.isPlaying())
                     laserSfx.play();
+                // Make the laser longer every 2 frames until it reaches the left side of the canvas
                 birdBoss.laser.x2 -= birdBoss.laser.xDecrease;
             }
-            if (birdBoss.laser.size < birdBoss.laser.sizeMax) {
-                birdBoss.laser.size += birdBoss.laser.sizeIncrease;
-            }
-            if (birdBoss.laser.x2 <= -10 && birdBoss.laser.colorAlpha >= 0.2) {
-                birdBoss.laser.colorAlpha -= birdBoss.laser.alphaDecrease;
-            }
-            if (birdBoss.laser.colorAlpha <= 0.2) {
-                birdBoss.state = "lockOn";
-            }
-            birdBoss.laser.timer += 1;
+        // Make the laser bigger every 2 frames until it has reached its max size
+        if (birdBoss.laser.size < birdBoss.laser.sizeMax) {
+            birdBoss.laser.size += birdBoss.laser.sizeIncrease;
         }
-        if (birdBoss.laser.timer >= 2) {
-            birdBoss.laser.timer = 0;
+        // Make the laser more transparent every 2 frames
+        if (birdBoss.laser.x2 <= -10 && birdBoss.laser.colorAlpha >= 0.2) {
+            birdBoss.laser.colorAlpha -= birdBoss.laser.alphaDecrease;
         }
+        // Set the boss state back to lockOn when the transparency is below or equal to 0.2
+        if (birdBoss.laser.colorAlpha <= 0.2) {
+            birdBoss.state = "lockOn";
+        }
+        // Add 1 to the timer
+        birdBoss.laser.timer += 1;
+    }
+    // Reset the timer once it reaches 2 frames
+    if (birdBoss.laser.timer >= 2) {
+        birdBoss.laser.timer = 0;
     }
 }

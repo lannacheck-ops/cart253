@@ -1,3 +1,8 @@
+/**
+ * Contains the Tutorial of the game
+ */
+
+// Instrction variable
 let instructions = {
     box: {
         x: undefined,
@@ -9,7 +14,9 @@ let instructions = {
     txt: "Click to fly, Press spacebar to deliver letters",
     size: 25
 }
-
+/**
+ * Sets up the tutorial screen
+ */
 function tutorialSetup() {
     instructions.box.x = width / 2;
     instructions.box.y = height / 2 - instructions.box.height / 2;
@@ -28,7 +35,7 @@ function tutorialSetup() {
 }
 
 /**
- * Draws Flappy Bird game
+ * Draws the Flappy Bird tutorial
  */
 function tutorialDraw() {
     background("#65c5f8ff");
@@ -44,13 +51,20 @@ function tutorialDraw() {
     drawBird();
     moveBird();
     pop();
+    // Check if the bird is overlapping the edge of the canvas
     checkBirdCanvasOverlapTutorial();
+    // Draw tutorial instrctions
     drawInstructions();
+    // Draw the esc text
     drawEsc();
 }
 
+/**
+ * Check if the bird is overlapping the edge of the canvas
+ */
 function checkBirdCanvasOverlapTutorial() {
     if (bird.y - bird.size / 2 < 0 || bird.y + bird.size / 2 > height) {
+        // Reset the bird position when there's an overlap
         bird.x = birdInitialX;
         bird.y = birdInitialY;
         bird.angle = 0;
@@ -58,7 +72,9 @@ function checkBirdCanvasOverlapTutorial() {
     }
 }
 
+// Draw the game instructions text 
 function drawInstructions() {
+    // Draw the text box
     push();
     stroke(0);
     strokeWeight(3);
@@ -66,6 +82,7 @@ function drawInstructions() {
     rect(instructions.box.x, instructions.box.y, instructions.box.width, instructions.box.height, instructions.box.corner);
     pop();
 
+    // Draw the text
     push();
     fill(0);
     textFont(pixelFont);
@@ -76,6 +93,9 @@ function drawInstructions() {
     pop();
 }
 
+/**
+ * Draw the esc text at the top right of the canvas
+ */
 function drawEsc() {
     push();
     fill(0);

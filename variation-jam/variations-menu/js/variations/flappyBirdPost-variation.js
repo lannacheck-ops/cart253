@@ -1,10 +1,9 @@
 /**
- * This file contains the code to run *only* the green variation part of the program.
- * Note how it has its own draw, greenDraw(), and its own keyPressed, greenKeyPressed().
- * This keeps the stuff the menu needs to do *separate* from the rest of the program.
+ * Contains the Flappy Bird Post variation of the game
  */
 
-// Letter variables
+
+// Letter image variables
 let letter = {
     x: undefined,
     y: undefined,
@@ -15,7 +14,7 @@ let letter = {
 }
 
 /**
- * This will be called just before the flappyBirdPost variation starts
+ * Sets up the Flappy Bird Post game
  */
 function flappyBirdPostSetup() {
     // Reset the bird's variables before the game starts
@@ -63,7 +62,9 @@ function flappyBirdPostDraw() {
     for (let nest of birdNest) {
         drawBirdNest(nest);
         moveBirdNest(nest);
+        // Check if the letter drops on the nest
         checkLetterBirdNestCollision(nest);
+        // Check if the bird overlaps the nest
         checkBirdBirdNestOverlap(nest);
     }
     // Moves the letter 
@@ -86,7 +87,7 @@ function flappyBirdPostDraw() {
 }
 
 /**
- * Calls the key pressed function when this variation is active
+ * Bird Post key pressed function
  */
 function flappyBirdPostKeyPressed(event) {
     // If the ESC key is pressed go back to the main menu
@@ -104,12 +105,18 @@ function flappyBirdPostKeyPressed(event) {
     }
 }
 
+/**
+ * Draws the letter image
+ */
 function letterSpawn() {
     push();
     image(letterImg, letter.x, letter.y, letter.size, letter.size);
     pop();
 }
 
+/**
+ * Moves the letter once it has been dropped 
+ */
 function moveLetter() {
     letter.x = bird.x;
     if (letter.active) {
@@ -126,6 +133,9 @@ function moveLetter() {
     }
 }
 
+/**
+ * Check if the bird overlaps the nest
+ */
 function checkLetterBirdNestCollision(nest) {
     // Get the distance from the rightmost side of the bird to the middle of the pipe
     const d = dist(letter.x, letter.y, nest.x, nest.bird.y);
@@ -141,6 +151,9 @@ function checkLetterBirdNestCollision(nest) {
     }
 }
 
+/**
+ * Check if the letter drops on the nest
+ */
 function checkBirdBirdNestOverlap(nest) {
     const d = dist(bird.x, bird.y, nest.x, nest.bird.y);
     const collision = (d < bird.size / 2 + nest.width / 2);
@@ -149,10 +162,4 @@ function checkBirdBirdNestOverlap(nest) {
     if (collision === true) {
         gameFailed = true;
     }
-}
-/**
- * This will be called whenever the mouse is pressed while the green variation is active
- */
-function flappyBirdPostMousePressed() {
-
 }

@@ -1,3 +1,6 @@
+/**
+ * Contains the pipe variables and draws and moves the pipes
+ */
 let pipes = [];
 let pipeSpawnTimer = 1000;
 let pipeGap = undefined;

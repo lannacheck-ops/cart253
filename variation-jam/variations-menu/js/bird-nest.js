@@ -1,6 +1,14 @@
+/**
+ * Containsthe the birdBNest variables and draws and moves the birdNest
+ */
+
+// Bird nest array
 let birdNest = [];
 let birdNestMax = undefined;
 
+/**
+ * Create new bird nest
+ */
 function createBirdNest(i) {
     let newBirdNest = {
         color: "#a66917",
@@ -31,6 +39,9 @@ function createBirdNest(i) {
     return newBirdNest;
 }
 
+/**
+ * Draws the bird nest
+ */
 function drawBirdNest(nest) {
     // Set Nest Y
     nest.y = height - nest.height / 4;
@@ -61,11 +72,9 @@ function drawBirdNest(nest) {
     drawBirdNestWings(nest.bird.wing.rightX, nest.bird.wing.y, nest.bird.wing, nest.bird.wing.rightAngle);
 }
 
-
-function moveBirdNestWings(nest) {
-
-}
-
+/**
+ * Draws the bird's wings
+ */
 function drawBirdNestWings(x, y, wing, wingAngle) {
     push();
     translate(x, y);
@@ -76,7 +85,11 @@ function drawBirdNestWings(x, y, wing, wingAngle) {
     pop();
 }
 
+/**
+ * Move the bird nest to the left
+ */
 function moveBirdNest(nest) {
+    // Only start moving when the game starts
     if (!gameStart || gameFailed) {
         return;
     }
@@ -88,9 +101,12 @@ function moveBirdNest(nest) {
     }
 }
 
+/**
+ * Reset the bird nest variables
+ */
 function resetBirdNest(nest) {
     let index = pipes.indexOf(nest);
-
+    // Bring the bird nest to the right of the screen
     nest.x = index * nest.width + width + 300;
     nest.speed += 0.1;
     nest.delivered = false;

@@ -1,3 +1,8 @@
+/**
+ * Contains the bird variables and draws and moves the bird
+ */
+
+// Bird variables
 let bird = {
     angle: 0,
     color: "#fff024ff",
@@ -23,25 +28,38 @@ let bird = {
         width: 23,
         height: 18
     },
-    escape: false
+    escape: false // If the bird escaped a laser
 };
+
+// Bird intial positions
 birdInitialX = 100;
 birdInitialY = 200;
+
+/**
+ * Moves the bird down and rotate the bird downwards
+ */
 function moveBird() {
+    // Only move the bird down once the game has started
     if (!gameStart || gameFailed) {
         return;
     }
+    // Make the bird fall 
     bird.velocity += bird.gravity;
     bird.y += bird.velocity;
+    // Rotate the bird
     bird.angle += 1;
     bird.angle = constrain(bird.angle, -30, 90);
 }
 
+/**
+ * Draws the bird
+ */
 function drawBird() {
     // Body
     push();
     noStroke();
     fill(bird.color);
+    // Sets the origin to 0 since the canvas is translated to the bird's real x and y position when this function is called
     circle(0, 0, bird.size * 2);
     pop();
 
@@ -61,7 +79,7 @@ function drawBird() {
 
     // Wing
     push();
-    // Roates the bird wing up
+    // Roates the bird's wing up
     translate(-bird.size / 2, 0);
     rotate(10 + bird.angle);
     noStroke();

@@ -1,9 +1,8 @@
 /**
- * This menu file contains the code to run *only* the menu part of the program.
- * Note how it has its own draw, menuDraw(), and its own keyPressed, menuKeyPressed().
- * This keeps the stuff the menu needs to do *separate* from the rest of the program.
+ * Contains the main menu code of the game
  */
 
+// Menu Option array containing all the menu options the player can click on
 const menuOption = [
     {
         menuName: "Tutorial",
@@ -43,7 +42,7 @@ const menuOption = [
     }
 
 ];
-
+// Menu Title variable
 let menuTitle = {
     x: 250,
     y: 100,
@@ -66,23 +65,25 @@ function menuDraw() {
     pipeGap = 140;
     pipeSpeed = 3;
     background("#65c5f8ff");
+
     if (pipes.length <= 0) {
         for (i = 0; i < pipeMax; i++) {
             pipes.push(createPipes(i));
         }
     }
+    // Draws background pipes
     for (let pipe of pipes) {
         drawPipe(pipe);
         movePipe(pipe);
     }
+    // Draws the menu options
     for (let option of menuOption) {
         checkOptionOverlap(option);
         menuOptionDraw(option);
 
     };
+    // Draws the title
     drawTitle();
-    moveTitle();
-
 }
 /**
  * Display main menu text
@@ -103,9 +104,13 @@ function menuOptionDraw(option) {
  * Check mouse overlap over the menu text and display a transparent box around the text if there is an overlap
  */
 function checkOptionOverlap(option) {
+    // Check the distance between the mouse y and the menu y 
     const d = abs(option.y - mouseY);
+    // Check if it's an overlap
     if (d < option.size - 10 && mouseX > 0 && mouseX < width) {
+        // Set the overlap to true
         option.overlap = true;
+        // Draw a box behind the menu option the mouse is overlapping
         push();
         fill(0, 80);
         noStroke();
@@ -117,11 +122,17 @@ function checkOptionOverlap(option) {
     }
 }
 
+/**
+ * Draws the game title
+ */
 function drawTitle() {
+    // Draws the title box 
     push();
     fill(255, 150);
     noStroke();
     rect(0, menuTitle.y - menuTitle.size / 1.6, width, menuTitle.size * 3);
+
+    // Draws the title
     pop();
     push();
     fill(menuTitle.color);
@@ -136,33 +147,9 @@ function drawTitle() {
     pop();
 }
 
-function moveTitle() {
-
-}
-/**
- * Listen to the keyboard
- */
-// function menuKeyPressed(event) {
-//     switch (event.keyCode) {
-//         case 82:
-//             state = "red-variation";
-//             redSetup();
-//             break;
-
-//         case 71:
-//             state = "green-variation";
-//             greenSetup();
-//             break;
-
-//         case 66:
-//             state = "blue-variation";
-//             blueSetup();
-//             break;
-//     }
-// }
 
 /**
- * This will be called whenever the mouse is pressed while the menu is active
+ * Menu mouse pressed function: when the player clicks of a menu option it brings the player to a specific game mode screen
  */
 function menuMousePressed() {
     for (let option of menuOption) {

@@ -1,10 +1,8 @@
 /**
- * Variation Menu
- * Pippin Barr
+ * Flappy Bird Extras!
+ * Lanna Check
  * 
- * A relatively simple example of a set of variations within a single
- * project. (When we learn Object-Oriented Programming this will be a
- * LOT easier.)
+ * 3 Variations of the flappy game: regular flappy bird, flappy bird post, flappy bird boss.
  */
 
 "use strict";
@@ -28,6 +26,10 @@ let jumpSfx = undefined;
 let laserSfx = undefined;
 let letterSfx = undefined;
 let pointsSfx = undefined;
+
+/**
+ * Preload images, sounds and fonts
+ */
 function preload() {
     pixelFont = loadFont('assets/fonts/PixelifySans-VariableFont_wght.ttf');
     letterImg = loadImage('assets/images/letter.png');
@@ -81,6 +83,7 @@ function mousePressed() {
         case "menu":
             menuMousePressed();
             break;
+        // All the variations use the same mouse press function to lift the bird
         case "flappyBird-variation":
         case "flappyBirdPost-variation":
         case "flappyBirdBoss-variation":
