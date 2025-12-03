@@ -10,19 +10,32 @@
 "use strict";
 
 let state = "menu";
+// Game start and fail variables
 let gameStart = false;
 let gameFailed = false;
+// Canvas size
 let cnv = {
     width: 500,
     height: 500
 };
+// Fonts
 let pixelFont = undefined;
-// Image of letter
+// Images
 let letterImg = undefined;
-
+// Sounds
+let crashSfx = undefined;
+let jumpSfx = undefined;
+let laserSfx = undefined;
+let letterSfx = undefined;
+let pointsSfx = undefined;
 function preload() {
     pixelFont = loadFont('assets/fonts/PixelifySans-VariableFont_wght.ttf');
     letterImg = loadImage('assets/images/letter.png');
+    crashSfx = loadSound('assets/sounds/crash.wav');
+    jumpSfx = loadSound('assets/sounds/jump.mp3');
+    laserSfx = loadSound('assets/sounds/laser-beam.wav');
+    letterSfx = loadSound('assets/sounds/letter-drop.wav');
+    pointsSfx = loadSound('assets/sounds/points.wav');
 }
 /**
  * Create the canvas

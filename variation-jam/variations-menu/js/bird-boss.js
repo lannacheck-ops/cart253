@@ -94,6 +94,8 @@ function moveLaser() {
 
         if (birdBoss.laser.timer < 2) {
             if (birdBoss.laser.x2 >= -10) {
+                if (!laserSfx.isPlaying())
+                    laserSfx.play();
                 birdBoss.laser.x2 -= birdBoss.laser.xDecrease;
             }
             if (birdBoss.laser.size < birdBoss.laser.sizeMax) {

@@ -69,7 +69,11 @@ function checkPipeOverlap(pipe) {
         // Add the score if the bird passes through the pipe it was overlapping
         addScore(overlapX, pipe);
         if (overlapTopY == true || overlapBottomY == true) {
-            gameFailed = true;
+            if (!gameFailed) {
+                gameFailed = true;
+                crashSfx.play()
+            }
+
         }
     }
 }
@@ -79,7 +83,11 @@ function checkPipeOverlap(pipe) {
  */
 function checkBirdCanvasOverlap() {
     if (bird.y - bird.size / 2 < 0 || bird.y + bird.size / 2 > height) {
-        gameFailed = true;
+        if (!gameFailed) {
+            gameFailed = true;
+            crashSfx.play()
+        }
+
     }
 }
 /**
@@ -94,6 +102,7 @@ function addScore(overlapX, pipe) {
         score += 1;
         // The pipe has been past 
         pipe.pastPipe = true;
+        pointsSfx.play();
     }
 
 }
@@ -114,6 +123,7 @@ function drawScore() {
  */
 function flappyBirdKeyPressed(event) {
     if (event.keyCode === 27) {
+        jumpSfx.play();
         state = "menu";
     }
 }
@@ -122,8 +132,11 @@ function flappyBirdKeyPressed(event) {
  * Lift the bird when the mouse is pressed
  */
 function flappyBirdMousePressed() {
+
+    // jumpSfx.setVolume(0.5);
     gameStart = true;
     if (!gameFailed) {
+        jumpSfx.play();
         bird.velocity = bird.lift;
         bird.angle -= 35;
     }

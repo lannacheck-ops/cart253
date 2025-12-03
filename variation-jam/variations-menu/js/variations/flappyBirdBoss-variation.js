@@ -64,6 +64,7 @@ function flappyBirdBossDraw() {
  */
 function flappyBirdBossKeyPressed(event) {
     if (event.keyCode === 27) {
+        jumpSfx.play();
         state = "menu";
     }
 }
@@ -128,7 +129,6 @@ function checkLaserOverlap() {
         bird.escape = true;
 
     }
-    console.log(birdBoss.state, bird.escape, birdBoss.laser.shot, birdBoss.laser.colorAlpha);
 }
 /**
  * This will be called whenever the mouse is pressed while the blue variation is active

@@ -91,12 +91,15 @@ function flappyBirdPostDraw() {
 function flappyBirdPostKeyPressed(event) {
     // If the ESC key is pressed go back to the main menu
     if (event.keyCode === 27) {
+        jumpSfx.play();
         state = "menu";
     }
     // If the spacebar is pressed drop the letter
     if (gameStart && !gameFailed) {
         if (event.keyCode === 32) {
             letter.active = true
+            letterSfx.play();
+            letterSfx.setVolume(3);
         }
     }
 }
@@ -133,6 +136,7 @@ function checkLetterBirdNestCollision(nest) {
         // Add the score if the bird passes through the pipe it was overlapping
         score += 5;
         letter.active = false;
+        pointsSfx.play();
         resetBirdNest(nest);
     }
 }

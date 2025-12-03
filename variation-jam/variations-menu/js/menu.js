@@ -74,7 +74,6 @@ function menuDraw() {
     for (let pipe of pipes) {
         drawPipe(pipe);
         movePipe(pipe);
-        checkPipeOverlap(pipe);
     }
     for (let option of menuOption) {
         checkOptionOverlap(option);
@@ -169,6 +168,7 @@ function menuMousePressed() {
     for (let option of menuOption) {
         if (option.overlap === true) {
             state = option.state;
+            jumpSfx.play();
         }
     }
     switch (state) {

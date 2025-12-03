@@ -31,17 +31,11 @@ JavaScript libraries:
 Credit to Pippin Barr for the base code from [Variation Menu](https://pippinbarr.com/cart253/templates/variations-menu.zip)
 
 Sound assets are all from freesound.org:
-> - Button UI sound: https://freesound.org/people/Bpianoholic/sounds/620391/
-> - Critical hunger sound: https://freesound.org/people/Deathbygeko/sounds/190843/
-> - Fly buzzing sound: https://freesound.org/people/FunWithSound/sounds/390733/
-> - Fly pick up sound: https://freesound.org/people/Strechy/sounds/654251/
-> - Game over sound: https://freesound.org/people/deleted_user_877451/sounds/76376/
-> - Background music: https://freesound.org/people/josefpres/sounds/832079/
-> - Potion pick up sound: https://freesound.org/people/andersmmg/sounds/523425/
-> - Potion spawn sound: https://freesound.org/people/Jamius/sounds/41529/
-> - Potion use sound: https://freesound.org/people/kianda/sounds/328120/
-> - Slurp sound: https://freesound.org/people/Breviceps/sounds/445974/
-> - Yellow fly pick up sound: https://freesound.org/people/Raclure/sounds/458867/
+> - Crash sound: https://freesound.org/people/Inxvert17209/sounds/713039/
+> - Jump sound: https://freesound.org/people/timgormly/sounds/170162/
+> - Laser sound: https://freesound.org/people/Robinhood76/sounds/231276/
+> - Points sound: https://freesound.org/people/AceOfSpadesProduc100/sounds/341695/
+> - Letter drop sound: https://freesound.org/people/cabled_mess/sounds/350873/
 
 ## License
 > This project is licensed under a Creative Commons Attribution ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en)) license with the exception of libraries and other components with their own licenses.
