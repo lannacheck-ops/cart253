@@ -140,7 +140,11 @@ function checkLaserOverlap() {
     // Set game failed to true if the laser overlaps the bird
     if (birdBoss.laser.x2 <= bird.x + bird.size / 2 && birdBoss.state === "laser" && birdBoss.laser.colorAlpha >= 30) {
         if (laserOverlap) {
-            gameFailed = true;
+            if (!gameFailed) {
+                gameFailed = true;
+                crashSfx.play()
+            }
+
         }
     }
     // The laser has been shot if the laser's alpha value is less than 30
