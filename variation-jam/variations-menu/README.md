@@ -1,35 +1,47 @@
-# TITLE OF PROJECT
+# Flappy Bird EXTRAS!
+Lanna Check
 
-AUTHOR NAME
-
-[View this project online](URL_FOR_THE_RUNNING_PROJECT)
+[View this project online](https://lannacheck-ops.github.io/cart253/art-jam/template-p5-project/)
 
 ## Description
 
-This description should help the reader understand what the program is, anything they should know to be able to experience it (controls, special features, etc.), and what the desired user experience is. For example:
+3 versions of the Flappy Bird game ! The original Flappy Bird, Flappy Bird mailman and Flappy Bird escapes the BIRD BOSS!
 
-> *The Mayor of Clown Town* is a simulator experience that allows the user to control a small town populated entirely by clowns.
+### Controls
+> - Click anywhere on the screen to launch the bird up
+> - Press space to deliver letters
+> - Press esc to get back to the main menu
 
-> The experience is controlled via the mouse, with left click selecting a clown and bringing up a menu of options such as "slip of banana peel" or "get into impossible capacious clown-car."
-
-> The project is meant to give the user a sense of what it would be the mayor of a town of clowns, eventually getting the sense that clowns are not taking their civic duties seriously.
+### Variations
+> - My first variation was of an inspiration of the regular flappy bird game where the player has to launch the bird up by clicking anywhere on the screen to escape the green pipes while staying within the canvas. Escaping pipes increases points.
+> - My second variation was of flappy bird delivering mail/letters to other birds to gain points. Players must press the spacebar to drop the mail at the right moment to deliver it to the birds at the bottom of the screen. Delivering mail increases points.
+> - My third variation was flappy bird escaping the laser attcks of the bird boss while still escaping pipes. Escaping each attack increases points.
 
 ## Screenshot(s)
+> ![Image of Flappy Bird Start Screen](assets/images/start-screen.png)
+> ![Image of Flappy Bird](assets/images/flappy-bird.png)
+> ![Image of Flappy Bird Post](assets/images/bird-post.png)
+> ![Image of Flappy Bird Boss](assets/images/bird-boss.png)
 
-This bit should have some images of the program running so that the reader has a sense of what it looks like. For example:
-
-> ![Image of a clown face](./assets/images/clown.png)
 
 ## Attribution
+JavaScript libraries:
+[p5.js](https://p5js.org/) and p5.sound.Js
 
-This bit should attribute any code, assets or other elements used taken from other sources. For example:
+Credit to Pippin Barr for the base code from [Variation Menu](https://pippinbarr.com/cart253/templates/variations-menu.zip)
 
-> - This project uses [p5.js](https://p5js.org).
-> - The clown image is a capture of the clown from the Apple emoji character set.
-> - The barking sound effect is "single dog bark 1" by crazymonke9 from freesound.org: https://freesound.org/people/crazymonke9/sounds/418107/
+Sound assets are all from freesound.org:
+> - Button UI sound: https://freesound.org/people/Bpianoholic/sounds/620391/
+> - Critical hunger sound: https://freesound.org/people/Deathbygeko/sounds/190843/
+> - Fly buzzing sound: https://freesound.org/people/FunWithSound/sounds/390733/
+> - Fly pick up sound: https://freesound.org/people/Strechy/sounds/654251/
+> - Game over sound: https://freesound.org/people/deleted_user_877451/sounds/76376/
+> - Background music: https://freesound.org/people/josefpres/sounds/832079/
+> - Potion pick up sound: https://freesound.org/people/andersmmg/sounds/523425/
+> - Potion spawn sound: https://freesound.org/people/Jamius/sounds/41529/
+> - Potion use sound: https://freesound.org/people/kianda/sounds/328120/
+> - Slurp sound: https://freesound.org/people/Breviceps/sounds/445974/
+> - Yellow fly pick up sound: https://freesound.org/people/Raclure/sounds/458867/
 
 ## License
-
-This bit should include the license you want to apply to your work. For example:
-
 > This project is licensed under a Creative Commons Attribution ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en)) license with the exception of libraries and other components with their own licenses.
