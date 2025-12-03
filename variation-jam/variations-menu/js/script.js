@@ -53,6 +53,9 @@ function draw() {
         case "flappyBirdBoss-variation":
             flappyBirdBossDraw();
             break;
+        case "tutorial":
+            tutorialDraw();
+            break;
     }
 }
 
@@ -68,6 +71,7 @@ function mousePressed() {
         case "flappyBird-variation":
         case "flappyBirdPost-variation":
         case "flappyBirdBoss-variation":
+        case "tutorial":
             flappyBirdMousePressed();
             break;
     }
@@ -83,6 +87,7 @@ function keyPressed(event) {
             flappyBirdKeyPressed(event);
             break
         case "flappyBirdPost-variation":
+        case "tutorial":
             flappyBirdPostKeyPressed(event);
             break;
         case "flappyBirdBoss-variation":

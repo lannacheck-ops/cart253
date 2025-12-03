@@ -21,6 +21,7 @@ function flappyBirdBossSetup() {
     // Reset the pipe variables
     pipeSpeed = 2;
     pipeGap = 200;
+    birdBoss.state = "lockOn";
     // Add pipes to the array
     for (i = 0; i < pipeMax; i++) {
         pipes.push(createPipes(i));
@@ -54,6 +55,7 @@ function flappyBirdBossDraw() {
     checkBirdAndBossMouthPostion();
     checkLaserOverlap();
     drawScore();
+    drawEsc();
 }
 
 /**

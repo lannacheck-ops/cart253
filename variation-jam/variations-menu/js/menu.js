@@ -6,12 +6,22 @@
 
 const menuOption = [
     {
+        menuName: "Tutorial",
+        x: undefined,
+        y: undefined,
+        size: 32,
+        overlap: false,
+        state: "tutorial",
+        color: 0
+    },
+    {
         menuName: "Flappy Bird",
         x: undefined,
         y: undefined,
         size: 32,
         overlap: false,
-        state: "flappyBird-variation"
+        state: "flappyBird-variation",
+        color: 255
     },
     {
         menuName: "Flappy Bird Post",
@@ -19,7 +29,8 @@ const menuOption = [
         y: undefined,
         size: 32,
         overlap: false,
-        state: "flappyBirdPost-variation"
+        state: "flappyBirdPost-variation",
+        color: 255
     },
     {
         menuName: "Flappy Bird Boss",
@@ -27,8 +38,10 @@ const menuOption = [
         y: undefined,
         size: 32,
         overlap: false,
-        state: "flappyBirdBoss-variation"
+        state: "flappyBirdBoss-variation",
+        color: 255
     }
+
 ];
 
 let menuTitle = {
@@ -79,7 +92,7 @@ function menuOptionDraw(option) {
     option.y = (menuOption.indexOf(option) * 50) + height / 1.8;
     option.x = width / 2;
     push();
-    fill(255);
+    fill(option.color);
     textFont(pixelFont);
     textSize(option.size);
     textAlign(CENTER, CENTER);
@@ -167,6 +180,9 @@ function menuMousePressed() {
             break;
         case "flappyBirdBoss-variation":
             flappyBirdBossSetup();
+            break;
+        case "tutorial":
+            tutorialSetup();
             break;
     }
 }

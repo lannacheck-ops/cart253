@@ -46,6 +46,7 @@ function flappyBirdDraw() {
 
     checkBirdCanvasOverlap();
     drawScore();
+    drawEsc();
 
 }
 
@@ -99,8 +100,11 @@ function addScore(overlapX, pipe) {
 function drawScore() {
     let scoreTxt = "Score: " + score
     push();
+    textFont(pixelFont);
     textAlign(LEFT, CENTER);
-    textSize(20);
+    stroke(255);
+    strokeWeight(3);
+    textSize(30);
     text(scoreTxt, 20, 30);
     pop();
 }

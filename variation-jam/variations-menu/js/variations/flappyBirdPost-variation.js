@@ -81,6 +81,7 @@ function flappyBirdPostDraw() {
 
     checkBirdCanvasOverlap();
     drawScore();
+    drawEsc();
 }
 
 /**
