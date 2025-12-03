@@ -117,7 +117,7 @@ function checkLaserOverlap() {
             gameFailed = true;
         }
     }
-    if (birdBoss.laser.colorAlpha <= 30 && birdBoss.state === "laser") {
+    if (birdBoss.laser.colorAlpha < 30 && birdBoss.state === "laser") {
         birdBoss.laser.shot = true;
     }
     if (!laserOverlap && birdBoss.laser.shot && bird.escape == false && birdBoss.state === "laser") {

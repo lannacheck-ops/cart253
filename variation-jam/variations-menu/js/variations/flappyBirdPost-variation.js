@@ -4,8 +4,6 @@
  * This keeps the stuff the menu needs to do *separate* from the rest of the program.
  */
 
-// Image of letter
-let letterImg = undefined;
 // Letter variables
 let letter = {
     x: undefined,
@@ -15,10 +13,7 @@ let letter = {
     active: false, // Checks if the letter has been dropped
     size: 32
 }
-// Load letter image
-function preload() {
-    letterImg = loadImage('assets/images/letter.png');
-}
+
 /**
  * This will be called just before the flappyBirdPost variation starts
  */

@@ -48,7 +48,9 @@ function drawPipe(pipe) {
  */
 function movePipe(pipe) {
     if (!gameStart || gameFailed) {
-        return;
+        if (state !== "menu") {
+            return;
+        }
     }
     pipe.x -= pipe.speed;
     const minX = random(-1000, -200);

@@ -4,7 +4,7 @@ let birdNestMax = undefined;
 function createBirdNest(i) {
     let newBirdNest = {
         color: "#a66917",
-        x: i * 50 + width + 100,
+        x: i * 50 + cnv.width + 100,
         y: undefined,
         width: 80,
         height: 35,

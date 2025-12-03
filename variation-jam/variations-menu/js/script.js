@@ -16,7 +16,14 @@ let cnv = {
     width: 500,
     height: 500
 };
+let pixelFont = undefined;
+// Image of letter
+let letterImg = undefined;
 
+function preload() {
+    pixelFont = loadFont('assets/fonts/PixelifySans-VariableFont_wght.ttf');
+    letterImg = loadImage('assets/images/letter.png');
+}
 /**
  * Create the canvas
 */

@@ -31,26 +31,56 @@ const menuOption = [
     }
 ];
 
+let menuTitle = {
+    x: 250,
+    y: 100,
+    size: 50,
+    color: "#fff024ff",
+    color2: "#ff2e2eff",
+    wrapper: 200,
+    name: "Flappy Bird",
+    name2: "EXTRAS!"
+}
+
 /**
  * Display the main menu
  */
 function menuDraw() {
-    background(0);
+    // Sets the max amount of bird in the array
+    pipeMax = 3;
+    // Reset the score
+    score = 0;
+    pipeGap = 140;
+    pipeSpeed = 3;
+    background("#65c5f8ff");
+    if (pipes.length <= 0) {
+        for (i = 0; i < pipeMax; i++) {
+            pipes.push(createPipes(i));
+        }
+    }
+    for (let pipe of pipes) {
+        drawPipe(pipe);
+        movePipe(pipe);
+        checkPipeOverlap(pipe);
+    }
     for (let option of menuOption) {
-        menuOptionDraw(option);
         checkOptionOverlap(option);
-    };
+        menuOptionDraw(option);
 
+    };
+    drawTitle();
+    moveTitle();
 
 }
 /**
  * Display main menu text
  */
 function menuOptionDraw(option) {
-    option.y = (menuOption.indexOf(option) * 50) + height / 2.4;
+    option.y = (menuOption.indexOf(option) * 50) + height / 1.8;
     option.x = width / 2;
     push();
     fill(255);
+    textFont(pixelFont);
     textSize(option.size);
     textAlign(CENTER, CENTER);
     text(option.menuName, option.x, option.y);
@@ -65,14 +95,37 @@ function checkOptionOverlap(option) {
     if (d < option.size - 10 && mouseX > 0 && mouseX < width) {
         option.overlap = true;
         push();
-        fill(255, 80);
+        fill(0, 80);
         noStroke();
-        rect(0, option.y - option.size / 1.2, width, option.size * 1.5);
+        rect(0, option.y - option.size / 1.8, width, option.size * 1.5);
         pop();
     }
     else {
         option.overlap = false;
     }
+}
+
+function drawTitle() {
+    push();
+    fill(255, 150);
+    noStroke();
+    rect(0, menuTitle.y - menuTitle.size / 1.6, width, menuTitle.size * 3);
+    pop();
+    push();
+    fill(menuTitle.color);
+    stroke(0);
+    strokeWeight(5);
+    textFont(pixelFont);
+    textSize(menuTitle.size);
+    textAlign(CENTER, CENTER);
+    text(menuTitle.name, menuTitle.x, menuTitle.y);
+    fill(menuTitle.color2);
+    text(menuTitle.name2, menuTitle.x, menuTitle.y + 70);
+    pop();
+}
+
+function moveTitle() {
+
 }
 /**
  * Listen to the keyboard
